@@ -1,0 +1,1083 @@
+@import 'tailwindcss';
+
+/* Breakpoint des Originals: @media (max-width: 760px) */
+@custom-variant narrow (@media (max-width: 760px));
+
+@theme {
+  /* Zusätzliche Stufe für sehr breite Bildschirme; als Theme-Breakpoint, damit sie nach 2xl sortiert wird. */
+  --breakpoint-3xl: 118.75rem; /* 1900px */
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  /* Markenfarben */
+  --color-accent: #601571; /* per App-Prop "accent" überschreibbar */
+  --color-primary: #601571;
+  --color-primary-hover: #3e0c4a;
+  --color-primary-deep: #330a3d;
+  --color-primary-tint: #f3eaf6;
+
+  /* Flächen & Linien */
+  --color-mist: #f6f2f7;
+  --color-line: #e6dee9;
+  --color-card-line: #e0d6e4;
+  --color-hairline: #eee7f0;
+  --color-connector: #cdbbd3;
+  --color-field-line: #c9bcce;
+
+  /* Text */
+  --color-ink: #1a1220;
+  --color-body: #4a4050;
+  --color-muted: #5b5160;
+  --color-footer-text: #d9d0dd;
+
+  /* Dunkle Flächen (Terminal, Praxis, Architektur) */
+  --color-night: #1e0f25;
+  --color-terminal: #0c0610;
+  --color-terminal-text: #c9b9d0;
+  --color-terminal-dim: #8e7d96;
+  --color-terminal-line: #2a1a31;
+  --color-plum-line: #3a2443;
+  --color-plum-card: #36203f;
+  --color-plum-chip: #4a3054;
+  --color-plum-tile: #2c1834;
+  --color-plum-icon: #3d2147;
+  --color-plum-dash: #6b4a78;
+  --color-plum-label: #b9a9c0;
+  --color-lilac: #e2c3ee;
+  --color-orchid: #d9a6ec;
+  --color-orchid-deep: #8a4a9c;
+  --color-snow: #f3edf5;
+  --color-mint: #9fd8b8;
+  --color-amber: #f0b860;
+
+  /* Formular-Status */
+  --color-danger: #b42318;
+  --color-danger-bg: #fef3f2;
+  --color-danger-line: #fecdca;
+  --color-warn-text: #5c4200;
+  --color-warn-bg: #fff8e6;
+  --color-warn-line: #f2d58a;
+  --color-ok-text: #085d3a;
+  --color-ok-bg: #ecfdf3;
+  --color-ok-line: #abefc6;
+
+  --shadow-terminal: 0 2px 4px rgba(26, 18, 32, 0.12), 0 20px 48px rgba(42, 11, 51, 0.28);
+  --shadow-panel: 0 2px 4px rgba(26, 18, 32, 0.1), 0 20px 48px rgba(42, 11, 51, 0.22);
+}
+
+@layer base {
+  /* Das Original verlässt sich auf das Browser-Standard-Boxmodell (content-box),
+     z. B. max-width: 1200px + padding. Preflight setzt border-box, daher zurück. */
+  *,
+  ::before,
+  ::after {
+    box-sizing: content-box;
+  }
+  button,
+  input[type='checkbox'] {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: #ffffff;
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration-line: underline;
+  }
+
+  a:hover {
+    color: var(--color-primary-hover);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Animationen – 1:1 aus dem Original übernommen
+   ------------------------------------------------------------------ */
+
+.px-bar,
+.px-l0,
+.px-l1,
+.px-s,
+.px-card,
+.px-c {
+    animation-duration: 14.0s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both
+}
+
+@keyframes pxbar {
+    0%,
+    2.86% {
+        transform: scaleX(0);
+        animation-timing-function: ease-in-out
+    }
+    25.71%,
+    95.71% {
+        transform: scaleX(1)
+    }
+    99.29%,
+    100% {
+        transform: scaleX(0)
+    }
+}
+
+@keyframes pxl0 {
+    0%,
+    25.71% {
+        opacity: 1
+    }
+    26.43%,
+    95.71% {
+        opacity: 0
+    }
+    96.43%,
+    100% {
+        opacity: 1
+    }
+}
+
+@keyframes pxl1 {
+    0%,
+    25.71% {
+        opacity: 0
+    }
+    26.43%,
+    95.71% {
+        opacity: 1
+    }
+    96.43%,
+    100% {
+        opacity: 0
+    }
+}
+
+.px-bar {
+    animation-name: pxbar
+}
+
+.px-l0 {
+    animation-name: pxl0
+}
+
+.px-l1 {
+    animation-name: pxl1
+}
+
+@keyframes pxs0 {
+    0%,
+    8.57% {
+        opacity: 0.3;
+        transform: translateX(-4px)
+    }
+    12.14%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0.3;
+        transform: translateX(-4px)
+    }
+}
+
+.px-s0 {
+    animation-name: pxs0
+}
+
+@keyframes pxs1 {
+    0%,
+    18.57% {
+        opacity: 0.3;
+        transform: translateX(-4px)
+    }
+    22.14%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0.3;
+        transform: translateX(-4px)
+    }
+}
+
+.px-s1 {
+    animation-name: pxs1
+}
+
+@keyframes pxs2 {
+    0%,
+    28.57% {
+        opacity: 0.3;
+        transform: translateX(-4px)
+    }
+    32.14%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0.3;
+        transform: translateX(-4px)
+    }
+}
+
+.px-s2 {
+    animation-name: pxs2
+}
+
+@keyframes pxcard {
+    0%,
+    38.57% {
+        opacity: 0;
+        transform: translateY(10px)
+    }
+    43.57%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0;
+        transform: translateY(10px)
+    }
+}
+
+.px-card {
+    animation-name: pxcard
+}
+
+@keyframes pxc0 {
+    0%,
+    45.71% {
+        opacity: 0;
+        transform: scale(0.9)
+    }
+    47.86%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0;
+        transform: scale(0.9)
+    }
+}
+
+.px-c0 {
+    animation-name: pxc0
+}
+
+@keyframes pxc1 {
+    0%,
+    48.57% {
+        opacity: 0;
+        transform: scale(0.9)
+    }
+    50.71%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0;
+        transform: scale(0.9)
+    }
+}
+
+.px-c1 {
+    animation-name: pxc1
+}
+
+@keyframes pxc2 {
+    0%,
+    51.43% {
+        opacity: 0;
+        transform: scale(0.9)
+    }
+    53.57%,
+    95.71% {
+        opacity: 1;
+        transform: none
+    }
+    99.29%,
+    100% {
+        opacity: 0;
+        transform: scale(0.9)
+    }
+}
+
+.px-c2 {
+    animation-name: pxc2
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .px-bar,
+    .px-l0,
+    .px-l1,
+    .px-s,
+    .px-card,
+    .px-c {
+        animation: none
+    }
+    .px-l0 {
+        opacity: 0
+    }
+}
+
+.ag {
+    --T: 15.71s
+}
+
+.ag-row {
+    opacity: 0;
+    animation: var(--T) linear infinite both
+}
+
+.ag-type {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    clip-path: inset(0 100% 0 0);
+    animation: var(--T) linear infinite both
+}
+
+.ag-cur {
+    position: absolute;
+    top: 0.1em;
+    left: 0;
+    width: 0.5em;
+    height: 1.05em;
+    background: #D9A6EC;
+    opacity: 0;
+    animation: var(--T) linear infinite both
+}
+
+.ag-st {
+    grid-area: 1/1;
+    opacity: 0;
+    animation: var(--T) linear infinite both;
+    justify-self: end
+}
+
+@keyframes agr0 {
+    0%,
+    3.820% {
+        opacity: 0
+    }
+    3.884%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt0 {
+    0%,
+    3.820% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(38, end)
+    }
+    8.219%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc0 {
+    0%,
+    3.820% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(38, end)
+    }
+    3.884% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(38, end)
+    }
+    8.219% {
+        left: 100%;
+        opacity: 1
+    }
+    8.283%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r0 {
+    animation-name: agr0
+}
+
+.ag-r0 .ag-type {
+    animation-name: agt0
+}
+
+.ag-r0 .ag-cur {
+    animation-name: agc0
+}
+
+@keyframes agr1 {
+    0%,
+    10.894% {
+        opacity: 0
+    }
+    10.957%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt1 {
+    0%,
+    10.894% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(37, end)
+    }
+    15.177%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc1 {
+    0%,
+    10.894% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(37, end)
+    }
+    10.957% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(37, end)
+    }
+    15.177% {
+        left: 100%;
+        opacity: 1
+    }
+    15.241%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r1 {
+    animation-name: agr1
+}
+
+.ag-r1 .ag-type {
+    animation-name: agt1
+}
+
+.ag-r1 .ag-cur {
+    animation-name: agc1
+}
+
+@keyframes agr2 {
+    0%,
+    17.851% {
+        opacity: 0
+    }
+    17.915%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt2 {
+    0%,
+    17.851% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(41, end)
+    }
+    22.598%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc2 {
+    0%,
+    17.851% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(41, end)
+    }
+    17.915% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(41, end)
+    }
+    22.598% {
+        left: 100%;
+        opacity: 1
+    }
+    22.661%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r2 {
+    animation-name: agr2
+}
+
+.ag-r2 .ag-type {
+    animation-name: agt2
+}
+
+.ag-r2 .ag-cur {
+    animation-name: agc2
+}
+
+@keyframes agr3 {
+    0%,
+    25.272% {
+        opacity: 0
+    }
+    25.336%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt3 {
+    0%,
+    25.272% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(31, end)
+    }
+    28.861%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc3 {
+    0%,
+    25.272% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(31, end)
+    }
+    25.336% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(31, end)
+    }
+    28.861% {
+        left: 100%;
+        opacity: 1
+    }
+    28.925%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r3 {
+    animation-name: agr3
+}
+
+.ag-r3 .ag-type {
+    animation-name: agt3
+}
+
+.ag-r3 .ag-cur {
+    animation-name: agc3
+}
+
+@keyframes agr4 {
+    0%,
+    31.535% {
+        opacity: 0
+    }
+    31.599%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt4 {
+    0%,
+    31.535% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(38, end)
+    }
+    35.934%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc4 {
+    0%,
+    31.535% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(38, end)
+    }
+    31.599% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(38, end)
+    }
+    35.934% {
+        left: 100%;
+        opacity: 1
+    }
+    35.998%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r4 {
+    animation-name: agr4
+}
+
+.ag-r4 .ag-type {
+    animation-name: agt4
+}
+
+.ag-r4 .ag-cur {
+    animation-name: agc4
+}
+
+@keyframes agr5 {
+    0%,
+    38.608% {
+        opacity: 0
+    }
+    38.672%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt5 {
+    0%,
+    38.608% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(41, end)
+    }
+    43.355%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc5 {
+    0%,
+    38.608% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(41, end)
+    }
+    38.672% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(41, end)
+    }
+    43.355% {
+        left: 100%;
+        opacity: 1
+    }
+    43.419%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r5 {
+    animation-name: agr5
+}
+
+.ag-r5 .ag-type {
+    animation-name: agt5
+}
+
+.ag-r5 .ag-cur {
+    animation-name: agc5
+}
+
+@keyframes agr6 {
+    0%,
+    46.029% {
+        opacity: 0
+    }
+    46.093%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt6 {
+    0%,
+    46.029% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(37, end)
+    }
+    50.313%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc6 {
+    0%,
+    46.029% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(37, end)
+    }
+    46.093% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(37, end)
+    }
+    50.313% {
+        left: 100%;
+        opacity: 1
+    }
+    50.376%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r6 {
+    animation-name: agr6
+}
+
+.ag-r6 .ag-type {
+    animation-name: agt6
+}
+
+.ag-r6 .ag-cur {
+    animation-name: agc6
+}
+
+@keyframes agr7 {
+    0%,
+    61.774% {
+        opacity: 0
+    }
+    61.837%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt7 {
+    0%,
+    61.774% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(22, end)
+    }
+    64.320%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc7 {
+    0%,
+    61.774% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(22, end)
+    }
+    61.837% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(22, end)
+    }
+    64.320% {
+        left: 100%;
+        opacity: 1
+    }
+    64.384%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r7 {
+    animation-name: agr7
+}
+
+.ag-r7 .ag-type {
+    animation-name: agt7
+}
+
+.ag-r7 .ag-cur {
+    animation-name: agc7
+}
+
+@keyframes agr8 {
+    0%,
+    66.995% {
+        opacity: 0
+    }
+    67.058%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes agt8 {
+    0%,
+    66.995% {
+        clip-path: inset(0 100% 0 0);
+        animation-timing-function: steps(42, end)
+    }
+    71.857%,
+    99.8% {
+        clip-path: inset(0 0 0 0)
+    }
+    100% {
+        clip-path: inset(0 100% 0 0)
+    }
+}
+
+@keyframes agc8 {
+    0%,
+    66.995% {
+        left: 0;
+        opacity: 0;
+        animation-timing-function: steps(42, end)
+    }
+    67.058% {
+        left: 0;
+        opacity: 1;
+        animation-timing-function: steps(42, end)
+    }
+    71.857% {
+        left: 100%;
+        opacity: 1
+    }
+    71.921%,
+    100% {
+        left: 100%;
+        opacity: 0
+    }
+}
+
+.ag-r8 {
+    animation-name: agr8
+}
+
+.ag-r8 .ag-type {
+    animation-name: agt8
+}
+
+.ag-r8 .ag-cur {
+    animation-name: agc8
+}
+
+@keyframes ags0 {
+    0%,
+    50.313% {
+        opacity: 1
+    }
+    50.376%,
+    61.774% {
+        opacity: 0
+    }
+    61.837%,
+    74.531% {
+        opacity: 1
+    }
+    74.595%,
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes ags1 {
+    0%,
+    50.313% {
+        opacity: 0
+    }
+    50.376%,
+    61.774% {
+        opacity: 1
+    }
+    61.837%,
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes ags2 {
+    0%,
+    74.531% {
+        opacity: 0
+    }
+    74.595%,
+    99.8% {
+        opacity: 1
+    }
+    100% {
+        opacity: 0
+    }
+}
+
+.ag-s0 {
+    animation-name: ags0
+}
+
+.ag-s1 {
+    animation-name: ags1
+}
+
+.ag-s2 {
+    animation-name: ags2
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ag-row,
+    .ag-type,
+    .ag-cur,
+    .ag-st {
+        animation: none
+    }
+    .ag-row {
+        opacity: 1
+    }
+    .ag-type {
+        clip-path: none
+    }
+    .ag-s2 {
+        opacity: 1
+    }
+}
+/* Hero-Heading: von unten einblenden */
+@keyframes heroRise {
+    from {
+        opacity: 0;
+        transform: translateY(40px)
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0)
+    }
+}
+.hero-rise {
+    opacity: 0;
+    animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
+    will-change: transform, opacity
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-rise {
+        opacity: 1;
+        animation: none
+    }
+}
+
+
+/* Collection: laufende Linien im Ordnerbaum des Standbilds */
+@keyframes treeFlow {
+    to { stroke-dashoffset: -38 }
+}
+.tree-flow {
+    animation: treeFlow 1.2s linear infinite
+}
+@media (prefers-reduced-motion: reduce) {
+    .tree-flow { animation: none }
+}
+
+/* Dunkle, gepunktete Fläche; gleiche Werte wie im ProcessingFlow-Video (Cockpit-bg #0a0a0b, Punkte 6 % Weiß, 24px) */
+.dot-grid-dark {
+    background-color: #0a0a0b;
+    background-image: radial-gradient(circle at 12px 12px, rgba(255, 255, 255, 0.06) 1px, transparent 1.5px);
+    background-size: 24px 24px
+}
+
+/* Processing: markierter Abschnitt mit sanft pulsierendem Rahmen */
+@keyframes chunkPulse {
+    0%, 100% { box-shadow: inset 0 0 0 1px #d9c6e0, 0 0 0 0 rgba(96, 21, 113, 0.18) }
+    50% { box-shadow: inset 0 0 0 1px #c3a6cd, 0 0 0 6px rgba(96, 21, 113, 0) }
+}
+.chunk-pulse { animation: chunkPulse 2.4s ease-in-out infinite }
+@media (prefers-reduced-motion: reduce) {
+    .chunk-pulse { animation: none; box-shadow: inset 0 0 0 1px #d9c6e0 }
+}
+
+/* Helle, gepunktete Fläche wie bei attio.com („Speed to lead“) */
+.dot-grid-light {
+    background-color: #f7f6f8;
+    background-image: radial-gradient(circle at 12px 12px, #dcd7df 1px, transparent 1.5px);
+    background-size: 24px 24px
+}
