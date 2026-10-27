@@ -3,7 +3,8 @@ import { useInView } from '../../lib/useInView'
 
 // AI Navigator als Ablauf im Stil von attio.com („Speed to lead“): Knoten werden nacheinander aktiv
 // (Plakette „Läuft“, blauer Rahmen), dann „Abgeschlossen“, die Kante zum nächsten Knoten zeichnet sich blau.
-// Am Ende bleibt das fertige Bild stehen. Kriterien und Ordner sind Platzhalter wie im AiNavigator-Video.
+// Erst wird die hohe, danach die niedrige Priorität vektorisiert; am Ende bleibt das fertige Bild stehen.
+// Kriterien und Ordner sind Platzhalter wie im AiNavigator-Video.
 
 type NodeState = 'idle' | 'run' | 'done' | 'wait'
 type NodeId = 'ingest' | 'nav' | 'case' | 'prio' | 'now' | 'later'
@@ -26,8 +27,8 @@ const NODES: NodeDef[] = [
   { id: 'nav', x: 480, y: 60, title: 'AI Navigator', sub: 'Bewertet jeden Ordner nach Relevanz', tone: 'bg-[#f3ecf6] text-[#601571]', icon: ICON('M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z') },
   { id: 'case', x: 90, y: 280, title: 'Fallbezug prüfen', sub: 'Abgleich mit Facetten und Suchbegriffen', tone: 'bg-[#e7f6ec] text-[#1f7a43]', icon: ICON('M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3') },
   { id: 'prio', x: 380, y: 280, h: 96, title: 'Priorität', sub: 'Nach Relevanz verzweigen', tone: 'bg-[#efeefe] text-[#5b4fd6]', icon: ICON('M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9') },
-  { id: 'now', x: 720, y: 280, title: 'Sofort vektorisieren', sub: 'structured_finance, legal, rac', tone: 'bg-[#fff1e6] text-[#c2571a]', icon: ICON('M13 2 4 14h7l-1 8 9-12h-7z') },
-  { id: 'later', x: 720, y: 430, title: 'Später vektorisieren', sub: 'hr, it · nach OCR', tone: 'bg-[#f4f2ee] text-[#7a6a3c]', icon: ICON('M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z') },
+  { id: 'now', x: 720, y: 280, title: 'Zuerst vektorisieren', sub: 'Hohe Priorität: structured_finance, legal, rac', tone: 'bg-[#fff1e6] text-[#c2571a]', icon: ICON('M13 2 4 14h7l-1 8 9-12h-7z') },
+  { id: 'later', x: 720, y: 430, title: 'Danach vektorisieren', sub: 'Niedrige Priorität: hr, it', tone: 'bg-[#f4f2ee] text-[#7a6a3c]', icon: ICON('M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z') },
 ]
 const NODE_W = 230
 const NODE_H = 64
@@ -53,19 +54,25 @@ const TIMELINE: Frame[] = [
   { at: 5600, nodes: { prio: 'run' } },
   { at: 6600, nodes: { prio: 'done', later: 'wait' }, edges: ['hoch'] },
   { at: 7200, nodes: { now: 'run' } },
-  { at: 8800, nodes: { now: 'done' } },
+  { at: 8800, nodes: { now: 'done' }, edges: ['niedrig'] },
+  { at: 9500, nodes: { later: 'run' } },
+  { at: 11100, nodes: { later: 'done' } },
 ]
-export const NAVIGATOR_FLOW_MS = 8800
+export const NAVIGATOR_FLOW_MS = 11100
+/** Dauer, bis eine Kante fertig gezeichnet ist; erst dann erscheint ihre Pfeilspitze. */
+const DRAW_MS = 700
 
 const FINAL: { nodes: Record<NodeId, NodeState>; edges: EdgeId[] } = {
-  nodes: { ingest: 'done', nav: 'done', case: 'done', prio: 'done', now: 'done', later: 'wait' },
-  edges: ['e1', 'e2', 'e3', 'hoch'],
+  nodes: { ingest: 'done', nav: 'done', case: 'done', prio: 'done', now: 'done', later: 'done' },
+  edges: ['e1', 'e2', 'e3', 'hoch', 'niedrig'],
 }
 
 export function NavigatorFlow({ onDone }: { onDone?: () => void }) {
   const { ref, inView } = useInView<HTMLDivElement>()
   const [nodes, setNodes] = useState<Record<NodeId, NodeState>>({ ingest: 'idle', nav: 'idle', case: 'idle', prio: 'idle', now: 'idle', later: 'idle' })
   const [edges, setEdges] = useState<EdgeId[]>([])
+  // Kanten, die fertig gezeichnet sind (Pfeilspitze sichtbar)
+  const [arrows, setArrows] = useState<EdgeId[]>([])
   const [scale, setScale] = useState(1)
   const onDoneRef = useRef(onDone)
 
@@ -91,6 +98,12 @@ export function NavigatorFlow({ onDone }: { onDone?: () => void }) {
         if (f.edges) setEdges((e) => [...new Set([...e, ...(f.edges ?? [])])])
       }, f.at),
     )
+    // Pfeilspitzen erst, wenn die Linie am Ziel angekommen ist.
+    for (const f of reduce ? [{ at: 0, ...FINAL }] : TIMELINE) {
+      if (!f.edges) continue
+      const list = f.edges
+      timers.push(window.setTimeout(() => setArrows((a) => [...new Set([...a, ...list])]), f.at + (reduce ? 0 : DRAW_MS)))
+    }
     timers.push(window.setTimeout(() => onDoneRef.current?.(), (reduce ? 0 : NAVIGATOR_FLOW_MS) + 2500))
     return () => timers.forEach(clearTimeout)
   }, [inView])
@@ -99,7 +112,7 @@ export function NavigatorFlow({ onDone }: { onDone?: () => void }) {
     <div ref={ref} className="relative w-full overflow-hidden" style={{ height: H * scale }}>
       <div
         role="img"
-        aria-label="Ablauf AI Navigator: Ingest abgeschlossen, AI Navigator bewertet die Ordner, Fallbezug wird geprüft, nach Priorität werden wichtige Ordner sofort und die übrigen später vektorisiert"
+        aria-label="Ablauf AI Navigator: Ingest abgeschlossen, AI Navigator bewertet die Ordner, Fallbezug wird geprüft, nach Priorität werden die wichtigen Ordner zuerst und die übrigen danach vektorisiert"
         className="absolute left-0 top-0 origin-top-left"
         style={{ width: W, height: H, transform: `scale(${scale})` }}
       >
@@ -119,7 +132,7 @@ export function NavigatorFlow({ onDone }: { onDone?: () => void }) {
                 pathLength={1}
                 strokeDasharray="1"
                 strokeDashoffset={edges.includes(id) ? 0 : 1}
-                markerEnd={edges.includes(id) ? 'url(#nav-arrow)' : undefined}
+                markerEnd={arrows.includes(id) ? 'url(#nav-arrow)' : undefined}
                 className="transition-[stroke-dashoffset] duration-700 ease-out"
               />
             </g>
