@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 import { useInView } from '../../lib/useInView'
 
 // AI Navigator als Ablauf im Stil von attio.com („Speed to lead“): Knoten werden nacheinander aktiv
@@ -58,7 +58,6 @@ const TIMELINE: Frame[] = [
   { at: 9500, nodes: { later: 'run' } },
   { at: 11100, nodes: { later: 'done' } },
 ]
-export const NAVIGATOR_FLOW_MS = 11100
 /** Dauer, bis eine Kante fertig gezeichnet ist; erst dann erscheint ihre Pfeilspitze. */
 const DRAW_MS = 700
 
@@ -67,18 +66,13 @@ const FINAL: { nodes: Record<NodeId, NodeState>; edges: EdgeId[] } = {
   edges: ['e1', 'e2', 'e3', 'hoch', 'niedrig'],
 }
 
-export function NavigatorFlow({ onDone }: { onDone?: () => void }) {
+export function NavigatorFlow() {
   const { ref, inView } = useInView<HTMLDivElement>()
   const [nodes, setNodes] = useState<Record<NodeId, NodeState>>({ ingest: 'idle', nav: 'idle', case: 'idle', prio: 'idle', now: 'idle', later: 'idle' })
   const [edges, setEdges] = useState<EdgeId[]>([])
   // Kanten, die fertig gezeichnet sind (Pfeilspitze sichtbar)
   const [arrows, setArrows] = useState<EdgeId[]>([])
   const [scale, setScale] = useState(1)
-  const onDoneRef = useRef(onDone)
-
-  useEffect(() => {
-    onDoneRef.current = onDone
-  })
 
   // Zeichenfläche auf die Breite der Fläche skalieren.
   useLayoutEffect(() => {
@@ -104,7 +98,6 @@ export function NavigatorFlow({ onDone }: { onDone?: () => void }) {
       const list = f.edges
       timers.push(window.setTimeout(() => setArrows((a) => [...new Set([...a, ...list])]), f.at + (reduce ? 0 : DRAW_MS)))
     }
-    timers.push(window.setTimeout(() => onDoneRef.current?.(), (reduce ? 0 : NAVIGATOR_FLOW_MS) + 2500))
     return () => timers.forEach(clearTimeout)
   }, [inView])
 

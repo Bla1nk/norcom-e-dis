@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { STEPS, STEP_VIDEOS } from '../content/steps'
 import { smoothScrollTo } from '../lib/lenis'
 import { CollectionVisual } from './steps/CollectionVisual'
+import { EntityNetwork } from './steps/EntityNetwork'
 import { NavigatorFlow } from './steps/NavigatorFlow'
 import { ProcessingCards } from './steps/ProcessingCards'
 import { ReviewCards } from './steps/ReviewCards'
@@ -16,8 +17,7 @@ const stepTop = (el: HTMLElement) => el.getBoundingClientRect().top + window.scr
 
 // „So funktioniert es“ im Aufbau wie attio.com: gerahmtes Raster (wächst auf breiten Bildschirmen mit), links eine mitlaufende Liste
 // der Schritte, rechts je Schritt Text (Claim fett, Beschreibung grau) und darunter eine Fläche
-// mit dem Clip. Der Clip startet, sobald sein Schritt aktiv ist; ist er zu Ende, scrollt die
-// Seite zum nächsten Schritt.
+// mit dem Clip. Der Clip startet, sobald sein Schritt aktiv ist.
 export function Steps() {
   // -1: noch kein Schritt im Bild, dann läuft auch kein Clip (sonst startet Collection schon im Hero).
   const [active, setActive] = useState(-1)
@@ -130,17 +130,24 @@ export function Steps() {
                     playsInline
                     preload={i < 2 ? 'auto' : 'metadata'}
                     aria-label={`Clip: ${step.title}`}
-                    onEnded={() => {
-                      if (i !== active || i + 1 >= STEPS.length) return
-                      // Nach Processing erst zum AI Navigator, der dann selbst zu Review weiterleitet.
-                      const nav = i === 1 ? document.getElementById('ai-navigator') : null
-                      if (nav) smoothScrollTo(stepTop(nav))
-                      else goTo(i + 1)
-                    }}
                   />
                 </div>
               )}
               {i === 2 && <ReviewCards />}
+              {i === 3 && (
+                <div className="border-t border-line">
+                  <div className="px-8 lg:px-12 pt-24 pb-16">
+                    <p className="m-0 max-w-[30rem] text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
+                      <span className="text-ink font-medium">Der Fall „Vertraulich“: Verbindungen sichtbar machen.</span>{' '}
+                      Die Entitätenerkennung zieht Personen, Organisationen, Orte und Projekte aus den vertraulichen
+                      Dokumenten. Klicken Sie auf eine Entität und sehen Sie, mit wem sie gemeinsam genannt wird.
+                    </p>
+                  </div>
+                  <div className="dot-grid-light border-t border-line px-6 lg:px-10 py-14">
+                    <EntityNetwork />
+                  </div>
+                </div>
+              )}
               {i === 1 && (
                 <>
                   <ProcessingCards />
@@ -154,7 +161,7 @@ export function Steps() {
                       </p>
                     </div>
                     <div className="dot-grid-light border-t border-line px-6 lg:px-10 py-14">
-                      <NavigatorFlow onDone={() => active === 1 && goTo(2)} />
+                      <NavigatorFlow />
                     </div>
                   </div>
                 </>

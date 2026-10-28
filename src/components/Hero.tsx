@@ -115,7 +115,7 @@ export function Hero() {
             muted
             loop
             playsInline
-            aria-label="DaSense-Suche: Suche nach Raptor, Filter auf die Facette Vertraulich und den Ordner rac"
+            aria-label="Ein Fall in einer Minute: Suche nach Raptor, SenseBot beantwortet eine Frage mit Quellen, Smart Filter klassifiziert 500.000 Dokumente, AI Report erstellt den Bericht über die vertraulichen Treffer"
           />
         </div>
       </div>

@@ -41,9 +41,9 @@ function JaNeinList() {
       <div className="flex items-center justify-between px-4 py-3 border-b border-line">
         <span className="flex items-center gap-2">
           <span className="text-ink font-medium">Dokumente</span>
-          <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.6875rem]">Vertraulich</span>
+          <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.6875rem]">Prüfset Vertraulich</span>
         </span>
-        <span className="text-muted/80 tabular-nums">4 von 41.870 bewertet</span>
+        <span className="text-muted/80 tabular-nums">4 von 50 bewertet</span>
       </div>
       <ul className="list-none m-0 p-0">
         {ROWS.map((r, i) => (
@@ -86,10 +86,11 @@ function Key({ children }: { children: string }) {
 }
 
 // Werte und Farben wie im Smart-Filter-Video (src/apps/smartfilter/data.ts).
+// soft = Ruhefarbe, strong = Farbe der gewählten Facette (popt beim Klick).
 const FACETS = [
-  { name: 'Bilanzrisiken', n: 18_420, color: '#c5b0cf' },
-  { name: 'Interessenkonflikt', n: 6_315, color: '#a9cfc8' },
-  { name: 'Vertraulich', n: 41_870, color: '#2563eb', on: true },
+  { name: 'Bilanzrisiken', n: 18_420, soft: '#c5b0cf', strong: '#8e44ad', tint: '#f4ebf8' },
+  { name: 'Interessenkonflikt', n: 6_315, soft: '#a9cfc8', strong: '#0f9b8e', tint: '#e6f6f3' },
+  { name: 'Vertraulich', n: 41_870, soft: '#93b4f5', strong: '#2563eb', tint: '#ecf2fe' },
 ]
 const TOTAL = FACETS.reduce((a, f) => a + f.n, 0)
 const de = (n: number) => n.toLocaleString('de-DE')
@@ -127,12 +128,12 @@ function FacetChart() {
                 cy="90"
                 r={r}
                 fill="none"
-                stroke={f.color}
+                stroke={i === sel ? f.strong : f.soft}
                 strokeWidth={i === sel ? 25 : 22}
                 strokeDasharray={`${(f.n / TOTAL) * c - 2} ${c}`}
                 strokeDashoffset={-starts[i]}
                 onClick={() => setSel(i)}
-                className="cursor-pointer transition-[stroke-width] duration-300"
+                className="cursor-pointer transition-[stroke-width,stroke] duration-300"
               />
             ))}
           </g>
@@ -159,13 +160,14 @@ function FacetChart() {
                   type="button"
                   onClick={() => setSel(i)}
                   aria-pressed={on}
-                  className={`w-full box-border cursor-pointer rounded-lg border-0 px-2.5 py-1.5 text-left font-[inherit] text-[inherit] transition-colors duration-300 ${
-                    on ? 'bg-[#f3ecf6]' : 'bg-transparent hover:bg-[#faf7fb]'
+                  className={`w-full box-border cursor-pointer rounded-lg border-0 px-2.5 py-1.5 text-left font-[inherit] text-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-[#d9c6e0] transition-colors duration-300 ${
+                    on ? '' : 'bg-transparent hover:bg-[#faf7fb]'
                   }`}
+                  style={on ? { background: f.tint } : undefined}
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span className={`flex items-center gap-2 ${on ? 'text-ink font-semibold' : 'text-muted'}`}>
-                      <span className="h-2.5 w-2.5 rounded-sm" style={{ background: f.color }} />
+                      <span className="h-2.5 w-2.5 rounded-sm transition-colors duration-300" style={{ background: on ? f.strong : f.soft }} />
                       {f.name}
                     </span>
                     <span className="tabular-nums">
@@ -175,8 +177,8 @@ function FacetChart() {
                   </span>
                   <span className="mt-1.5 block h-1.5 rounded-full bg-[#f1eef3] overflow-hidden">
                     <span
-                      className="block h-full rounded-full"
-                      style={{ width: `${(f.n / FACETS[2].n) * 100}%`, background: f.color }}
+                      className="block h-full rounded-full transition-colors duration-300"
+                      style={{ width: `${(f.n / FACETS[2].n) * 100}%`, background: on ? f.strong : f.soft }}
                     />
                   </span>
                 </button>
