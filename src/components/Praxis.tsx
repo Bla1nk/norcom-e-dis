@@ -52,7 +52,12 @@ const SOURCES = ['Chat [1]', 'E-Mail [2]', 'Kalkulation [3]']
 
 export function Praxis() {
   return (
-    <section id="praxis" aria-labelledby="praxis-h" className="bg-white">
+    <section
+      id="praxis"
+      aria-labelledby="praxis-h"
+      // Gleitet über den stehenbleibenden dunklen Abschnitt „Warum DaSense“.
+      className="relative bg-white"
+    >
       <div className="max-w-[1200px] mx-auto py-24 px-8 flex flex-col gap-8">
         <div className="flex flex-col gap-4 max-w-[48rem]">
           <Eyebrow colorClass="text-primary">DaSense in der Praxis</Eyebrow>

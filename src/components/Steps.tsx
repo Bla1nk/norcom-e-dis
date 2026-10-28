@@ -59,7 +59,8 @@ export function Steps() {
   }
 
   return (
-    <section id="funktionen" aria-label="So funktioniert es" className="bg-white border-y border-line">
+    // Liegt über „Warum DaSense“ und zieht sich am Ende wie ein Vorhang nach oben weg.
+    <section id="funktionen" aria-label="So funktioniert es" className="relative z-10 bg-white border-y border-line">
       <div className="box-border max-w-[1100px] xl:max-w-[1280px] 2xl:max-w-[1520px] 3xl:max-w-[1760px] mx-auto border-x border-line grid lg:grid-cols-[272px_minmax(0,1fr)] 2xl:grid-cols-[320px_minmax(0,1fr)] 3xl:grid-cols-[360px_minmax(0,1fr)]">
         {/* Linke Spalte: Liste der Schritte, bleibt beim Scrollen stehen */}
         <nav aria-label="Schritte" className="hidden lg:block">

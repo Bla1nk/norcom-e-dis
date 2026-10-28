@@ -26,11 +26,14 @@ export default function App({ accent = '#601571' }: AppProps) {
         <Hero />
         <Steps />
         <Usps />
-        <Praxis />
-        <Architektur />
-        <FuerWen />
-        <Demo />
-        <Footer />
+        {/* Folgt dem dunklen Abschnitt; liegt ebenfalls über dem stehenbleibenden „So funktioniert es“ */}
+        <div className="relative z-10 bg-white">
+          <Praxis />
+          <Architektur />
+          <FuerWen />
+          <Demo />
+          <Footer />
+        </div>
       </div>
     </SmoothScroll>
   )

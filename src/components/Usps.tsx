@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useInView } from '../lib/useInView'
+import { useReveal } from '../lib/useReveal'
 import { USPS, USP_INTRO } from '../content/usps'
 
 // „Warum DaSense“ im Stil von linear.app: dunkler Abschnitt, je Punkt große Überschrift links, Text rechts,
@@ -14,8 +15,19 @@ const PANEL = 'rounded-2xl bg-[#16141b] ring-1 ring-white/10 shadow-[0_40px_80px
 const VISUALS: ReactNode[] = [<SovereigntyScene key="s" />, <SenseBotScene key="b" />, <ReviewScene key="r" />]
 
 export function Usps() {
+  const revealRef = useReveal<HTMLElement>()
   return (
-    <section aria-labelledby="usp-h" className="relative overflow-hidden bg-[#0b0a0e] text-[#ececf1]">
+    // Liegt fest unter „So funktioniert es“: wird freigelegt, während der weiße Abschnitt nach oben wegzieht.
+    <section
+      ref={revealRef}
+      aria-labelledby="usp-h"
+      className="relative z-0 overflow-hidden bg-[#0b0a0e] text-[#ececf1] will-change-transform"
+    >
+      {/* Rahmenlinien des Rasters von „So funktioniert es“ laufen im dunklen Abschnitt weiter */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-full box-border max-w-[1100px] xl:max-w-[1280px] 2xl:max-w-[1520px] 3xl:max-w-[1760px] border-x border-white/[0.08]"
+      />
       {/* Einleitung: gestaffelte Headline über die volle Breite, darunter Text und Inhaltsübersicht */}
       <div className={`${WRAP} pt-36 pb-4`}>
         <span className="text-[0.8125rem] font-medium tracking-[0.12em] uppercase text-[#c39bd3]">{USP_INTRO.eyebrow}</span>
