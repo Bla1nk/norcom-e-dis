@@ -10,13 +10,14 @@ import { FuerWen } from './components/FuerWen'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { Intro } from './components/Intro'
+import { IntroSystem } from './components/IntroSystem'
 import { Steps } from './components/Steps'
 import { TextReveal } from './components/TextReveal'
 import { WordmarkCap } from './components/WordmarkCap'
 import { Usps } from './components/Usps'
 import { CASES } from './content/cases'
 import { LEGAL } from './content/legal'
-import { INTRO_PENDING } from './lib/intro'
+import { INTRO_PENDING, INTRO_VARIANT } from './lib/intro'
 import { jumpTo, lockScroll, smoothScrollTo, unlockScroll } from './lib/lenis'
 import { SmoothScroll } from './lib/SmoothScroll'
 
@@ -186,7 +187,7 @@ export default function App({ accent = '#601571' }: AppProps) {
         {legalDoc && <LegalPage doc={legalDoc} startDelay={entering ? HOLD + 150 : 150} />}
 
         {!intro && <CookieBanner />}
-        {intro && <Intro onDone={() => setIntro(false)} />}
+        {intro && (INTRO_VARIANT === 'a' ? <Intro onDone={() => setIntro(false)} /> : <IntroSystem onDone={() => setIntro(false)} />)}
 
         {curtain && (
           <div

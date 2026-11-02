@@ -32,3 +32,7 @@ export function markIntroSeen() {
     /* ohne Speicher spielt das Intro beim nächsten Laden erneut */
   }
 }
+
+// Welches Intro läuft: ?intro=a (Data Assembly, Standard) oder ?intro=c (System Initialization)
+export const INTRO_VARIANT: 'a' | 'c' =
+  typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('intro') === 'c' ? 'c' : 'a'
