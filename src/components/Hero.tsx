@@ -1,5 +1,6 @@
 import { useRef, type ReactNode } from 'react'
 import { useHeroReveal } from '../lib/useHeroReveal'
+import { INTRO_OWNS_VIDEO } from '../lib/intro'
 import { Eyebrow } from './Eyebrow'
 import { RevealWords } from './RevealWords'
 
@@ -64,7 +65,7 @@ export function Hero() {
     { ref: eyebrowRef, duration: 1000, delay: 100 },
     { ref: textRef, duration: 1200, delay: 450 },
     { ref: featuresRef, duration: 1200, delay: 550 },
-    { ref: videoRef, duration: 1600, delay: 450, from: 30 },
+    ...(INTRO_OWNS_VIDEO ? [] : [{ ref: videoRef, duration: 1600, delay: 450, from: 30 }]),
   ])
 
   return (

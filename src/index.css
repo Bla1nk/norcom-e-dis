@@ -1245,3 +1245,11 @@
     mask-composite: intersect;
   }
 }
+
+/* Intro „Ingest“: Datenfluss zwischen den Stufen */
+.ing-flow { background: linear-gradient(90deg, transparent, #3b6cf6, transparent) no-repeat; background-size: 45% 100%; animation: ingFlow 1s linear infinite }
+@keyframes ingFlow { from { background-position: -70% 0 } to { background-position: 170% 0 } }
+@media (prefers-reduced-motion: reduce) { .ing-flow { animation: none } }
+@keyframes ingDash { to { stroke-dashoffset: -14 } }
+.ing-dash { animation: ingDash .7s linear infinite }
+@media (prefers-reduced-motion: reduce) { .ing-dash { animation: none } }

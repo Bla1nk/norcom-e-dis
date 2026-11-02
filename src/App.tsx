@@ -10,6 +10,7 @@ import { FuerWen } from './components/FuerWen'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { Intro } from './components/Intro'
+import { IntroIngest } from './components/IntroIngest'
 import { IntroSystem } from './components/IntroSystem'
 import { Steps } from './components/Steps'
 import { TextReveal } from './components/TextReveal'
@@ -187,7 +188,7 @@ export default function App({ accent = '#601571' }: AppProps) {
         {legalDoc && <LegalPage doc={legalDoc} startDelay={entering ? HOLD + 150 : 150} />}
 
         {!intro && <CookieBanner />}
-        {intro && (INTRO_VARIANT === 'a' ? <Intro onDone={() => setIntro(false)} /> : <IntroSystem onDone={() => setIntro(false)} />)}
+        {intro && ((INTRO_VARIANT === 'a' || (INTRO_VARIANT === 'i' && window.innerWidth < 768)) ? <Intro onDone={() => setIntro(false)} /> : INTRO_VARIANT === 'c' ? <IntroSystem onDone={() => setIntro(false)} /> : <IntroIngest onDone={() => setIntro(false)} />)}
 
         {curtain && (
           <div

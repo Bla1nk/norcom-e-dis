@@ -33,6 +33,9 @@ export function markIntroSeen() {
   }
 }
 
-// Welches Intro läuft: ?intro=a (Data Assembly, Standard) oder ?intro=c (System Initialization)
-export const INTRO_VARIANT: 'a' | 'c' =
-  typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('intro') === 'c' ? 'c' : 'a'
+// Welches Intro läuft: ?intro=i (Ingest im Cockpit, Standard), ?intro=a (Data Assembly), ?intro=c (System Initialization)
+const v = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('intro') : null
+export const INTRO_VARIANT: 'a' | 'c' | 'i' = v === 'a' || v === 'c' ? v : 'i'
+
+// Beim Ingest-Intro blendet das Intro das Demo-Video selbst ein; der Hero lässt es dann in Ruhe
+export const INTRO_OWNS_VIDEO = INTRO_PENDING && INTRO_VARIANT === 'i' && typeof window !== 'undefined' && window.innerWidth >= 768
