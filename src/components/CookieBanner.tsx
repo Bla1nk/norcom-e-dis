@@ -62,7 +62,7 @@ export function CookieBanner() {
     <div
       role="dialog"
       aria-label="Cookie-Einstellungen"
-      className={`fixed z-50 left-4 bottom-4 w-[min(23.5rem,calc(100vw-2rem))] rounded-[22px] bg-white/95 backdrop-blur-xl ring-1 ring-black/10 shadow-[0_24px_70px_-24px_rgba(30,10,40,0.45)] p-5 text-ink text-[0.875rem] leading-[1.55] ${leaving ? 'cookie-out' : 'cookie-in'}`}
+      className={`fixed z-50 box-border inset-x-3 bottom-3 sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-[min(23.5rem,calc(100vw_-_2rem))] max-h-[calc(100svh_-_1.5rem)] overflow-y-auto rounded-[22px] bg-white/95 backdrop-blur-xl ring-1 ring-black/10 shadow-[0_24px_70px_-24px_rgba(30,10,40,0.45)] p-5 text-ink text-[0.875rem] leading-[1.55] ${leaving ? 'cookie-out' : 'cookie-in'}`}
     >
       <div className="flex items-center gap-2.5">
         <span className="grid size-8 place-items-center rounded-full bg-primary-tint text-primary flex-none">

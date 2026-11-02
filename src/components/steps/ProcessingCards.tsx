@@ -75,7 +75,7 @@ const VECTOR = [0.5, 0.9, 0.35, 0.7, 1, 0.45, 0.8, 0.3, 0.65, 0.95, 0.4, 0.75]
 
 function ChunkStill() {
   return (
-    <div aria-hidden="true" className="w-full max-w-[420px] grid grid-cols-[1fr_auto_120px] items-center gap-4">
+    <div aria-hidden="true" className="w-full max-w-[420px] grid grid-cols-[1fr_auto_84px] sm:grid-cols-[1fr_auto_120px] items-center gap-4">
       <div className="rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-20px_rgba(40,10,50,0.25)] p-3 flex flex-col gap-2">
         {CHUNKS.map((lines, c) => (
           <div

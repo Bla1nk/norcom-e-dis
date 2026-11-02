@@ -369,7 +369,7 @@ export function PraxisDemo() {
                         key={q.id}
                         type="button"
                         onClick={() => ask(q.question, q)}
-                        className="box-border cursor-pointer rounded-full border border-card-line bg-white px-3 py-1.5 text-left text-[0.8125rem] text-body transition-colors hover:border-primary hover:bg-primary-tint hover:text-primary"
+                        className="box-border min-h-[40px] cursor-pointer rounded-full border border-card-line bg-white px-3 py-1.5 text-left text-[0.8125rem] text-body transition-colors hover:border-primary hover:bg-primary-tint hover:text-primary lg:min-h-0"
                       >
                         {q.chip}
                       </button>
@@ -394,7 +394,7 @@ export function PraxisDemo() {
                       type="submit"
                       disabled={!input.trim()}
                       aria-label="Senden"
-                      className="ml-auto grid size-7 cursor-pointer place-items-center rounded-full border-0 bg-primary text-white disabled:cursor-default disabled:bg-mist disabled:text-muted"
+                      className="ml-auto grid size-10 cursor-pointer place-items-center rounded-full border-0 bg-primary text-white disabled:cursor-default disabled:bg-mist disabled:text-muted lg:size-7"
                     >
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                         <path d="M12 19V5M5 12l7-7 7 7" />

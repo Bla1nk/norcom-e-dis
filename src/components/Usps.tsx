@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { useInView } from '../lib/useInView'
 import { useReveal } from '../lib/useReveal'
 import { Praxis } from './Praxis'
@@ -31,7 +31,7 @@ export function Usps() {
         className="pointer-events-none absolute inset-y-0 left-1/2 -translate-x-1/2 w-full box-border max-w-[1100px] xl:max-w-[1280px] 2xl:max-w-[1520px] 3xl:max-w-[1760px] border-x border-white/[0.08]"
       />
       {/* Einleitung: gestaffelte Headline über die volle Breite, darunter Text und Inhaltsübersicht */}
-      <div className={`${WRAP} pt-36 pb-4`}>
+      <div className={`${WRAP} pt-28 lg:pt-36 pb-4`}>
         <span className="text-[0.8125rem] font-medium tracking-[0.12em] uppercase text-[#c39bd3]">{USP_INTRO.eyebrow}</span>
         <h2 id="usp-h" className="mt-6 mb-0 max-w-[18ch] text-[clamp(2.75rem,6vw,5.5rem)] leading-[1] tracking-[-0.04em] font-medium">
           {USP_INTRO.heading.split('. ').map((part, k, arr) => (
@@ -45,7 +45,7 @@ export function Usps() {
           ))}
         </h2>
         <p className="mt-8 mb-0 max-w-[40rem] text-[1.1875rem] leading-[1.55] text-[#a19dab]">{USP_INTRO.text}</p>
-        <nav aria-label="Warum DaSense: Übersicht" className="mt-16 grid sm:grid-cols-3 gap-6">
+        <nav aria-label="Warum DaSense: Übersicht" className="mt-12 lg:mt-16 grid sm:grid-cols-3 gap-6">
           {USPS.map((usp) => (
             <a
               key={usp.num}
@@ -62,7 +62,7 @@ export function Usps() {
       </div>
 
       {USPS.map((usp, i) => (
-        <div key={usp.num} id={`usp-${usp.num}`} className={`${WRAP} pt-32 pb-8 scroll-mt-16`}>
+        <div key={usp.num} id={`usp-${usp.num}`} className={`${WRAP} pt-20 lg:pt-32 pb-4 lg:pb-8 scroll-mt-16`}>
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-24 items-start">
             <div>
               <span className="text-[0.8125rem] font-medium tracking-[0.12em] text-[#6f6a78]">{usp.num}</span>
@@ -72,10 +72,10 @@ export function Usps() {
             </div>
             <p className="m-0 lg:pt-8 text-[1.1875rem] leading-[1.5] text-[#a19dab] max-w-[34rem]">{usp.text}</p>
           </div>
-          <div className={`relative mt-20 ${i === 1 ? 'h-[580px]' : 'h-[540px]'}`}>{VISUALS[i]}</div>
+          <div className={`relative mt-10 lg:mt-20 ${i === 1 ? 'lg:h-[580px]' : 'lg:h-[540px]'}`}>{VISUALS[i]}</div>
         </div>
       ))}
-      <div className="h-24" />
+      <div className="h-12 lg:h-24" />
       <Praxis />
     </section>
   )
@@ -97,22 +97,16 @@ function SovereigntyScene() {
   const [mode, setMode] = useState<Mode>('cloud')
   const cur = MODES.find((m) => m.id === mode)!
   return (
-    <>
+    <div className="flex flex-col-reverse gap-4 lg:contents">
       {/* Fläche liegt hinter dem Panel (wie bei Linear); das Schaubild beginnt rechts neben dem Panel */}
       <div
-        className="absolute left-[16%] right-[-6%] top-12 bottom-0 overflow-hidden rounded-2xl bg-[#100e14] ring-1 ring-white/[0.06] dot-grid-night"
-        style={{
-          WebkitMaskImage: 'linear-gradient(to right, black 80%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)',
-          WebkitMaskComposite: 'source-in',
-          maskImage: 'linear-gradient(to right, black 80%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)',
-          maskComposite: 'intersect',
-        }}
+        className="m2-fade relative lg:absolute lg:left-[16%] lg:right-[-6%] lg:top-12 lg:bottom-0 overflow-x-auto overflow-y-hidden lg:overflow-hidden rounded-2xl bg-[#100e14] ring-1 ring-white/[0.06] dot-grid-night no-scrollbar"
       >
-        <div className="absolute inset-y-0 right-[6%] left-[min(300px,34%)]">
+        <div className="relative min-w-[600px] aspect-[720/440] lg:min-w-0 lg:aspect-auto lg:absolute lg:inset-y-0 lg:right-[6%] lg:left-[min(300px,34%)]">
           <DeploymentDiagram mode={mode} />
         </div>
       </div>
-      <div className={`absolute left-0 top-0 w-[min(440px,100%)] ${PANEL}`}>
+      <div className={`relative lg:absolute left-0 top-0 w-full lg:w-[min(440px,100%)] ${PANEL}`}>
         <div className="px-6 py-5 border-b border-white/[0.07] flex items-center justify-between">
           <span className="text-[1rem] font-medium text-white">Betrieb</span>
           <span className="text-[0.75rem] text-[#8e8a96]">DaSense eDiscovery</span>
@@ -144,7 +138,7 @@ function SovereigntyScene() {
         </div>
         <div className="px-6 pb-5 text-[0.8125rem] text-[#a19dab] min-h-[2.5em]">{cur.note}</div>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -490,6 +484,27 @@ const DIM = [1, 0.5, 0.18]
 
 // Karussell: Anfangs zeigen die Fenster nur ihre Frage. Klick auf ein Fenster oder einen Punkt holt es in die Mitte;
 // dort wird die Antwort gesucht und aufgebaut. Einmal beantwortete Fenster behalten ihre Antwort.
+/** Skaliert eine Komposition fester Größe auf schmale Behälter. Ist genug Platz, bleibt alles unverändert (volle Fläche). */
+function ScaleFit({ designW, designH, children }: { designW: number; designH: number; children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [s, setS] = useState(1)
+  useLayoutEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const ro = new ResizeObserver(() => setS(Math.min(1, el.clientWidth / designW)))
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [designW])
+  const small = s < 1
+  return (
+    <div ref={ref} className="relative w-full" style={{ height: small ? designH * s : '100%' }}>
+      <div style={small ? { position: 'absolute', left: 0, top: 0, width: designW, height: designH, transform: `scale(${s})`, transformOrigin: 'top left' } : { position: 'absolute', inset: 0 }}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function SenseBotScene() {
   const [sel, setSel] = useState(2)
   const [run, setRun] = useState(0)
@@ -503,6 +518,7 @@ function SenseBotScene() {
     setRun((r) => r + 1)
   }
   return (
+    <ScaleFit designW={WIN_W} designH={580}>
     <div ref={ref} className="absolute inset-0">
       <div
         className="absolute top-0 left-1/2 flex items-start gap-4 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -535,11 +551,12 @@ function SenseBotScene() {
             aria-label={`Frage ${i + 1}: ${c.q}`}
             aria-current={i === sel}
             onClick={() => pick(i)}
-            className={`h-2 rounded-full border-0 p-0 cursor-pointer transition-all duration-300 ${i === sel ? 'w-6 bg-white' : 'w-2 bg-white/25 hover:bg-white/50'}`}
+            className={`relative h-2 rounded-full border-0 p-0 cursor-pointer transition-all duration-300 before:absolute before:-inset-x-1.5 before:-inset-y-4 before:content-[''] ${i === sel ? 'w-6 bg-white' : 'w-2 bg-white/25 hover:bg-white/50'}`}
           />
         ))}
       </div>
     </div>
+    </ScaleFit>
   )
 }
 
@@ -611,25 +628,19 @@ function ReviewScene() {
   }
 
   return (
-    <>
+    <div className="flex flex-col-reverse gap-4 lg:contents">
       {/* Dahinter: Prüfprotokoll */}
       <div
-        className="absolute left-[16%] right-[-6%] top-12 bottom-0 overflow-hidden rounded-2xl bg-[#100e14] ring-1 ring-white/[0.06] dot-grid-night"
-        style={{
-          WebkitMaskImage: 'linear-gradient(to right, black 80%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)',
-          WebkitMaskComposite: 'source-in',
-          maskImage: 'linear-gradient(to right, black 80%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%)',
-          maskComposite: 'intersect',
-        }}
+        className="m2-fade relative lg:absolute lg:left-[16%] lg:right-[-6%] lg:top-12 lg:bottom-0 overflow-x-auto overflow-y-hidden lg:overflow-hidden rounded-2xl bg-[#100e14] ring-1 ring-white/[0.06] dot-grid-night no-scrollbar"
       >
-        <div className="absolute inset-y-0 right-[6%] left-[min(560px,46%)] pt-8 flex flex-col gap-5">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="relative p-4 sm:p-5 lg:p-0 lg:absolute lg:inset-y-0 lg:right-[6%] lg:left-[min(560px,46%)] lg:pt-8 flex flex-col gap-5">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
               { l: 'Ja', n: ja, c: '#4ade80' },
               { l: 'Nein', n: nein, c: '#f87171' },
               { l: 'Nicht bewertet', n: Math.max(0, TOTAL_HITS - done), c: '#8e8a96' },
             ].map((k) => (
-              <div key={k.l} className="rounded-xl bg-white/[0.03] ring-1 ring-white/[0.07] px-4 py-3">
+              <div key={k.l} className="min-w-0 rounded-xl bg-white/[0.03] ring-1 ring-white/[0.07] px-3 py-3 sm:px-4">
                 <div className="flex items-center gap-2 text-[0.8125rem] text-[#a19dab]">
                   <span className="h-2 w-2 rounded-full" style={{ background: k.c }} />
                   {k.l}
@@ -641,20 +652,20 @@ function ReviewScene() {
           <div>
             <div className="mb-2 flex items-center justify-between text-[0.8125rem] text-[#8e8a96]">
               <span>Prüfprotokoll · Review-Ordner /Review</span>
-              <span>jede Entscheidung protokolliert</span>
+              <span className="hidden sm:inline">jede Entscheidung protokolliert</span>
             </div>
             <div className="rounded-xl ring-1 ring-white/[0.07] divide-y divide-white/[0.06] overflow-hidden">
               {log.slice(0, 6).map((e, k) => (
                 <div
                   key={`${e.time}-${e.doc}-${k}`}
-                  className={`grid grid-cols-[72px_64px_1fr_auto] items-center gap-3 px-4 py-2.5 text-[0.8125rem] ${k === 0 && log.length > SEED.length ? 'animate-[fadeIn_.4s_ease] bg-white/[0.03]' : ''}`}
+                  className={`grid grid-cols-[3.25rem_3.25rem_minmax(0,1fr)] sm:grid-cols-[72px_64px_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 text-[0.8125rem] ${k === 0 && log.length > SEED.length ? 'animate-[fadeIn_.4s_ease] bg-white/[0.03]' : ''}`}
                 >
                   <span className="text-[#6f6a78] tabular-nums">{e.time}</span>
                   <span className={e.d === 'ja' ? 'text-[#86efac]' : 'text-[#fca5a5]'}>{e.d === 'ja' ? '✓ Ja' : '✕ Nein'}</span>
                   <span className="truncate text-[#d6d3dd]">
                     {e.doc} <span className="text-[#6f6a78]">· fadmin</span>
                   </span>
-                  <span className="text-[0.75rem] text-[#6f6a78]">
+                  <span className="hidden sm:block text-[0.75rem] text-[#6f6a78]">
                     SHA {e.hash} <span className="text-[#86efac]">✓</span>
                   </span>
                 </div>
@@ -673,11 +684,11 @@ function ReviewScene() {
           if (e.key === 'j' || e.key === 'J') decide('ja')
           if (e.key === 'n' || e.key === 'N') decide('nein')
         }}
-        className={`absolute left-0 top-0 w-[min(540px,100%)] rounded-2xl bg-white text-[#0d0d0d] outline-none ring-1 ring-white/10 focus-visible:ring-2 focus-visible:ring-[#b06fd1] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.85)] overflow-hidden transition-shadow duration-300 ${
+        className={`relative lg:absolute left-0 top-0 w-full lg:w-[min(540px,100%)] rounded-2xl bg-white text-[#0d0d0d] outline-none ring-1 ring-white/10 focus-visible:ring-2 focus-visible:ring-[#b06fd1] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.85)] overflow-hidden transition-shadow duration-300 ${
           flash === 'ja' ? 'shadow-[0_0_0_3px_rgba(74,222,128,0.5)]' : flash === 'nein' ? 'shadow-[0_0_0_3px_rgba(248,113,113,0.5)]' : ''
         }`}
       >
-        <div className="flex items-center gap-2 px-5 h-[52px] border-b border-[#e5e5e5] text-[0.8125rem]">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 sm:px-5 py-2.5 lg:py-0 min-h-[52px] lg:h-[52px] border-b border-[#e5e5e5] text-[0.8125rem]">
           <span className="font-semibold text-[0.875rem]">Dokumente</span>
           <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.75rem]">Prüfset · aus 41.870 eingegrenzt</span>
           <span className="ml-auto text-[#8f8f8f] tabular-nums">
@@ -713,14 +724,14 @@ function ReviewScene() {
             <button
               type="button"
               onClick={() => decide('ja')}
-              className="flex-1 cursor-pointer rounded-xl border border-[#e3dfe6] bg-white px-4 py-2.5 text-[0.875rem] font-medium text-[#0d0d0d] hover:bg-[#e7f6ec] hover:border-[#bfe8cd] hover:text-[#1f7a43] transition-colors"
+              className="flex-1 min-h-[44px] cursor-pointer rounded-xl border border-[#e3dfe6] bg-white px-4 py-2.5 text-[0.875rem] font-medium text-[#0d0d0d] hover:bg-[#e7f6ec] hover:border-[#bfe8cd] hover:text-[#1f7a43] transition-colors"
             >
               ✓ Ja <kbd className="ml-1 rounded border border-[#e3dfe6] bg-white px-1 font-sans text-[0.6875rem]">J</kbd>
             </button>
             <button
               type="button"
               onClick={() => decide('nein')}
-              className="flex-1 cursor-pointer rounded-xl border border-[#e3dfe6] bg-white px-4 py-2.5 text-[0.875rem] font-medium text-[#0d0d0d] hover:bg-[#fdecec] hover:border-[#f6c9c5] hover:text-[#b42318] transition-colors"
+              className="flex-1 min-h-[44px] cursor-pointer rounded-xl border border-[#e3dfe6] bg-white px-4 py-2.5 text-[0.875rem] font-medium text-[#0d0d0d] hover:bg-[#fdecec] hover:border-[#f6c9c5] hover:text-[#b42318] transition-colors"
             >
               ✕ Nein <kbd className="ml-1 rounded border border-[#e3dfe6] bg-white px-1 font-sans text-[0.6875rem]">N</kbd>
             </button>
@@ -728,6 +739,6 @@ function ReviewScene() {
           <div className="mt-3 text-center text-[0.75rem] text-[#8f8f8f]">Probieren Sie es aus: klicken oder J / N drücken</div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

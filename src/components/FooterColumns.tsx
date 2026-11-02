@@ -14,7 +14,7 @@ const SHORT: Record<string, string> = {
   behoerden: 'Behörden',
 }
 
-const WRAP = 'box-border w-full max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-8 lg:px-12'
+const WRAP = 'box-border w-full max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12'
 
 // Fuß im Aufbau wie bei apexcollection.de: links eine fette Aussage mit Button, in der Mitte die Zielgruppen als große
 // Wörter (grau, beim Überfahren weiß), rechts eine Kachel mit dem Bild der überfahrenen Zielgruppe, darunter eine
@@ -25,7 +25,7 @@ export function FooterBody() {
 
   return (
     <>
-      <div className={`${WRAP} pt-14 lg:pt-16 pb-12 grid gap-x-10 gap-y-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.75fr)] items-start`}>
+      <div className={`${WRAP} pt-9 sm:pt-14 lg:pt-16 pb-7 sm:pb-12 grid gap-x-10 gap-y-7 sm:gap-y-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.75fr)] items-start`}>
         <div>
           <TextReveal
             as="h2"
@@ -35,13 +35,13 @@ export function FooterBody() {
             text="Sehen Sie es an Ihrem Fall."
             className="block m-0 max-w-[14ch] text-white text-[clamp(1.875rem,3vw,2.75rem)] leading-[1.12] tracking-[-0.025em] font-bold"
           />
-          <p className="rv-c m-0 mt-4 max-w-[22rem] text-white/60 leading-[1.6]" style={{ transitionDelay: '260ms' }}>
+          <p className="rv-c hidden sm:block m-0 mt-4 max-w-[22rem] text-white/60 leading-[1.6]" style={{ transitionDelay: '260ms' }}>
             Wir zeigen Ihnen DaSense an Ihren Daten und Ihrem Anwendungsfall, auf Wunsch vollständig im eigenen Netz.
           </p>
           <a
             {...linkProps('/#demo')}
             style={{ transitionDelay: '380ms' }}
-            className="rv-c group mt-8 inline-flex items-center gap-3 h-12 pl-6 pr-2 rounded-full bg-white !text-ink text-[0.9375rem] font-semibold no-underline transition-colors hover:bg-primary hover:!text-white"
+            className="rv-c group mt-6 sm:mt-8 inline-flex items-center gap-3 h-12 pl-6 pr-2 rounded-full bg-white !text-ink text-[0.9375rem] font-semibold no-underline transition-colors hover:bg-primary hover:!text-white"
           >
             Demo buchen
             <span className="grid size-8 place-items-center rounded-full bg-ink text-white transition-transform duration-300 group-hover:translate-x-0.5">
@@ -59,7 +59,7 @@ export function FooterBody() {
                   onMouseEnter={() => setHot(i)}
                   onFocus={() => setHot(i)}
                   style={{ transitionDelay: `${120 + i * 70}ms` }}
-                  className={`rv-c block no-underline text-[clamp(2.25rem,4.1vw,3.75rem)] leading-[1.14] tracking-[-0.035em] font-bold transition-colors duration-300 ${
+                  className={`rv-c block no-underline text-[clamp(1.875rem,4.1vw,3.75rem)] leading-[1.14] tracking-[-0.035em] font-bold transition-colors duration-300 ${
                     i === hot ? '!text-white' : '!text-white/35 hover:!text-white'
                   }`}
                 >
@@ -82,7 +82,7 @@ export function FooterBody() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className={`${WRAP} py-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[0.6875rem] tracking-[0.12em] uppercase text-white/45`}>
+        <div className={`${WRAP} py-4 sm:py-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[0.6875rem] tracking-[0.12em] uppercase text-white/45`}>
           <span className="normal-case tracking-normal text-[0.75rem]">© 2026 NorCom Information Technology GmbH &amp; Co. KGaA</span>
           <span className="flex flex-wrap items-center gap-x-3">
             <a {...linkProps('/impressum')} className="!text-white/55 no-underline hover:!text-white">Impressum</a>

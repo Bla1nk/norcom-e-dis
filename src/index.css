@@ -1223,3 +1223,25 @@
 .cookie-in { animation: cookieIn .6s cubic-bezier(.22,1,.36,1) both }
 .cookie-out { animation: cookieOut .35s cubic-bezier(.4,0,1,1) both }
 @media (prefers-reduced-motion: reduce) { .cookie-in, .cookie-out { animation: none } }
+
+/* m1-: Hero-Video mobil größer, seitlich wischbar (Oberfläche bleibt lesbar); ab 640 px unverändert */
+.m1-hero-scroll { overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 0 1.25rem; }
+.m1-hero-scroll::-webkit-scrollbar { display: none }
+.m1-hero-video { min-width: 660px }
+@media (min-width: 640px) {
+  .m1-hero-scroll { overflow: visible; padding: 0 }
+  .m1-hero-video { min-width: 0 }
+}
+
+/* Mobil: Reveal-Footer mit festerer, passender Höhe (Inhalt ist hier kompakter) */
+@media (max-width: 1023px) { :root { --foot: 36rem; } }
+
+/* Mobil: Hintergrundflächen von „Warum DaSense“ liegen als eigene Karten unter dem Panel; die Ausblendung gilt nur ab lg */
+@media (min-width: 1024px) {
+  .m2-fade {
+    -webkit-mask-image: linear-gradient(to right, black 80%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, black 80%, transparent 100%), linear-gradient(to bottom, black 75%, transparent 100%);
+    mask-composite: intersect;
+  }
+}

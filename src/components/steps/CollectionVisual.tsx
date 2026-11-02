@@ -32,8 +32,8 @@ export function CollectionVisual() {
   return (
     <>
       {/* Oben: Plattform mit 500.000 Dokumenten, rechts schwebt die Ingest-Karte */}
-      <div className="relative border-t border-line bg-[#f7f4f8] px-8 lg:px-14 py-16 overflow-hidden">
-        <div className="relative w-[88%]">
+      <div className="relative border-t border-line bg-[#f7f4f8] px-4 sm:px-8 lg:px-14 py-8 sm:py-16 overflow-hidden">
+        <div className="relative w-full sm:w-[88%]">
           <img
             src="/images/collection-platform.webp"
             alt="DaSense-Suche mit 500.000 Treffern im Ordner enron-archiv"
@@ -99,7 +99,7 @@ function IngestCard() {
   return (
     <div
       ref={ref}
-      className="absolute right-6 lg:right-10 top-1/2 -translate-y-1/3 w-[min(320px,46%)] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_24px_60px_-20px_rgba(20,60,40,0.35)] p-5 flex flex-col gap-3 text-[0.8125rem]"
+      className="relative mt-4 sm:mt-0 sm:absolute sm:right-6 lg:right-10 sm:top-1/2 sm:-translate-y-1/3 sm:w-[min(320px,46%)] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_24px_60px_-20px_rgba(20,60,40,0.35)] p-5 flex flex-col gap-3 text-[0.8125rem]"
     >
       <div className="flex items-center justify-between">
         <span className="text-[0.6875rem] font-medium tracking-[0.08em] uppercase text-muted">Ingest</span>

@@ -191,11 +191,11 @@ export default function App({ accent = '#601571' }: AppProps) {
             className="fixed inset-0 z-[60] flex items-end bg-[#0b0a0e] text-white"
             style={{ transform: 'translateY(100%)' }}
           >
-            <div className="box-border w-full max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-8 lg:px-12 pb-[14vh]">
+            <div className="box-border w-full max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12 pb-[14vh]">
               <div className="text-[0.8125rem] font-medium tracking-[0.12em] uppercase text-white/60 h-5 overflow-hidden">
                 {curtain.titleOn && <TextReveal text={curtain.label} immediate delay={0} />}
               </div>
-              <div className="mt-4 min-h-[1.1em] text-[clamp(3rem,9.5vw,9rem)] leading-[1.06] tracking-[-0.045em] font-bold">
+              <div className="mt-4 min-h-[1.1em] text-[8.4vw] md:text-[clamp(3rem,9.5vw,9rem)] leading-[1.06] tracking-[-0.045em] font-bold">
                 {curtain.titleOn && <TextReveal text={curtain.title} immediate delay={120} stagger={90} className="block" />}
               </div>
             </div>

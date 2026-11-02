@@ -119,7 +119,7 @@ function Chips({ label, options, value, onToggle }: { label: string; options: st
               type="button"
               aria-pressed={on}
               onClick={() => onToggle(o)}
-              className={`px-3.5 py-2 border text-[0.875rem] [font:inherit] cursor-pointer transition-colors duration-200 ${
+              className={`max-w-full min-h-[40px] text-left px-3.5 py-2 border text-[0.875rem] [font:inherit] cursor-pointer transition-colors duration-200 ${
                 on ? 'bg-ink border-ink text-white' : 'bg-[#faf8fb] border-ink/45 text-ink hover:border-ink'
               }`}
             >
@@ -200,12 +200,12 @@ function DemoForm() {
       noValidate
       onSubmit={onSubmit}
       onChange={onInput}
-      className="relative min-w-0 border border-ink bg-[#e8dcee] p-4 sm:p-6 flex flex-col gap-5"
+      className="relative min-w-0 border border-ink bg-[#e8dcee] p-3 sm:p-6 flex flex-col gap-5"
     >
       <h3 id="demo-form-h" className="sr-only">
         Demo anfragen
       </h3>
-      <div className="border border-ink p-4 sm:p-5 flex flex-col gap-5">
+      <div className="border border-ink p-3.5 sm:p-5 flex flex-col gap-5">
         <div className="flex items-baseline gap-3">
           <span className="text-[0.9375rem] font-bold">Beginnen Sie mit ein paar Klicks</span>
           <span className="text-[0.75rem] text-muted">Optional</span>
@@ -335,7 +335,7 @@ function DemoForm() {
 export function Demo() {
   return (
     <section id="demo" className="bg-mist border-t border-line scroll-mt-0">
-      <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-8 lg:px-12 py-20 lg:py-28 grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-x-16 gap-y-14 items-start">
+      <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-28 grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-x-16 gap-y-12 sm:gap-y-14 items-start">
         <div className="lg:sticky lg:top-28">
           <Reveal>
             <Eyebrow colorClass="text-ink">Live-Demo</Eyebrow>

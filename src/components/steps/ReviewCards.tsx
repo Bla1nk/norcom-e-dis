@@ -118,7 +118,7 @@ function FacetChart() {
           Nur facettierte
         </span>
       </div>
-      <div className="mt-4 grid grid-cols-[160px_minmax(0,1fr)] items-center gap-6">
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-[160px_minmax(0,1fr)] items-center justify-items-center sm:justify-items-stretch gap-4 sm:gap-6">
         <svg viewBox="0 0 180 180" className="w-[160px] h-[160px]" role="group" aria-label="Ring der Facetten-Verteilung">
           <g className="-rotate-90 origin-center">
             {FACETS.map((f, i) => (

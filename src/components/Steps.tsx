@@ -100,11 +100,11 @@ export function Steps() {
               aria-labelledby={`step-${i}`}
               className={i > 0 ? 'border-t border-line' : undefined}
             >
-              <div className="px-8 lg:px-12 pt-24 pb-16">
+              <div className="px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
                 <h3 id={`step-${i}`} className="sr-only">
                   {step.title}
                 </h3>
-                <p className="m-0 max-w-[24rem] text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
+                <p className="m-0 max-w-[24rem] text-[1.1875rem] sm:text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
                   <span className="text-ink font-medium">{step.claim}</span> {step.desc}
                 </p>
               </div>
@@ -113,7 +113,7 @@ export function Steps() {
               ) : (
                 <div
                   className={`border-t border-line ${
-                    FLUSH.has(i) ? 'dot-grid-dark' : 'bg-[#f7f4f8] px-8 lg:px-14 py-16'
+                    FLUSH.has(i) ? 'dot-grid-dark' : 'bg-[#f7f4f8] px-4 sm:px-8 lg:px-14 py-8 sm:py-16'
                   }`}
                 >
                   <video
@@ -137,14 +137,14 @@ export function Steps() {
               {i === 2 && <ReviewCards />}
               {i === 3 && (
                 <div className="border-t border-line">
-                  <div className="px-8 lg:px-12 pt-24 pb-16">
-                    <p className="m-0 max-w-[30rem] text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
+                  <div className="px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
+                    <p className="m-0 max-w-[30rem] text-[1.1875rem] sm:text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
                       <span className="text-ink font-medium">Der Fall „Vertraulich“: Verbindungen sichtbar machen.</span>{' '}
                       Die Entitätenerkennung zieht Personen, Organisationen, Orte und Projekte aus den vertraulichen
                       Dokumenten. Klicken Sie auf eine Entität und sehen Sie, mit wem sie gemeinsam genannt wird.
                     </p>
                   </div>
-                  <div className="dot-grid-light border-t border-line px-6 lg:px-10 py-14">
+                  <div className="dot-grid-light border-t border-line px-3 sm:px-6 lg:px-10 py-8 sm:py-14">
                     <EntityNetwork />
                   </div>
                 </div>
@@ -154,15 +154,20 @@ export function Steps() {
                   <ProcessingCards />
                   {/* AI Navigator: eigener Block wie Attios „Speed to lead“ */}
                   <div id="ai-navigator" className="border-t border-line">
-                    <div className="px-8 lg:px-12 pt-24 pb-16">
-                      <p className="m-0 max-w-[24rem] text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
+                    <div className="px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
+                      <p className="m-0 max-w-[24rem] text-[1.1875rem] sm:text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
                         <span className="text-ink font-medium">AI Navigator: das Wichtigste zuerst.</span> Der AI
                         Navigator erkennt per Logik, welche Dokumente zuerst vektorisiert werden, damit die Analyse
                         sofort mit den relevanten Daten startet.
                       </p>
                     </div>
-                    <div className="dot-grid-light border-t border-line px-6 lg:px-10 py-14">
-                      <NavigatorFlow />
+                    <div className="dot-grid-light border-t border-line px-3 sm:px-6 lg:px-10 py-8 sm:py-14">
+                      <div className="overflow-x-auto no-scrollbar sm:overflow-visible">
+                        <div className="min-w-[640px] sm:min-w-0">
+                          <NavigatorFlow />
+                        </div>
+                      </div>
+                      <p className="sm:hidden m-0 mt-3 text-center text-[0.75rem] text-muted">Seitlich wischen, um den ganzen Ablauf zu sehen</p>
                     </div>
                   </div>
                 </>

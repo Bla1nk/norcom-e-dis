@@ -69,7 +69,7 @@ export function Hero() {
 
   return (
     <section className="relative bg-white">
-      <div className="box-border max-w-[1440px] mx-auto px-8 pt-[max(7rem,14svh)] flex flex-col items-center text-center gap-6">
+      <div className="box-border max-w-[1440px] mx-auto px-5 sm:px-8 pt-[max(6rem,12svh)] sm:pt-[max(7rem,14svh)] flex flex-col items-center text-center gap-6">
         <div className={MASK}>
           <div ref={eyebrowRef}>
             <Eyebrow>DaSense eDiscovery</Eyebrow>
@@ -82,7 +82,7 @@ export function Hero() {
           <RevealWords text="Agentic eDiscovery trifft maximale Datensouveränität." />
         </h1>
         <div className={MASK}>
-          <p ref={textRef} className="m-0 max-w-[44rem] text-[1.25rem] leading-normal text-body">
+          <p ref={textRef} className="m-0 max-w-[44rem] text-[1.0625rem] sm:text-[1.25rem] leading-normal text-body">
             Finden Sie relevante Dokumente, verborgene Zusammenhänge und neue Ermittlungsansätze in
             Millionen Dateien. Mit lokaler KI, weniger manuellem Review und voller Kontrolle über
             Ihre Daten.
@@ -105,10 +105,10 @@ export function Hero() {
       </div>
 
       {/* Ruhiges Arbeitsvideo: ganze Oberfläche sichtbar, ohne Kamera, nahtlose Schleife */}
-      <div className="box-border max-w-[1240px] xl:max-w-[1380px] 2xl:max-w-[1600px] 3xl:max-w-[1800px] mx-auto px-8 pt-16 pb-24">
-        <div ref={videoRef}>
+      <div className="box-border max-w-[1240px] xl:max-w-[1380px] 2xl:max-w-[1600px] 3xl:max-w-[1800px] mx-auto px-0 sm:px-8 pt-10 sm:pt-16 pb-16 sm:pb-24">
+        <div ref={videoRef} className="m1-hero-scroll">
           <video
-            className="block w-full aspect-video rounded-xl ring-1 ring-black/10 shadow-[0_40px_100px_-40px_rgba(40,10,50,0.4)] bg-white"
+            className="m1-hero-video block w-full aspect-video rounded-xl ring-1 ring-black/10 shadow-[0_40px_100px_-40px_rgba(40,10,50,0.4)] bg-white"
             src="/videos/hero.mp4"
             poster="/videos/hero-poster.jpg"
             autoPlay
@@ -118,6 +118,7 @@ export function Hero() {
             aria-label="Ein Fall in einer Minute: Suche nach Raptor, SenseBot beantwortet eine Frage mit Quellen, Smart Filter klassifiziert 500.000 Dokumente, AI Report erstellt den Bericht über die vertraulichen Treffer"
           />
         </div>
+        <p className="sm:hidden m-0 mt-3 px-5 text-center text-[0.75rem] text-muted">Seitlich wischen, um die ganze Oberfläche zu sehen</p>
       </div>
     </section>
   )

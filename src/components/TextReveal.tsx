@@ -44,7 +44,9 @@ type TextRevealProps = {
 // Überschrift, deren Wörter einzeln aus einer Maske nach oben laufen (Keyframes/Transition in index.css).
 export function TextReveal({ text, as: Tag = 'span', id, className, delay = 0, stagger = 55, immediate = false, inherit = false }: TextRevealProps) {
   const { ref, on } = useOn<HTMLElement>(immediate)
-  const words = text.split(' ')
+  // An Leerzeichen und nach Bindestrichen trennen; nach einem Bindestrich kommt kein Leerzeichen (Aussehen bleibt gleich).
+  const words = text.match(/[^\s-]+-?|-/g) ?? [text]
+  const glue = (i: number) => (i < words.length - 1 && !words[i].endsWith('-') ? ' ' : '')
   return (
     <Tag ref={ref} id={id} className={`${on && !inherit ? 'tr-on' : ''} ${className ?? ''}`} aria-label={text}>
       {words.map((w, i) => (
@@ -54,7 +56,7 @@ export function TextReveal({ text, as: Tag = 'span', id, className, delay = 0, s
               {w}
             </span>
           </span>
-          {i < words.length - 1 && ' '}
+          {glue(i)}
         </Fragment>
       ))}
     </Tag>

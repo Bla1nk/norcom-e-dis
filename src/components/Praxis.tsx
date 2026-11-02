@@ -5,7 +5,7 @@ export function Praxis() {
   return (
     // Teil des dunklen Abschnitts „Warum DaSense“ (kein eigener Hintergrund, damit keine Naht entsteht)
     <div id="praxis" role="region" aria-labelledby="praxis-h" className="relative border-t border-white/[0.08]">
-      <div className="max-w-[1240px] mx-auto py-28 px-8 lg:px-12 flex flex-col gap-8">
+      <div className="max-w-[1240px] mx-auto py-20 lg:py-28 px-8 lg:px-12 flex flex-col gap-8">
         <div className="flex flex-col gap-4 max-w-[48rem]">
           <Eyebrow colorClass="text-[#c39bd3]">DaSense in der Praxis</Eyebrow>
           <h2 id="praxis-h" className={`${sectionHeadingClass} !text-white`}>
