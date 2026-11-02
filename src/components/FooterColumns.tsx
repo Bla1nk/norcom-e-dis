@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { CASES } from '../content/cases'
+import { openConsentSettings } from '../lib/consent'
 import { linkProps } from '../lib/router'
 import { CaseIcon } from './CaseIcons'
 import { TextReveal } from './TextReveal'
@@ -87,6 +88,8 @@ export function FooterBody() {
             <a {...linkProps('/impressum')} className="!text-white/55 no-underline hover:!text-white">Impressum</a>
             <span aria-hidden="true">·</span>
             <a {...linkProps('/datenschutzerklaerung')} className="!text-white/55 no-underline hover:!text-white">Datenschutz</a>
+            <span aria-hidden="true">·</span>
+            <button type="button" onClick={openConsentSettings} className="bg-transparent border-0 p-0 text-inherit uppercase tracking-[inherit] [font:inherit] !text-white/55 cursor-pointer hover:!text-white">Cookies</button>
             <span aria-hidden="true">·</span>
             <a href="https://www.norcom.de" className="!text-white/55 no-underline hover:!text-white">norcom.de</a>
           </span>

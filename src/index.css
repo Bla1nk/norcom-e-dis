@@ -1216,3 +1216,10 @@
 @keyframes iconSwap { from { opacity: 0; transform: translateY(14px) scale(.96) } to { opacity: 1; transform: none } }
 .icon-swap { animation: iconSwap .5s cubic-bezier(.22,1,.36,1) both }
 @media (prefers-reduced-motion: reduce) { .icon-swap { animation: none } }
+
+/* Cookie-Hinweis: gleitet von unten ein und wieder aus */
+@keyframes cookieIn { from { opacity: 0; transform: translateY(24px) scale(.98) } to { opacity: 1; transform: none } }
+@keyframes cookieOut { to { opacity: 0; transform: translateY(24px) scale(.98) } }
+.cookie-in { animation: cookieIn .6s cubic-bezier(.22,1,.36,1) both }
+.cookie-out { animation: cookieOut .35s cubic-bezier(.4,0,1,1) both }
+@media (prefers-reduced-motion: reduce) { .cookie-in, .cookie-out { animation: none } }

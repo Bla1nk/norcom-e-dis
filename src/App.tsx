@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { flushSync } from 'react-dom'
 import { CasePage } from './components/CasePage'
+import { CookieBanner } from './components/CookieBanner'
 import { LegalPage } from './components/LegalPage'
 import { Demo } from './components/Demo'
 import { DemoNext } from './components/DemoNext'
@@ -160,21 +161,28 @@ export default function App({ accent = '#601571' }: AppProps) {
         <Header />
         {/* Beide Seiten bleiben eingehängt, damit die Scrollposition der Hauptseite erhalten bleibt */}
         <div style={page ? { display: 'none' } : undefined} aria-hidden={!!page || undefined} inert={!!page || undefined}>
-          <Hero />
-          <Steps />
-          <Usps />
-          {/* Folgt dem dunklen Abschnitt; liegt ebenfalls über dem stehenbleibenden „So funktioniert es“.
-              Unten Abstand in Footerhöhe: Der Footer liegt fest dahinter und wird freigelegt. */}
-          <div className="relative z-10 bg-white rounded-b-[2.5rem] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.5)]" style={{ marginBottom: 'var(--foot)' }}>
-            <FuerWen />
-            <Demo />
-            <DemoNext />
-            <WordmarkCap />
+          {/* Gesamter Inhalt in einem Stapelkontext über dem festen Footer, sonst scheint der Footer durch */}
+          <div className="relative z-10">
+            <div className="bg-white">
+              <Hero />
+              <Steps />
+              <Usps />
+            </div>
+            {/* Folgt dem dunklen Abschnitt; liegt ebenfalls über dem stehenbleibenden „So funktioniert es“.
+                Unten Abstand in Footerhöhe: Der Footer liegt fest dahinter und wird freigelegt. */}
+            <div className="relative z-10 bg-white rounded-b-[2.5rem] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.5)]" style={{ marginBottom: 'var(--foot)' }}>
+              <FuerWen />
+              <Demo />
+              <DemoNext />
+              <WordmarkCap />
+            </div>
           </div>
           <Footer />
         </div>
         {item && <CasePage item={item} startDelay={entering ? HOLD + 150 : 150} />}
         {legalDoc && <LegalPage doc={legalDoc} startDelay={entering ? HOLD + 150 : 150} />}
+
+        <CookieBanner />
 
         {curtain && (
           <div
