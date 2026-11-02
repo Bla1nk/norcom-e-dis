@@ -16,7 +16,8 @@ pnpm lint
 - `src/components/Hero.tsx` – Einstieg mit ruhigem Arbeitsvideo der Plattform
 - `src/components/Steps.tsx` – „So funktioniert es“: Collection, Processing (mit AI Navigator), Review, Analysis, Production
 - `src/components/steps/` – Bilder, Kleinkarten und Animationen je Schritt
-- `src/content/` – Texte der Schritte und USPs
+- `src/content/` – Texte der Schritte und USPs; `cases.ts` = Zielgruppen und ihre Unterseiten (/kanzleien, /compliance, /datenschutz, /forensik, /dienstleister, /behoerden)
+- `src/components/CasePage.tsx` – Vorlage der Unterseiten; `src/App.tsx` – Seitentransition (Hauptseite zieht nach links über die Unterseite), `src/lib/router.ts` – Navigation
 - `public/videos/`, `public/images/` – Clips und Standbilder, gerendert mit dem Projekt App-Previews (Remotion)
 
 Alle Inhalte zeigen den öffentlichen Enron-Datensatz; Zahlen und Abläufe sind illustrativ.

@@ -1106,3 +1106,113 @@
     from { opacity: 0; transform: translateY(3px) }
     to { opacity: 1; transform: none }
 }
+
+/* Scrollbereiche ohne sichtbare Scrollleiste */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animierte Strichsymbole im Abschnitt „Für wen“ */
+.ico * { transform-box: fill-box; }
+.ico .rock, .ico .rock-rev { transform-box: view-box; transform-origin: 80px 26px; animation: ico-rock 4.8s ease-in-out infinite; }
+.ico .rock-rev { animation-direction: reverse; }
+.ico .rock-l { transform-origin: 34px 26px; }
+.ico .rock-r { transform-origin: 126px 26px; }
+.ico .scan { animation: ico-scan 4.2s ease-in-out infinite; }
+.ico .hit { animation: ico-hit 4.2s ease-in-out infinite; }
+.ico .redact { transform-origin: left center; animation: ico-redact 4.6s cubic-bezier(.6,0,.2,1) infinite; }
+.ico .redact.d2 { animation-delay: .5s; }
+.ico .redact.d3 { animation-delay: 1s; }
+.ico .flow { stroke-dasharray: 4 6; animation: ico-flow 1.4s linear infinite; }
+.ico .pulse { transform-origin: center; animation: ico-pulse 2.4s ease-in-out infinite; }
+.ico .pulse.d2 { animation-delay: .8s; }
+.ico .blink { animation: ico-blink 1.6s steps(1) infinite; }
+.ico .blink.d2 { animation-delay: .5s; }
+.ico .blink.d3 { animation-delay: 1.1s; }
+.ico .packet { animation: ico-packet 3s ease-in infinite; }
+.ico .packet.d2 { animation-delay: 1s; }
+.ico .packet.d3 { animation-delay: 2s; }
+.ico .carry { animation: ico-carry 3.6s ease-in-out infinite; }
+.ico .flag { transform-origin: left bottom; animation: ico-flag 3.6s ease-in-out infinite; }
+@keyframes ico-rock { 0%,100% { transform: rotate(-5deg) } 50% { transform: rotate(5deg) } }
+@keyframes ico-scan { 0%,100% { transform: translate(0,0) } 50% { transform: translate(8px,46px) } }
+@keyframes ico-hit { 0%,100% { opacity: .15 } 40%,60% { opacity: 1 } }
+@keyframes ico-redact { 0%,15% { transform: scaleX(0) } 35%,80% { transform: scaleX(1) } 95%,100% { transform: scaleX(0) } }
+@keyframes ico-flow { to { stroke-dashoffset: -20 } }
+@keyframes ico-pulse { 0%,100% { transform: scale(1) } 50% { transform: scale(1.35) } }
+@keyframes ico-blink { 0%,100% { opacity: 1 } 50% { opacity: .15 } }
+@keyframes ico-packet { 0% { transform: translateX(0); opacity: 0 } 15% { opacity: 1 } 85% { opacity: 1 } 100% { transform: translateX(42px); opacity: 0 } }
+@keyframes ico-carry { 0% { transform: translate(0,0); opacity: 0 } 15% { opacity: 1 } 70% { transform: translate(-42px,0); opacity: 1 } 100% { transform: translate(-42px,-14px); opacity: 0 } }
+@keyframes ico-flag { 0%,50% { transform: scaleY(.2) } 65%,100% { transform: scaleY(1) } }
+@media (prefers-reduced-motion: reduce) { .ico * { animation: none !important } }
+
+/* Einblenden der Unterseiten-Inhalte */
+.case-in { animation: case-in .9s cubic-bezier(.22,1,.36,1) both; animation-delay: 0s; }
+@keyframes case-in { from { opacity: 0; transform: translateY(18px) } to { opacity: 1; transform: none } }
+@media (prefers-reduced-motion: reduce) { .case-in { animation: none } }
+
+/* Textanimationen der Unterseiten: Wörter aus einer Maske, Rest blendet von unten ein */
+.tr-word { display: inline-block; transform: translateY(115%); transition: transform 1s cubic-bezier(.22,1,.36,1); will-change: transform; }
+.tr-on .tr-word, .tr-on.tr-word { transform: none; }
+.rv { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform 1s cubic-bezier(.22,1,.36,1); }
+.rv.tr-on { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .tr-word, .rv { transform: none; opacity: 1; transition: none } }
+
+/* Zeilen der Zielgruppen-Liste: Linie zieht sich auf, Inhalte laufen gestaffelt ein */
+.rv-c { opacity: 0; transform: translateY(22px); transition: opacity .9s ease, transform 1s cubic-bezier(.22,1,.36,1); }
+.tr-on .rv-c { opacity: 1; transform: none; }
+.line-draw { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #1a1220; transform: scaleX(0); transform-origin: left; transition: transform 1.1s cubic-bezier(.76,0,.24,1); }
+.tr-on .line-draw { transform: none; }
+@media (prefers-reduced-motion: reduce) { .rv-c { opacity: 1; transform: none; transition: none } .line-draw { transform: none; transition: none } }
+
+/* Glocke der aktiven Erinnerung */
+@keyframes bellRing { 0%,100% { transform: rotate(0) } 10%,30%,50% { transform: rotate(14deg) } 20%,40% { transform: rotate(-14deg) } 60% { transform: rotate(0) } }
+.bell-ring { transform-origin: 50% 10%; animation: bellRing 1.6s ease-in-out infinite }
+@media (prefers-reduced-motion: reduce) { .bell-ring { animation: none } }
+
+/* Stempel der Produktionsnummer */
+@keyframes stampIn { 0% { transform: scale(1.7); opacity: 0 } 60% { transform: scale(.94); opacity: 1 } 100% { transform: scale(1); opacity: 1 } }
+.stamp-in { animation: stampIn .45s cubic-bezier(.22,1,.36,1) both }
+@media (prefers-reduced-motion: reduce) { .stamp-in { animation: none } }
+
+/* Zugriffsprotokoll: neue Zeile läuft ein, Live-Punkt blinkt */
+@keyframes logIn { from { opacity: 0; transform: translateY(-8px) } to { opacity: 1; transform: none } }
+.log-in { animation: logIn .5s cubic-bezier(.22,1,.36,1) both }
+@keyframes blinkDot { 50% { opacity: .25 } }
+.blink-dot { animation: blinkDot 1.4s ease-in-out infinite }
+@media (prefers-reduced-motion: reduce) { .log-in, .blink-dot { animation: none } }
+
+/* Höhe des Reveal-Footers auf den Unterseiten */
+:root { --foot: clamp(38rem, 68vh, 46rem); }
+
+/* Behörden: laufende Dateiendungen und Prüfstrich */
+@keyframes be-marquee { to { transform: translateX(-50%) } }
+@keyframes be-marquee-rev { from { transform: translateX(-50%) } to { transform: translateX(0) } }
+.be-marquee { animation: be-marquee 26s linear infinite }
+.be-marquee-rev { animation: be-marquee-rev 30s linear infinite }
+@keyframes be-scan { from { transform: scaleX(0); transform-origin: left } to { transform: scaleX(1); transform-origin: left } }
+.be-scan { animation: be-scan 1.1s linear both }
+@media (prefers-reduced-motion: reduce) { .be-marquee, .be-marquee-rev, .be-scan { animation: none } }
+
+/* Dienstleister: Live-Punkt und Burn-down-Linie */
+@keyframes dlBlink { 50% { opacity: .25 } }
+.dl-blink { animation: dlBlink 1.4s ease-in-out infinite }
+@keyframes dlDraw { from { stroke-dashoffset: 1 } to { stroke-dashoffset: 0 } }
+.dl-draw { stroke-dasharray: 1; animation: dlDraw .9s cubic-bezier(.22,1,.36,1) both }
+@media (prefers-reduced-motion: reduce) { .dl-blink, .dl-draw { animation: none } }
+
+/* Forensik: Fundstellen laufen ein, Kreislauf-Symbol dreht sich */
+@keyframes foRise { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+.fo-rise { animation: foRise .5s cubic-bezier(.22,1,.36,1) both }
+@keyframes foSpin { to { transform: rotate(360deg) } }
+.fo-spin-slow { animation: foSpin 3.2s linear infinite }
+@media (prefers-reduced-motion: reduce) { .fo-rise, .fo-spin-slow { animation: none } }
+
+/* Bildwechsel in der Footer-Kachel */
+@keyframes iconSwap { from { opacity: 0; transform: translateY(14px) scale(.96) } to { opacity: 1; transform: none } }
+.icon-swap { animation: iconSwap .5s cubic-bezier(.22,1,.36,1) both }
+@media (prefers-reduced-motion: reduce) { .icon-swap { animation: none } }

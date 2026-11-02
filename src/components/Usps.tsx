@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { useInView } from '../lib/useInView'
 import { useReveal } from '../lib/useReveal'
+import { Praxis } from './Praxis'
 import { USPS, USP_INTRO } from '../content/usps'
 
 // „Warum DaSense“ im Stil von linear.app: dunkler Abschnitt, je Punkt große Überschrift links, Text rechts,
@@ -21,6 +22,7 @@ export function Usps() {
     <section
       ref={revealRef}
       aria-labelledby="usp-h"
+      data-nav-dark
       className="relative z-0 overflow-hidden bg-[#0b0a0e] text-[#ececf1] will-change-transform"
     >
       {/* Rahmenlinien des Rasters von „So funktioniert es“ laufen im dunklen Abschnitt weiter */}
@@ -73,7 +75,8 @@ export function Usps() {
           <div className={`relative mt-20 ${i === 1 ? 'h-[580px]' : 'h-[540px]'}`}>{VISUALS[i]}</div>
         </div>
       ))}
-      <div className="h-40" />
+      <div className="h-24" />
+      <Praxis />
     </section>
   )
 }

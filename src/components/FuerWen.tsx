@@ -1,87 +1,59 @@
-import { Eyebrow, sectionHeadingClass } from './Eyebrow'
+import { CASES } from '../content/cases'
+import { CaseIcon } from './CaseIcons'
+import { Eyebrow } from './Eyebrow'
+import { linkProps } from '../lib/router'
+import { RevealGroup, TextReveal } from './TextReveal'
 
-type Audience = { title: string; text: string; tags: string[] }
-
-const AUDIENCES: Audience[] = [
-  {
-    title: 'Kanzleien',
-    text: 'Große Dokumentenbestände in Streitverfahren früh einschätzen und gezielt prüfen.',
-    tags: ['Litigation & Schiedsverfahren', 'Kartellverfahren', 'Early Case Assessment'],
-  },
-  {
-    title: 'Rechtsabteilungen & Compliance',
-    text: 'Interne Untersuchungen vertraulich führen und Behördenanfragen fristgerecht beantworten.',
-    tags: ['Hinweisgeberfälle', 'Behördenanfragen', 'Dawn-Raid-Vorbereitung'],
-  },
-  {
-    title: 'Datenschutz & IT-Security',
-    text: 'Personenbezogene Daten systemübergreifend finden, schnell und nachweisbar.',
-    tags: ['DSGVO-Auskunftsersuchen', 'Incident Response', 'Betroffene nach Datenpanne ermitteln'],
-  },
-  {
-    title: 'Forensik & Beratung',
-    text: 'Forensik-Teams von Wirtschaftsprüfungen und Beratungen, die Betrugs- und Transaktionsfälle unter Zeitdruck aufklären.',
-    tags: ['Fraud Investigations', 'M&A Due Diligence'],
-  },
-  {
-    title: 'eDiscovery-Dienstleister',
-    text: 'Litigation-Support-Anbieter, die KI-gestützte Auswertung als eigenen Service für ihre Mandanten anbieten wollen.',
-    // INTERN ZU PRÜFEN: Mandantenfähigkeit technisch bestätigen; erst danach als Merkmal ergänzen.
-    tags: ['Eigenes Rechenzentrum'],
-  },
-  {
-    title: 'Behörden & Ermittler',
-    text: 'Millionen Beweisdateien schneller sichten und priorisieren.',
-    tags: ['Sichergestellte Massendaten', 'Aufsichtsverfahren'],
-  },
-]
+const pad2 = (n: number) => String(n).padStart(2, '0')
 
 export function FuerWen() {
   return (
-    <section id="fuer-wen">
-      <div className="max-w-[1200px] mx-auto py-24 px-8 flex flex-wrap gap-12">
-        <div className="flex-[1_1_360px] min-w-0 flex flex-col gap-4">
-          <Eyebrow>Für wen</Eyebrow>
-          <h2 className={sectionHeadingClass}>
-            Für alle, die große Datenbestände belastbar auswerten müssen.
-          </h2>
+    <section id="fuer-wen" aria-labelledby="fuer-wen-h" className="relative bg-white py-24 lg:py-32">
+      <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-8 lg:px-12">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)_minmax(0,1.6fr)] items-start gap-x-8 gap-y-5 pb-14">
+          <Eyebrow colorClass="text-ink">Für wen</Eyebrow>
+          <TextReveal as="h2" id="fuer-wen-h" text="Zielgruppen." className="block m-0 text-ink text-[clamp(2.5rem,6vw,5.25rem)] leading-[1.06] tracking-[-0.04em] font-bold" />
+          <p className="m-0 text-body text-[0.9375rem] leading-[1.65]">
+            Für alle, die große Datenbestände belastbar auswerten müssen, ob in der Kanzlei, im Konzern oder in der Behörde.
+          </p>
         </div>
-        <ul className="flex-[1_1_560px] min-w-0 list-none m-0 p-0 border-t border-card-line">
-          {AUDIENCES.map((a) => (
-            <li key={a.title} className="border-b border-card-line">
-              <details className="group">
-                <summary className="list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-4 min-h-16 py-3 cursor-pointer text-[1.125rem] font-semibold text-primary focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-4 focus-visible:rounded-[4px]">
-                  {a.title}
-                  <svg
-                    className="flex-none transition-transform duration-200 ease-[ease] group-open:rotate-180"
-                    aria-hidden="true"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#601571"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="m6 9 6 6 6-6" />
-                  </svg>
-                </summary>
-                <div className="flex flex-col gap-3 pb-5">
-                  <span className="text-body">{a.text}</span>
-                  <span className="flex flex-wrap gap-2">
+
+        <ul className="list-none m-0 p-0 border-t border-ink">
+          {CASES.map((a, i) => (
+            <RevealGroup as="li" key={a.title} className="relative">
+              <span aria-hidden="true" className="line-draw" />
+              <a
+                {...linkProps(`/${a.slug}`)}
+                className="group grid lg:grid-cols-[6rem_minmax(0,1fr)_11rem_21rem_2rem] items-start gap-x-8 gap-y-4 py-8 lg:py-9 text-inherit no-underline transition-colors hover:bg-mist/70"
+              >
+                <span className="rv-c text-[0.8125rem] font-semibold tabular-nums text-ink lg:pt-3.5">{pad2(i + 1)}</span>
+                <TextReveal
+                  as="h3"
+                  inherit
+                  delay={120}
+                  text={a.title}
+                  className="block m-0 text-ink text-[clamp(1.75rem,3.1vw,2.75rem)] leading-[1.12] tracking-[-0.03em] font-bold transition-transform duration-300 group-hover:translate-x-1"
+                />
+                <div className="rv-c hidden lg:block justify-self-center lg:mt-1" style={{ transitionDelay: '240ms' }}>
+                  <CaseIcon name={a.icon} className="w-[11rem] h-auto" />
+                </div>
+                <div className="rv-c lg:pt-2" style={{ transitionDelay: '320ms' }}>
+                  <p className="m-0 text-body text-[0.9375rem] leading-[1.65]">{a.text}</p>
+                  <span className="mt-3 flex flex-wrap gap-2">
                     {a.tags.map((t) => (
-                      <span
-                        key={t}
-                        className="text-[0.8125rem] py-1 px-2.5 rounded-full bg-mist text-body"
-                      >
+                      <span key={t} className="text-[0.75rem] py-0.5 px-2.5 rounded-full bg-mist text-body">
                         {t}
                       </span>
                     ))}
                   </span>
                 </div>
-              </details>
-            </li>
+                <span className="rv-c hidden lg:block justify-self-end lg:mt-3" style={{ transitionDelay: '420ms' }}>
+                  <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" className="block text-ink transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                    <path d="M6 18 18 6M8 6h10v10" />
+                  </svg>
+                </span>
+              </a>
+            </RevealGroup>
           ))}
         </ul>
       </div>
