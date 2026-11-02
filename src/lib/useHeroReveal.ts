@@ -1,4 +1,5 @@
 import { useLayoutEffect, type RefObject } from 'react'
+import { introGate } from './intro'
 
 // Einstieg wie auf apexcollection.de: Jedes Wort steigt aus einer Maske auf,
 // danach folgen die übrigen Elemente. Die Startposition wird vor dem ersten
@@ -50,7 +51,8 @@ export function useHeroReveal(headingRef: RefObject<HTMLElement | null>, extras:
       words.forEach((word, i) => reveal(word, 1000, 150 + i * 100))
       others.forEach((o) => reveal(o.el, o.duration, o.delay))
     }
-    void fontReady.then(start, start)
+    // Beim Intro startet der Text erst, wenn der Vorhang wegzieht.
+    void Promise.all([fontReady.catch(() => []), introGate]).then(start, start)
 
     const stop = () => {
       cancelled = true

@@ -9,12 +9,14 @@ import { Footer } from './components/Footer'
 import { FuerWen } from './components/FuerWen'
 import { Header } from './components/Header'
 import { Hero } from './components/Hero'
+import { Intro } from './components/Intro'
 import { Steps } from './components/Steps'
 import { TextReveal } from './components/TextReveal'
 import { WordmarkCap } from './components/WordmarkCap'
 import { Usps } from './components/Usps'
 import { CASES } from './content/cases'
 import { LEGAL } from './content/legal'
+import { INTRO_PENDING } from './lib/intro'
 import { jumpTo, lockScroll, smoothScrollTo, unlockScroll } from './lib/lenis'
 import { SmoothScroll } from './lib/SmoothScroll'
 
@@ -55,6 +57,7 @@ export default function App({ accent = '#601571' }: AppProps) {
   const [slug, setSlug] = useState<string | null>(() => slugOf(window.location.pathname))
   const [curtain, setCurtain] = useState<Curtain | null>(null)
   const [entering, setEntering] = useState(false)
+  const [intro, setIntro] = useState(INTRO_PENDING)
   const curtainRef = useRef<HTMLDivElement>(null)
   const busy = useRef(false)
   const slugRef = useRef(slug)
@@ -182,7 +185,8 @@ export default function App({ accent = '#601571' }: AppProps) {
         {item && <CasePage item={item} startDelay={entering ? HOLD + 150 : 150} />}
         {legalDoc && <LegalPage doc={legalDoc} startDelay={entering ? HOLD + 150 : 150} />}
 
-        <CookieBanner />
+        {!intro && <CookieBanner />}
+        {intro && <Intro onDone={() => setIntro(false)} />}
 
         {curtain && (
           <div
