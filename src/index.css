@@ -1,12 +1,27 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-Variable.woff2') format('woff2');
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/Satoshi-VariableItalic.woff2') format('woff2');
+  font-weight: 300 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* Breakpoint des Originals: @media (max-width: 760px) */
 @custom-variant narrow (@media (max-width: 760px));
 
 @theme {
   /* Zusätzliche Stufe für sehr breite Bildschirme; als Theme-Breakpoint, damit sie nach 2xl sortiert wird. */
   --breakpoint-3xl: 118.75rem; /* 1900px */
-  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-sans: 'Satoshi', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
 
   /* Markenfarben */

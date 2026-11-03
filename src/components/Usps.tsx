@@ -152,11 +152,11 @@ function Node({ x, y, w, h, title, sub, icon }: { x: number; y: number; w: numbe
       <g transform={`translate(${x + 16} ${y + h / 2 - 11})`} stroke="#c39bd3" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
         {icon}
       </g>
-      <text x={x + 48} y={sub ? y + h / 2 - 3 : y + h / 2 + 5} fill="#ececf1" style={{ font: '500 14px Helvetica, Arial, sans-serif' }}>
+      <text x={x + 48} y={sub ? y + h / 2 - 3 : y + h / 2 + 5} fill="#ececf1" style={{ font: '500 14px Satoshi, Helvetica, Arial, sans-serif' }}>
         {title}
       </text>
       {sub && (
-        <text x={x + 48} y={y + h / 2 + 15} fill="#8e8a96" style={{ font: '400 11.5px Helvetica, Arial, sans-serif' }}>
+        <text x={x + 48} y={y + h / 2 + 15} fill="#8e8a96" style={{ font: '400 11.5px Satoshi, Helvetica, Arial, sans-serif' }}>
           {sub}
         </text>
       )}
@@ -168,14 +168,14 @@ function StackBox({ x, y, w, h, label, tone }: { x: number; y: number; w: number
   return (
     <g>
       <rect x={x} y={y} width={w} height={h} rx="18" fill="rgba(255,255,255,0.02)" stroke={tone} strokeDasharray="6 5" />
-      <text x={x + 18} y={y + 26} fill={tone} style={{ font: '600 11px Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>
+      <text x={x + 18} y={y + 26} fill={tone} style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>
         {label}
       </text>
       {STACK.map((s, i) => (
         <g key={s}>
           <rect x={x + 18} y={y + 44 + i * 46} width={w - 36} height="36" rx="10" fill="#1a1720" stroke="rgba(255,255,255,0.1)" />
           <circle cx={x + 34} cy={y + 62 + i * 46} r="3.5" fill="#4ade80" />
-          <text x={x + 48} y={y + 66 + i * 46} fill="#e2e0e8" style={{ font: '500 13px Helvetica, Arial, sans-serif' }}>
+          <text x={x + 48} y={y + 66 + i * 46} fill="#e2e0e8" style={{ font: '500 13px Satoshi, Helvetica, Arial, sans-serif' }}>
             {s}
           </text>
         </g>
@@ -208,16 +208,16 @@ function DeploymentDiagram({ mode }: { mode: Mode }) {
         <Node x={40} y={180} w={190} h={64} title="Ihr Team" sub="Browser" icon={USERS} />
         <path d="M230 212 C 300 212 330 212 404 212" fill="none" stroke="#b06fd1" strokeWidth="1.8" strokeDasharray="6 6" className="flow-12" />
         <rect x="273" y="196" width="88" height="22" rx="11" fill="#1f1726" stroke="rgba(176,111,209,0.5)" />
-        <text x="317" y="211" textAnchor="middle" fill="#c39bd3" style={{ font: '500 10.5px Helvetica, Arial, sans-serif' }}>verschlüsselt</text>
+        <text x="317" y="211" textAnchor="middle" fill="#c39bd3" style={{ font: '500 10.5px Satoshi, Helvetica, Arial, sans-serif' }}>verschlüsselt</text>
         <path d="M455 66 a40 40 0 0 1 76 -10 a32 32 0 0 1 54 26 a26 26 0 0 1 -6 52 h-120 a34 34 0 0 1 -4 -68z" fill="none" stroke="#c39bd3" strokeWidth="1.6" transform="translate(-14 0)" />
-        <text x="512" y="106" textAnchor="middle" fill="#c39bd3" style={{ font: '600 11px Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>CLOUD</text>
+        <text x="512" y="106" textAnchor="middle" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>CLOUD</text>
         <StackBox x={404} y={150} w={276} h={190} label="RECHENZENTRUM IN DEUTSCHLAND" tone="#c39bd3" />
       </g>
 
       {/* On-Premise: alles im eigenen Netz */}
       <g style={show('onprem')}>
         <rect x="24" y="40" width="672" height="360" rx="22" fill="none" stroke="rgba(176,111,209,0.55)" strokeDasharray="7 6" />
-        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>IHR NETZ</text>
+        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>IHR NETZ</text>
         <Node x={60} y={180} w={190} h={64} title="Ihr Team" sub="Browser" icon={USERS} />
         <path d="M250 212 C 330 212 350 212 420 212" fill="none" stroke="#b06fd1" strokeWidth="1.8" strokeDasharray="6 6" className="flow-12" />
         <StackBox x={420} y={110} w={240} h={190} label="IHR RECHENZENTRUM" tone="#c39bd3" />
@@ -233,7 +233,7 @@ function DeploymentDiagram({ mode }: { mode: Mode }) {
             <path d="M3 6V4a4 4 0 0 1 8 0v2" />
           </g>
         </g>
-        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>ABGESCHOTTETES NETZ</text>
+        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>ABGESCHOTTETES NETZ</text>
         <Node x={50} y={180} w={170} h={64} title="Ihr Team" sub="Browser" icon={USERS} />
         <path d="M220 212 C 270 212 290 212 320 212" fill="none" stroke="#b06fd1" strokeWidth="1.8" strokeDasharray="6 6" className="flow-12" />
         <StackBox x={320} y={110} w={200} h={190} label="IHRE SERVER" tone="#c39bd3" />
@@ -244,7 +244,7 @@ function DeploymentDiagram({ mode }: { mode: Mode }) {
         <g transform="translate(600 178)">
           <rect x="0" y="0" width="100" height="68" rx="14" fill="#1a1720" stroke="rgba(255,255,255,0.08)" />
           <g transform="translate(39 10)" stroke="#6f6a78" strokeWidth="1.6" fill="none">{GLOBE}</g>
-          <text x="50" y="54" textAnchor="middle" fill="#6f6a78" style={{ font: '500 11.5px Helvetica, Arial, sans-serif' }}>Internet</text>
+          <text x="50" y="54" textAnchor="middle" fill="#6f6a78" style={{ font: '500 11.5px Satoshi, Helvetica, Arial, sans-serif' }}>Internet</text>
         </g>
       </g>
     </svg>

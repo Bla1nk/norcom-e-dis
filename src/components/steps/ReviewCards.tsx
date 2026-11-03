@@ -137,7 +137,7 @@ function FacetChart() {
               />
             ))}
           </g>
-          <text x="90" y="94" textAnchor="middle" className="fill-ink" style={{ font: '700 26px Helvetica, Arial, sans-serif' }}>
+          <text x="90" y="94" textAnchor="middle" className="fill-ink" style={{ font: '700 26px Satoshi, Helvetica, Arial, sans-serif' }}>
             {de(cur.n)}
           </text>
           <text
@@ -146,7 +146,7 @@ function FacetChart() {
             textAnchor="middle"
             className="fill-muted"
             // Lange Namen (Interessenkonflikt) kleiner, damit sie nicht an den Ring stoßen.
-            style={{ font: `600 ${cur.name.length > 12 ? 7 : 9}px Helvetica, Arial, sans-serif`, letterSpacing: cur.name.length > 12 ? '0.06em' : '0.12em' }}
+            style={{ font: `600 ${cur.name.length > 12 ? 7 : 9}px Satoshi, Helvetica, Arial, sans-serif`, letterSpacing: cur.name.length > 12 ? '0.06em' : '0.12em' }}
           >
             {cur.name.toUpperCase()}
           </text>
