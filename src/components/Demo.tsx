@@ -5,10 +5,10 @@ import { Eyebrow } from './Eyebrow'
 import { Reveal, TextReveal } from './TextReveal'
 
 /**
- * OFFENER INTEGRATIONSPUNKT: URL des Formular-Backends (POST, JSON).
- * Solange leer, wird nichts übermittelt (Status „unconnected“).
+ * URL des Formular-Backends (POST, JSON): Standard ist die Vercel-Funktion api/demo.ts, die per Mail an NorCom schickt.
+ * Mit VITE_DEMO_ENDPOINT überschreibbar; leer gesetzt wird nichts übermittelt (Status „unconnected“).
  */
-const FORM_ENDPOINT: string = import.meta.env.VITE_DEMO_ENDPOINT ?? ''
+const FORM_ENDPOINT: string = import.meta.env.VITE_DEMO_ENDPOINT ?? '/api/demo'
 
 type ErrorKey = 'name' | 'org' | 'mail' | 'consent'
 type Errors = Partial<Record<ErrorKey, true>>

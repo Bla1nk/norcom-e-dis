@@ -3,7 +3,6 @@ import { flushSync } from 'react-dom'
 import { CasePage } from './components/CasePage'
 import { CookieBanner } from './components/CookieBanner'
 import { LegalPage } from './components/LegalPage'
-import { ReferenzenPage } from './components/ReferenzenPage'
 import { Demo } from './components/Demo'
 import { DemoNext } from './components/DemoNext'
 import { Footer } from './components/Footer'
@@ -43,7 +42,6 @@ const frames = () => new Promise<void>((r) => requestAnimationFrame(() => reques
 
 const slugOf = (path: string) => {
   const p = path.replace(/\/$/, '')
-  if (p === '/referenzen') return 'referenzen'
   return [...CASES, ...LEGAL].find((c) => `/${c.slug}` === p)?.slug ?? null
 }
 
@@ -73,9 +71,8 @@ export default function App({ accent = '#601571' }: AppProps) {
     const from = slugRef.current
     const item = CASES.find((c) => c.slug === target)
     const legal = LEGAL.find((c) => c.slug === target)
-    const refs = target === 'referenzen'
-    const label = item ? `${String(CASES.indexOf(item) + 1).padStart(2, '0')} · Für wen` : legal ? legal.eyebrow : refs ? 'NorCom' : 'Zurück zu'
-    const title = item ? item.title : legal ? legal.title : refs ? 'Referenzen' : (HASH_TITLES[hash] ?? 'Zielgruppen')
+    const label = item ? `${String(CASES.indexOf(item) + 1).padStart(2, '0')} · Für wen` : legal ? legal.eyebrow : 'Zurück zu'
+    const title = item ? item.title : legal ? legal.title : (HASH_TITLES[hash] ?? 'Zielgruppen')
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const swap = () => {
@@ -161,8 +158,7 @@ export default function App({ accent = '#601571' }: AppProps) {
 
   const item = CASES.find((c) => c.slug === slug) ?? null
   const legalDoc = LEGAL.find((c) => c.slug === slug) ?? null
-  const refPage = slug === 'referenzen'
-  const page = item ?? legalDoc ?? (refPage ? true : null)
+  const page = item ?? legalDoc
 
   return (
     <SmoothScroll>
@@ -189,7 +185,6 @@ export default function App({ accent = '#601571' }: AppProps) {
           <Footer />
         </div>
         {item && <CasePage item={item} startDelay={entering ? HOLD + 150 : 150} />}
-        {refPage && <ReferenzenPage startDelay={entering ? HOLD + 150 : 150} />}
         {legalDoc && <LegalPage doc={legalDoc} startDelay={entering ? HOLD + 150 : 150} />}
 
         {!intro && <CookieBanner />}
