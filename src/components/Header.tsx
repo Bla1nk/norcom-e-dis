@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { anchorProps, navigate } from '../lib/router'
+import { anchorProps, linkProps, navigate } from '../lib/router'
 
 const LINKS = [
   { href: '#funktionen', label: 'Funktionen' },
@@ -80,7 +80,7 @@ export function Header() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-30 backdrop-blur-xl transition-[background-color,border-color,translate] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] border-b ${
-        hidden && !menu ? '-translate-y-full focus-within:translate-y-0' : 'translate-y-0'
+        hidden && !menu ? '-translate-y-full has-[:focus-visible]:translate-y-0' : 'translate-y-0'
       } ${
         menu ? 'bg-white' : dark ? 'bg-[#0b0a0e]/70' : 'bg-white/75'
       } ${scrolled ? (dark ? 'border-white/10' : 'border-line') : 'border-transparent'}`}
@@ -104,6 +104,11 @@ export function Header() {
               </a>
             </li>
           ))}
+          <li>
+            <a {...linkProps('/referenzen')} className={`block px-3.5 py-2 rounded-full text-[0.875rem] font-medium no-underline transition-colors duration-200 ${ink}`}>
+              Referenzen
+            </a>
+          </li>
         </ul>
         <div className="justify-self-end flex items-center gap-2">
           <a
@@ -150,6 +155,17 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li className="border-b border-hairline last:border-b-0">
+              <a
+                {...linkProps('/referenzen')}
+                tabIndex={menu ? 0 : -1}
+                onClickCapture={() => setMenu(false)}
+                className="flex items-center justify-between min-h-[52px] text-[1.125rem] font-medium text-ink no-underline"
+              >
+                Referenzen
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-muted"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+            </li>
           </ul>
         </div>
       </div>

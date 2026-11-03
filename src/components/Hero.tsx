@@ -116,7 +116,7 @@ export function Hero() {
             muted
             loop
             playsInline
-            aria-label="Ein Fall in einer Minute: Suche nach Raptor, SenseBot beantwortet eine Frage mit Quellen, Smart Filter klassifiziert 500.000 Dokumente, AI Report erstellt den Bericht über die vertraulichen Treffer"
+            aria-label="Ein Fall in einer Minute: SenseBot prüft eine Hypothese im ganzen Archiv und belegt sie mit Quellen, der E-Mail-Filter grenzt 500.000 Dokumente auf 3.412 E-Mails ein, der Smart Filter klassifiziert genau diese Treffer, der AI Report erstellt den Bericht über die 786 vertraulichen E-Mails"
           />
         </div>
         <p className="sm:hidden m-0 mt-3 px-5 text-center text-[0.75rem] text-muted">Seitlich wischen, um die ganze Oberfläche zu sehen</p>

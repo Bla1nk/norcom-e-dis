@@ -1253,3 +1253,9 @@
 @keyframes ingDash { to { stroke-dashoffset: -14 } }
 .ing-dash { animation: ingDash .7s linear infinite }
 @media (prefers-reduced-motion: reduce) { .ing-dash { animation: none } }
+
+/* Kundenband (Referenzen): endloses Laufband, hält bei Hover an */
+@keyframes custMarquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.cust-track { display: flex; width: max-content; animation: custMarquee 48s linear infinite }
+.cust-mask:hover .cust-track { animation-play-state: paused }
+@media (prefers-reduced-motion: reduce) { .cust-track { animation: none; flex-wrap: wrap; width: auto; row-gap: 1.5rem } }
