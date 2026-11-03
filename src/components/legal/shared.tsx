@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { t } from '../../lib/i18n'
 
 /** Fläche unter dem Text eines Abschnitts (wie bei „So funktioniert es“). */
 export function Surface({ children, tone = 'mist' }: { children: ReactNode; tone?: 'mist' | 'dark' | 'grid' }) {
@@ -7,7 +8,7 @@ export function Surface({ children, tone = 'mist' }: { children: ReactNode; tone
   return <div className={`border-t border-line ${bg} px-5 sm:px-8 lg:px-14 py-12 lg:py-16`}>{children}</div>
 }
 
-const BASE_TABS = ['Smart Filter', 'AI Report', 'Entitäten', 'Verträge']
+const BASE_TABS = ['Smart Filter', 'AI Report', t('Entitäten', 'Entities'), t('Verträge', 'Contracts')]
 
 /** Fenster im Stil der DaSense-App; `tab` ist der aktive Reiter. Ist es keine der Standard-Apps, steht die eigene App an zweiter Stelle. */
 export function AppWindow({ tab, title, children }: { tab: string; title: string; children: ReactNode }) {
@@ -23,12 +24,12 @@ export function AppWindow({ tab, title, children }: { tab: string; title: string
       </div>
       <div className="flex items-center gap-1 px-3 h-11 border-b border-line overflow-x-auto no-scrollbar">
         <span className="px-2 text-[0.6875rem] font-medium tracking-[0.1em] uppercase text-muted whitespace-nowrap">Enterprise AI</span>
-        {TABS.map((t) => (
+        {TABS.map((tb) => (
           <span
-            key={t}
-            className={`px-3 py-1 rounded-full whitespace-nowrap ${t === tab ? 'bg-primary-tint text-primary font-medium ring-1 ring-primary/20' : 'text-body'}`}
+            key={tb}
+            className={`px-3 py-1 rounded-full whitespace-nowrap ${tb === tab ? 'bg-primary-tint text-primary font-medium ring-1 ring-primary/20' : 'text-body'}`}
           >
-            {t}
+            {tb}
           </span>
         ))}
       </div>

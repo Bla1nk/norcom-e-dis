@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 import { useRef, type ReactNode } from 'react'
 import { useHeroReveal } from '../lib/useHeroReveal'
 import { INTRO_OWNS_VIDEO } from '../lib/intro'
@@ -22,7 +23,7 @@ const iconProps = {
 
 const FEATURES: Feature[] = [
   {
-    label: '1.400+ Dateiformate',
+    label: t('1.400+ Dateiformate', '1,400+ file formats'),
     icon: (
       <svg {...iconProps}>
         <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
@@ -31,7 +32,7 @@ const FEATURES: Feature[] = [
     ),
   },
   {
-    label: 'Lokale KI',
+    label: t('Lokale KI', 'Local AI'),
     icon: (
       <svg {...iconProps}>
         <rect x="6" y="6" width="12" height="12" rx="2" />
@@ -41,7 +42,7 @@ const FEATURES: Feature[] = [
     ),
   },
   {
-    label: 'On-Premise & Air-Gapped',
+    label: t('On-Premise & Air-Gapped', 'On-premise & air-gapped'),
     icon: (
       <svg {...iconProps}>
         <path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z" />
@@ -80,19 +81,20 @@ export function Hero() {
           ref={headingRef}
           className="m-0 max-w-[22ch] text-primary text-[clamp(2.25rem,4vw,4.25rem)] leading-[1.05] tracking-[-0.03em] font-bold text-balance"
         >
-          <RevealWords text="Agentic eDiscovery trifft maximale Datensouveränität." />
+          <RevealWords text={t('Agentic eDiscovery trifft maximale Datensouveränität.', 'Agentic eDiscovery meets maximum data sovereignty.')} />
         </h1>
         <div className={MASK}>
           <p ref={textRef} className="m-0 max-w-[44rem] text-[1.0625rem] sm:text-[1.25rem] leading-normal text-body">
-            Finden Sie relevante Dokumente, verborgene Zusammenhänge und neue Ermittlungsansätze in
-            Millionen Dateien. Mit lokaler KI, weniger manuellem Review und voller Kontrolle über
-            Ihre Daten.
+            {t(
+              'Finden Sie relevante Dokumente, verborgene Zusammenhänge und neue Ermittlungsansätze in Millionen Dateien. Mit lokaler KI, weniger manuellem Review und voller Kontrolle über Ihre Daten.',
+              'Find relevant documents, hidden connections and new investigative leads across millions of files. With local AI, less manual review and full control over your data.',
+            )}
           </p>
         </div>
         <div className={MASK}>
           <ul
             ref={featuresRef}
-            aria-label="Leistungsmerkmale"
+            aria-label={t('Leistungsmerkmale', 'Key features')}
             className="list-none m-0 p-0 flex flex-wrap justify-center gap-x-7 gap-y-3"
           >
             {FEATURES.map((f) => (
@@ -116,10 +118,10 @@ export function Hero() {
             muted
             loop
             playsInline
-            aria-label="Ein Fall in einer Minute: SenseBot prüft eine Hypothese im ganzen Archiv und belegt sie mit Quellen, der E-Mail-Filter grenzt 500.000 Dokumente auf 3.412 E-Mails ein, der Smart Filter klassifiziert genau diese Treffer, der AI Report erstellt den Bericht über die 786 vertraulichen E-Mails"
+            aria-label={t('Ein Fall in einer Minute: SenseBot prüft eine Hypothese im ganzen Archiv und belegt sie mit Quellen, der E-Mail-Filter grenzt 500.000 Dokumente auf 3.412 E-Mails ein, der Smart Filter klassifiziert genau diese Treffer, der AI Report erstellt den Bericht über die 786 vertraulichen E-Mails', 'A case in one minute: SenseBot tests a hypothesis across the entire archive and backs it up with sources, the email filter narrows 500,000 documents down to 3,412 emails, the Smart Filter classifies exactly those hits, and the AI Report generates the report on the 786 confidential emails')}
           />
         </div>
-        <p className="sm:hidden m-0 mt-3 px-5 text-center text-[0.75rem] text-muted">Seitlich wischen, um die ganze Oberfläche zu sehen</p>
+        <p className="sm:hidden m-0 mt-3 px-5 text-center text-[0.75rem] text-muted">{t('Seitlich wischen, um die ganze Oberfläche zu sehen', 'Swipe sideways to see the full interface')}</p>
       </div>
     </section>
   )

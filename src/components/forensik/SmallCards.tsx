@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { SubCard } from '../steps/shared'
 import { useSeen } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Zwei kleine Funktionen: Namen zusammenführen und Chronologie eines Vorgangs. Fiktive Daten.
 
 export function ForensikSmallCards() {
   return (
     <div className="grid md:grid-cols-2 border-t border-line">
-      <SubCard title="Eine Person, nicht fünf." text="Verschiedene Schreibweisen und Adressen derselben Person werden zusammengeführt. So bleibt kein Beteiligter unentdeckt.">
+      <SubCard title={t('Eine Person, nicht fünf.', 'One person, not five.')} text={t('Verschiedene Schreibweisen und Adressen derselben Person werden zusammengeführt. So bleibt kein Beteiligter unentdeckt.', 'Different spellings and addresses of the same person are merged. That way no one involved goes undetected.')}>
         <Merge />
       </SubCard>
-      <SubCard className="md:border-l border-line" title="Der Vorgang auf einer Zeitleiste." text="Alle Ereignisse eines Vorgangs stehen in der richtigen Reihenfolge, mit Quelle zu jedem Punkt.">
+      <SubCard className="md:border-l border-line" title={t('Der Vorgang auf einer Zeitleiste.', 'The case on a timeline.')} text={t('Alle Ereignisse eines Vorgangs stehen in der richtigen Reihenfolge, mit Quelle zu jedem Punkt.', 'All events of a case appear in the right order, with a source for every point.')}>
         <Chronology />
       </SubCard>
     </div>
@@ -22,7 +23,7 @@ const VARIANTS = [
   { t: 'Jörg Meier', x: 112, y: -54, r: 5 },
   { t: 'joerg.m@halden-holding.example', x: -96, y: 62, r: 4 },
   { t: 'Meier, Jörg', x: 108, y: 64, r: -5 },
-  { t: 'JM (Chat)', x: 0, y: -98, r: 3 },
+  { t: t('JM (Chat)', 'JM (chat)'), x: 0, y: -98, r: 3 },
 ]
 
 function Merge() {
@@ -64,12 +65,12 @@ function Merge() {
           <span className="grid size-8 place-items-center rounded-full bg-primary text-white text-[0.75rem] font-semibold">JM</span>
           <div>
             <div className="font-semibold text-ink text-[0.875rem]">Jörg Meier</div>
-            <div className="text-muted">Einkaufsleiter · Halden Holding</div>
+            <div className="text-muted">{t('Einkaufsleiter', 'Head of Purchasing')} · Halden Holding</div>
           </div>
         </div>
         <div className="mt-2.5 flex gap-1.5">
-          <span className="rounded-full bg-primary-tint px-2 py-0.5 text-[0.75rem] text-primary font-medium">5 Schreibweisen</span>
-          <span className="rounded-full bg-[#f4f1f5] px-2 py-0.5 text-[0.75rem] text-body">412 Dokumente</span>
+          <span className="rounded-full bg-primary-tint px-2 py-0.5 text-[0.75rem] text-primary font-medium">{t('5 Schreibweisen', '5 spellings')}</span>
+          <span className="rounded-full bg-[#f4f1f5] px-2 py-0.5 text-[0.75rem] text-body">{t('412 Dokumente', '412 documents')}</span>
         </div>
       </div>
     </div>
@@ -77,11 +78,11 @@ function Merge() {
 }
 
 const EVENTS = [
-  { d: '03.03.', t: 'Angebot Orion Advisory eingegangen', s: 'Mail' },
-  { d: '14.03.', t: 'Eilüberweisung angewiesen', s: 'Beleg' },
-  { d: '02.04.', t: 'Freigabe ohne zweite Unterschrift', s: 'PDF' },
-  { d: '19.04.', t: 'Gesprächsnotiz „nur mündlich“', s: 'Chat' },
-  { d: '08.05.', t: 'Barübergabe 25.000 €', s: 'Notiz' },
+  { d: t('03.03.', '03/03'), t: t('Angebot Orion Advisory eingegangen', 'Orion Advisory offer received'), s: t('Mail', 'Email') },
+  { d: t('14.03.', '03/14'), t: t('Eilüberweisung angewiesen', 'Rush transfer ordered'), s: t('Beleg', 'Receipt') },
+  { d: t('02.04.', '04/02'), t: t('Freigabe ohne zweite Unterschrift', 'Approval without second signature'), s: 'PDF' },
+  { d: t('19.04.', '04/19'), t: t('Gesprächsnotiz „nur mündlich“', 'Call note "verbal only"'), s: 'Chat' },
+  { d: t('08.05.', '05/08'), t: t('Barübergabe 25.000 €', 'Cash handover €25,000'), s: t('Notiz', 'Note') },
 ]
 
 function Chronology() {

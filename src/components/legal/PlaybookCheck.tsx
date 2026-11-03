@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AppWindow, Surface } from './shared'
+import { t } from '../../lib/i18n'
 
 // Abweichungsprüfung: Jeder Vertrag wird Klausel für Klausel gegen den hinterlegten Standard (Playbook) der
 // Rechtsabteilung geprüft. Beispielverträge und Fundstellen sind fiktiv.
@@ -9,59 +10,59 @@ type Part = { t: string; mark?: boolean }
 type Check = { status: Status; found: Part[] }
 
 const STANDARD: Record<string, string> = {
-  haftung: 'Haftung auf den vertragstypischen Schaden begrenzt, höchstens eine Jahresvergütung.',
-  kuendigung: 'Ordentliche Kündigung mit drei Monaten zum Quartalsende.',
-  verlaengerung: 'Keine automatische Verlängerung, höchstens um sechs Monate.',
-  gericht: 'Gerichtsstand am Sitz des eigenen Unternehmens, deutsches Recht.',
-  avv: 'Auftragsverarbeitung nach Art. 28 DSGVO ist als Anlage vereinbart.',
+  haftung: t('Haftung auf den vertragstypischen Schaden begrenzt, höchstens eine Jahresvergütung.', 'Liability limited to damage typical for the contract type, at most one year\'s fees.'),
+  kuendigung: t('Ordentliche Kündigung mit drei Monaten zum Quartalsende.', 'Ordinary termination with three months\' notice to the end of a quarter.'),
+  verlaengerung: t('Keine automatische Verlängerung, höchstens um sechs Monate.', 'No automatic renewal, six months at most.'),
+  gericht: t('Gerichtsstand am Sitz des eigenen Unternehmens, deutsches Recht.', 'Jurisdiction at our own company\'s registered seat, German law.'),
+  avv: t('Auftragsverarbeitung nach Art. 28 DSGVO ist als Anlage vereinbart.', 'Data processing under Art. 28 GDPR is agreed as an annex.'),
 }
 const LABELS: Record<string, string> = {
-  haftung: 'Haftungsbegrenzung',
-  kuendigung: 'Kündigungsfrist',
-  verlaengerung: 'Verlängerung',
-  gericht: 'Gerichtsstand',
-  avv: 'Auftragsverarbeitung',
+  haftung: t('Haftungsbegrenzung', 'Limitation of liability'),
+  kuendigung: t('Kündigungsfrist', 'Notice period'),
+  verlaengerung: t('Verlängerung', 'Renewal'),
+  gericht: t('Gerichtsstand', 'Jurisdiction'),
+  avv: t('Auftragsverarbeitung', 'Data processing'),
 }
 const KEYS = Object.keys(LABELS)
 
 const CONTRACTS: { name: string; type: string; checks: Record<string, Check> }[] = [
   {
     name: 'Nordlicht Logistik GmbH',
-    type: 'Liefervertrag',
+    type: t('Liefervertrag', 'Supply agreement'),
     checks: {
-      haftung: { status: 'ok', found: [{ t: 'Haftung auf vorhersehbaren Schaden, höchstens ' }, { t: '500.000 Euro', mark: true }, { t: ' je Schadensfall.' }] },
-      kuendigung: { status: 'ok', found: [{ t: 'Kündigung mit ' }, { t: 'drei Monaten zum Quartalsende', mark: true }, { t: '.' }] },
-      verlaengerung: { status: 'bad', found: [{ t: 'Verlängerung jeweils um ' }, { t: '12 Monate', mark: true }, { t: ' ohne Kündigung.' }] },
-      gericht: { status: 'ok', found: [{ t: 'Gerichtsstand Hamburg, deutsches Recht.' }] },
-      avv: { status: 'ok', found: [{ t: 'Anlage 3: Auftragsverarbeitung nach Art. 28 DSGVO.' }] },
+      haftung: { status: 'ok', found: [{ t: t('Haftung auf vorhersehbaren Schaden, höchstens ', 'Liability for foreseeable damage, at most ') }, { t: t('500.000 Euro', 'EUR 500,000'), mark: true }, { t: t(' je Schadensfall.', ' per claim.') }] },
+      kuendigung: { status: 'ok', found: [{ t: t('Kündigung mit ', 'Termination with ') }, { t: t('drei Monaten zum Quartalsende', 'three months\' notice to quarter end'), mark: true }, { t: '.' }] },
+      verlaengerung: { status: 'bad', found: [{ t: t('Verlängerung jeweils um ', 'Renewal by ') }, { t: t('12 Monate', '12 months'), mark: true }, { t: t(' ohne Kündigung.', ' unless terminated.') }] },
+      gericht: { status: 'ok', found: [{ t: t('Gerichtsstand Hamburg, deutsches Recht.', 'Jurisdiction Hamburg, German law.') }] },
+      avv: { status: 'ok', found: [{ t: t('Anlage 3: Auftragsverarbeitung nach Art. 28 DSGVO.', 'Annex 3: Data processing under Art. 28 GDPR.') }] },
     },
   },
   {
     name: 'Lensa Cloud Services AG',
-    type: 'Rahmenvertrag IT',
+    type: t('Rahmenvertrag IT', 'IT framework agreement'),
     checks: {
-      haftung: { status: 'bad', found: [{ t: 'Die Haftung des Anbieters ist ' }, { t: 'auf 10 % der Jahresvergütung', mark: true }, { t: ' beschränkt.' }] },
-      kuendigung: { status: 'warn', found: [{ t: 'Kündigung mit ' }, { t: 'sechs Monaten zum Jahresende', mark: true }, { t: '.' }] },
-      verlaengerung: { status: 'warn', found: [{ t: 'Verlängerung um ' }, { t: '12 Monate', mark: true }, { t: ', Hinweis des Anbieters 90 Tage vorher.' }] },
-      gericht: { status: 'bad', found: [{ t: 'Gerichtsstand ' }, { t: 'Dublin, irisches Recht', mark: true }, { t: '.' }] },
-      avv: { status: 'ok', found: [{ t: 'Anlage 2: Auftragsverarbeitung nach Art. 28 DSGVO.' }] },
+      haftung: { status: 'bad', found: [{ t: t('Die Haftung des Anbieters ist ', 'The provider\'s liability is ') }, { t: t('auf 10 % der Jahresvergütung', 'to 10% of annual fees'), mark: true }, { t: t(' beschränkt.', ' capped.') }] },
+      kuendigung: { status: 'warn', found: [{ t: t('Kündigung mit ', 'Termination with ') }, { t: t('sechs Monaten zum Jahresende', 'six months\' notice to year end'), mark: true }, { t: '.' }] },
+      verlaengerung: { status: 'warn', found: [{ t: t('Verlängerung um ', 'Renewal by ') }, { t: t('12 Monate', '12 months'), mark: true }, { t: t(', Hinweis des Anbieters 90 Tage vorher.', ', provider notice 90 days in advance.') }] },
+      gericht: { status: 'bad', found: [{ t: t('Gerichtsstand ', 'Jurisdiction ') }, { t: t('Dublin, irisches Recht', 'Dublin, Irish law'), mark: true }, { t: '.' }] },
+      avv: { status: 'ok', found: [{ t: t('Anlage 2: Auftragsverarbeitung nach Art. 28 DSGVO.', 'Annex 2: Data processing under Art. 28 GDPR.') }] },
     },
   },
   {
     name: 'Brandt & Kollegen Beratung',
-    type: 'Beratungsvertrag',
+    type: t('Beratungsvertrag', 'Consulting agreement'),
     checks: {
-      haftung: { status: 'warn', found: [{ t: 'Haftung begrenzt auf ' }, { t: '50.000 Euro', mark: true }, { t: ' je Auftrag.' }] },
-      kuendigung: { status: 'ok', found: [{ t: 'Kündigung mit sechs Wochen, jederzeit zulässig.' }] },
-      verlaengerung: { status: 'ok', found: [{ t: 'Keine automatische Verlängerung.' }] },
-      gericht: { status: 'ok', found: [{ t: 'Gerichtsstand Hamburg, deutsches Recht.' }] },
-      avv: { status: 'bad', found: [{ t: 'Keine Regelung gefunden.', mark: true }] },
+      haftung: { status: 'warn', found: [{ t: t('Haftung begrenzt auf ', 'Liability capped at ') }, { t: t('50.000 Euro', 'EUR 50,000'), mark: true }, { t: t(' je Auftrag.', ' per engagement.') }] },
+      kuendigung: { status: 'ok', found: [{ t: t('Kündigung mit sechs Wochen, jederzeit zulässig.', 'Termination with six weeks\' notice, permitted at any time.') }] },
+      verlaengerung: { status: 'ok', found: [{ t: t('Keine automatische Verlängerung.', 'No automatic renewal.') }] },
+      gericht: { status: 'ok', found: [{ t: t('Gerichtsstand Hamburg, deutsches Recht.', 'Jurisdiction Hamburg, German law.') }] },
+      avv: { status: 'bad', found: [{ t: t('Keine Regelung gefunden.', 'No provision found.'), mark: true }] },
     },
   },
 ]
 
 const DOT: Record<Status, string> = { ok: 'bg-[#16a07c]', warn: 'bg-[#e0a21e]', bad: 'bg-[#d6385c]' }
-const TXT: Record<Status, string> = { ok: 'Entspricht', warn: 'Prüfen', bad: 'Abweichung' }
+const TXT: Record<Status, string> = { ok: t('Entspricht', 'Compliant'), warn: t('Prüfen', 'Review'), bad: t('Abweichung', 'Deviation') }
 const PILL: Record<Status, string> = { ok: 'bg-[#e1f4ee] text-[#16795e]', warn: 'bg-[#fcefcf] text-[#8a5e07]', bad: 'bg-[#fbe0e6] text-[#b02347]' }
 
 export function PlaybookCheck() {
@@ -73,7 +74,7 @@ export function PlaybookCheck() {
 
   return (
     <Surface tone="grid">
-      <AppWindow tab="AI Report" title="Abweichungsprüfung">
+      <AppWindow tab="AI Report" title={t('Abweichungsprüfung', 'Deviation check')}>
         <div className="flex flex-wrap gap-2 px-5 pt-4">
           {CONTRACTS.map((x, i) => (
             <button
@@ -89,7 +90,7 @@ export function PlaybookCheck() {
         </div>
         <div className="px-5 pt-4 pb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
           <span className="text-[1.0625rem] font-semibold">{c.type}</span>
-          <span className="text-muted">gegen Playbook „Einkauf Standard“</span>
+          <span className="text-muted">{t('gegen Playbook „Einkauf Standard“', 'against playbook “Procurement Standard”')}</span>
           <span className="ml-auto flex gap-1.5">
             {(['bad', 'warn', 'ok'] as Status[]).map((s) => (
               <span key={s} className={`rounded-full px-2.5 py-0.5 text-[0.75rem] font-medium ${PILL[s]}`}>
@@ -125,11 +126,11 @@ export function PlaybookCheck() {
                   <div className="overflow-hidden">
                     <div className="grid md:grid-cols-2 gap-3 px-5 pb-5">
                       <div className="rounded-lg border border-line bg-white p-3.5">
-                        <div className="text-[0.6875rem] uppercase tracking-[0.08em] text-muted mb-1.5">Standard</div>
+                        <div className="text-[0.6875rem] uppercase tracking-[0.08em] text-muted mb-1.5">{t('Standard', 'Standard')}</div>
                         <p className="m-0 leading-[1.55]">{STANDARD[k]}</p>
                       </div>
                       <div className={`rounded-lg border p-3.5 ${ch.status === 'ok' ? 'border-line bg-white' : ch.status === 'warn' ? 'border-[#f0d9a0] bg-[#fffaf0]' : 'border-[#f1b9c6] bg-[#fff6f8]'}`}>
-                        <div className="text-[0.6875rem] uppercase tracking-[0.08em] text-muted mb-1.5">Im Vertrag</div>
+                        <div className="text-[0.6875rem] uppercase tracking-[0.08em] text-muted mb-1.5">{t('Im Vertrag', 'In the contract')}</div>
                         <p className="m-0 leading-[1.55]">
                           {ch.found.map((p, i) =>
                             p.mark ? (

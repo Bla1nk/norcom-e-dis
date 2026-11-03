@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 import type { ReactNode } from 'react'
 import { Eyebrow, sectionHeadingClass } from './Eyebrow'
 
@@ -20,7 +21,7 @@ type Item = { label: string; icon: ReactNode }
 
 const COMPONENTS: Item[] = [
   {
-    label: 'Dokumente & Metadaten',
+    label: t('Dokumente & Metadaten', 'Documents & metadata'),
     icon: (
       <svg {...lilacIcon}>
         <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
@@ -29,7 +30,7 @@ const COMPONENTS: Item[] = [
     ),
   },
   {
-    label: 'Suchindex & Vektoren',
+    label: t('Suchindex & Vektoren', 'Search index & vectors'),
     icon: (
       <svg {...lilacIcon}>
         <circle cx="11" cy="11" r="7" />
@@ -38,7 +39,7 @@ const COMPONENTS: Item[] = [
     ),
   },
   {
-    label: 'KI-Modelle & Verarbeitung',
+    label: t('KI-Modelle & Verarbeitung', 'AI models & processing'),
     icon: (
       <svg {...lilacIcon}>
         <rect x="6" y="6" width="12" height="12" rx="2" />
@@ -48,7 +49,7 @@ const COMPONENTS: Item[] = [
     ),
   },
   {
-    label: 'Prüfprotokolle & Zugriffsrechte',
+    label: t('Prüfprotokolle & Zugriffsrechte', 'Audit logs & access rights'),
     icon: (
       <svg {...lilacIcon}>
         <path d="M12 3 4 6v6c0 5 3.4 8.3 8 9 4.6-.7 8-4 8-9V6z" />
@@ -62,8 +63,8 @@ type Model = Item & { text: string }
 
 const MODELS: Model[] = [
   {
-    label: 'Deutsche Cloud',
-    text: 'Betrieb auf NorCom-Infrastruktur in Deutschland.',
+    label: t('Deutsche Cloud', 'German cloud'),
+    text: t('Betrieb auf NorCom-Infrastruktur in Deutschland.', 'Operated on NorCom infrastructure in Germany.'),
     icon: (
       <svg {...primaryIcon}>
         <path d="M7 18h10a4 4 0 0 0 .5-7.97A6 6 0 0 0 6.1 9.2 4.5 4.5 0 0 0 7 18z" />
@@ -71,8 +72,8 @@ const MODELS: Model[] = [
     ),
   },
   {
-    label: 'On-Premise',
-    text: 'Betrieb in der eigenen Infrastruktur.',
+    label: 'On-premise',
+    text: t('Betrieb in der eigenen Infrastruktur.', 'Operated in your own infrastructure.'),
     icon: (
       <svg {...primaryIcon}>
         <rect x="3" y="4" width="18" height="7" rx="2" />
@@ -82,8 +83,8 @@ const MODELS: Model[] = [
     ),
   },
   {
-    label: 'Air-Gapped',
-    text: 'Vollständig isolierter Betrieb ohne externe Verbindung.',
+    label: t('Air-Gapped', 'Air-gapped'),
+    text: t('Vollständig isolierter Betrieb ohne externe Verbindung.', 'Fully isolated operation with no external connection.'),
     icon: (
       <svg {...primaryIcon}>
         <rect x="5" y="11" width="14" height="10" rx="2" />
@@ -99,15 +100,17 @@ export function Architektur() {
     <section id="architektur" className="bg-white border-y border-line">
       <div className="max-w-[1200px] mx-auto py-24 px-8 flex flex-col gap-10">
         <div className="flex flex-col gap-4 max-w-[48rem]">
-          <Eyebrow colorClass="text-primary">Architektur</Eyebrow>
-          <h2 className={sectionHeadingClass}>Ihre Daten. Ihre Infrastruktur. Ihre KI.</h2>
+          <Eyebrow colorClass="text-primary">{t('Architektur', 'Architecture')}</Eyebrow>
+          <h2 className={sectionHeadingClass}>{t('Ihre Daten. Ihre Infrastruktur. Ihre KI.', 'Your data. Your infrastructure. Your AI.')}</h2>
           <p className="m-0 text-[1.125rem] text-body">
-            Nicht nur Ihre Dokumente bleiben geschützt. Auch Suchindizes, KI-Modelle, Verarbeitung
-            und Prüfprotokolle laufen innerhalb Ihrer kontrollierten Umgebung.
+            {t(
+              'Nicht nur Ihre Dokumente bleiben geschützt. Auch Suchindizes, KI-Modelle, Verarbeitung und Prüfprotokolle laufen innerhalb Ihrer kontrollierten Umgebung.',
+              'It is not just your documents that stay protected. Search indexes, AI models, processing and audit logs also run entirely within your controlled environment.',
+            )}
           </p>
         </div>
         <figure
-          aria-label="Alle Komponenten von DaSense laufen gemeinsam in einer kontrollierten Umgebung"
+          aria-label={t('Alle Komponenten von DaSense laufen gemeinsam in einer kontrollierten Umgebung', 'All DaSense components run together in a controlled environment')}
           className="m-0 bg-night rounded-2xl p-3 shadow-panel"
         >
           <div className="border-[1.5px] border-dashed border-plum-dash rounded-xl pt-5 px-6 pb-6 flex flex-col gap-4">
@@ -116,7 +119,7 @@ export function Architektur() {
                 <rect x="5" y="11" width="14" height="10" rx="2" />
                 <path d="M8 11V7a4 4 0 0 1 8 0v4" />
               </svg>
-              KONTROLLIERTE UMGEBUNG
+              {t('KONTROLLIERTE UMGEBUNG', 'CONTROLLED ENVIRONMENT')}
             </span>
             <ul className="list-none m-0 p-0 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
               {COMPONENTS.map((c) => (
@@ -136,7 +139,7 @@ export function Architektur() {
           </div>
         </figure>
         <div className="flex flex-col gap-4">
-          <Eyebrow colorClass="text-muted">Drei Betriebsmodelle zur Wahl</Eyebrow>
+          <Eyebrow colorClass="text-muted">{t('Drei Betriebsmodelle zur Wahl', 'Three deployment models to choose from')}</Eyebrow>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-5">
             {MODELS.map((m) => (
               <div

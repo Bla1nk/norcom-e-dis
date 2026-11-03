@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n'
 import { useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
 import { useInView } from '../../lib/useInView'
 
@@ -23,12 +24,12 @@ const ICON = (d: string) => (
 )
 
 const NODES: NodeDef[] = [
-  { id: 'ingest', x: 110, y: 60, title: 'Ingest abgeschlossen', sub: '500.000 Dokumente in enron-archiv', tone: 'bg-[#eaf1fd] text-[#2f5fc4]', icon: ICON('M4 7h16M4 12h16M4 17h10') },
-  { id: 'nav', x: 480, y: 60, title: 'AI Navigator', sub: 'Bewertet jeden Ordner nach Relevanz', tone: 'bg-[#f3ecf6] text-[#601571]', icon: ICON('M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z') },
-  { id: 'case', x: 90, y: 280, title: 'Fallbezug prüfen', sub: 'Abgleich mit Facetten und Suchbegriffen', tone: 'bg-[#e7f6ec] text-[#1f7a43]', icon: ICON('M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3') },
-  { id: 'prio', x: 380, y: 280, h: 96, title: 'Priorität', sub: 'Nach Relevanz verzweigen', tone: 'bg-[#efeefe] text-[#5b4fd6]', icon: ICON('M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9') },
-  { id: 'now', x: 720, y: 280, title: 'Zuerst vektorisieren', sub: 'Hohe Priorität: structured_finance, legal, rac', tone: 'bg-[#fff1e6] text-[#c2571a]', icon: ICON('M13 2 4 14h7l-1 8 9-12h-7z') },
-  { id: 'later', x: 720, y: 430, title: 'Danach vektorisieren', sub: 'Niedrige Priorität: hr, it', tone: 'bg-[#f4f2ee] text-[#7a6a3c]', icon: ICON('M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z') },
+  { id: 'ingest', x: 110, y: 60, title: t('Ingest abgeschlossen', 'Ingest complete'), sub: t('500.000 Dokumente in enron-archiv', '500,000 documents in enron-archiv'), tone: 'bg-[#eaf1fd] text-[#2f5fc4]', icon: ICON('M4 7h16M4 12h16M4 17h10') },
+  { id: 'nav', x: 480, y: 60, title: 'AI Navigator', sub: t('Bewertet jeden Ordner nach Relevanz', 'Scores every folder by relevance'), tone: 'bg-[#f3ecf6] text-[#601571]', icon: ICON('M12 3l1.8 4.7L18 9l-4.2 1.3L12 15l-1.8-4.7L6 9l4.2-1.3z') },
+  { id: 'case', x: 90, y: 280, title: t('Fallbezug prüfen', 'Check case relevance'), sub: t('Abgleich mit Facetten und Suchbegriffen', 'Matched against facets and search terms'), tone: 'bg-[#e7f6ec] text-[#1f7a43]', icon: ICON('M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-4.3-4.3') },
+  { id: 'prio', x: 380, y: 280, h: 96, title: t('Priorität', 'Priority'), sub: t('Nach Relevanz verzweigen', 'Branch by relevance'), tone: 'bg-[#efeefe] text-[#5b4fd6]', icon: ICON('M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9') },
+  { id: 'now', x: 720, y: 280, title: t('Zuerst vektorisieren', 'Vectorize first'), sub: t('Hohe Priorität: structured_finance, legal, rac', 'High priority: structured_finance, legal, rac'), tone: 'bg-[#fff1e6] text-[#c2571a]', icon: ICON('M13 2 4 14h7l-1 8 9-12h-7z') },
+  { id: 'later', x: 720, y: 430, title: t('Danach vektorisieren', 'Vectorize afterwards'), sub: t('Niedrige Priorität: hr, it', 'Low priority: hr, it'), tone: 'bg-[#f4f2ee] text-[#7a6a3c]', icon: ICON('M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z') },
 ]
 const NODE_W = 230
 const NODE_H = 64
@@ -105,7 +106,7 @@ export function NavigatorFlow() {
     <div ref={ref} className="relative w-full overflow-hidden" style={{ height: H * scale }}>
       <div
         role="img"
-        aria-label="Ablauf AI Navigator: Ingest abgeschlossen, AI Navigator bewertet die Ordner, Fallbezug wird geprüft, nach Priorität werden die wichtigen Ordner zuerst und die übrigen danach vektorisiert"
+        aria-label={t('Ablauf AI Navigator: Ingest abgeschlossen, AI Navigator bewertet die Ordner, Fallbezug wird geprüft, nach Priorität werden die wichtigen Ordner zuerst und die übrigen danach vektorisiert', 'AI Navigator flow: ingest complete, AI Navigator scores the folders, case relevance is checked, and by priority the important folders are vectorized first and the rest afterwards')}
         className="absolute left-0 top-0 origin-top-left"
         style={{ width: W, height: H, transform: `scale(${scale})` }}
       >
@@ -140,9 +141,9 @@ export function NavigatorFlow() {
 }
 
 const BADGE: Record<Exclude<NodeState, 'idle'>, { text: string; cls: string }> = {
-  run: { text: 'Läuft', cls: 'bg-[#f3ecf6] text-[#7b3b8f] ring-[#e4d3ea]' },
-  done: { text: 'Abgeschlossen', cls: 'bg-[#ecfdf3] text-[#15803d] ring-[#c9f0d6]' },
-  wait: { text: 'Eingeplant', cls: 'bg-[#f4f2ee] text-[#7a6a3c] ring-[#e7e1d4]' },
+  run: { text: t('Läuft', 'Running'), cls: 'bg-[#f3ecf6] text-[#7b3b8f] ring-[#e4d3ea]' },
+  done: { text: t('Abgeschlossen', 'Completed'), cls: 'bg-[#ecfdf3] text-[#15803d] ring-[#c9f0d6]' },
+  wait: { text: t('Eingeplant', 'Scheduled'), cls: 'bg-[#f4f2ee] text-[#7a6a3c] ring-[#e7e1d4]' },
 }
 
 function FlowNode({ def, state, trigger, ports }: { def: NodeDef; state: NodeState; trigger: boolean; ports: boolean }) {
@@ -175,8 +176,8 @@ function FlowNode({ def, state, trigger, ports }: { def: NodeDef; state: NodeSta
       <div className="mt-1 text-[11.5px] text-muted/80 truncate">{def.sub}</div>
       {ports && (
         <div className="absolute right-3 bottom-2.5 flex flex-col items-end gap-0.5 text-[10.5px] text-muted">
-          <span>Hoch</span>
-          <span>Niedrig</span>
+          <span>{t('Hoch', 'High')}</span>
+          <span>{t('Niedrig', 'Low')}</span>
         </div>
       )}
     </div>

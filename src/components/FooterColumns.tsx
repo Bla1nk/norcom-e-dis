@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { CASES } from '../content/cases'
 import { openConsentSettings } from '../lib/consent'
+import { LANG, switchLang, t } from '../lib/i18n'
 import { linkProps } from '../lib/router'
 import { CaseIcon } from './CaseIcons'
 import { TextReveal } from './TextReveal'
 
 const SHORT: Record<string, string> = {
-  kanzleien: 'Kanzleien',
+  kanzleien: t('Kanzleien', 'Law firms'),
   compliance: 'Compliance',
-  datenschutz: 'Datenschutz',
-  forensik: 'Forensik',
-  dienstleister: 'Dienstleister',
-  behoerden: 'Behörden',
+  datenschutz: t('Datenschutz', 'Privacy'),
+  forensik: t('Forensik', 'Forensics'),
+  dienstleister: t('Dienstleister', 'Providers'),
+  behoerden: t('Behörden', 'Public sector'),
 }
 
 const WRAP = 'box-border w-full max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12'
@@ -32,25 +33,25 @@ export function FooterBody() {
             inherit
             delay={80}
             stagger={70}
-            text="Sehen Sie es an Ihrem Fall."
+            text={t('Sehen Sie es an Ihrem Fall.', 'See it on your own case.')}
             className="block m-0 max-w-[14ch] text-white text-[clamp(1.875rem,3vw,2.75rem)] leading-[1.12] tracking-[-0.025em] font-bold"
           />
           <p className="rv-c hidden sm:block m-0 mt-4 max-w-[22rem] text-white/60 leading-[1.6]" style={{ transitionDelay: '260ms' }}>
-            Wir zeigen Ihnen DaSense an Ihren Daten und Ihrem Anwendungsfall, auf Wunsch vollständig im eigenen Netz.
+            {t('Wir zeigen Ihnen DaSense an Ihren Daten und Ihrem Anwendungsfall, auf Wunsch vollständig im eigenen Netz.', 'We show you DaSense on your own data and your own use case, fully inside your network if you wish.')}
           </p>
           <a
             {...linkProps('/#demo')}
             style={{ transitionDelay: '380ms' }}
             className="rv-c group mt-6 sm:mt-8 inline-flex items-center gap-3 h-12 pl-6 pr-2 rounded-full bg-white !text-ink text-[0.9375rem] font-semibold no-underline transition-colors hover:bg-primary hover:!text-white"
           >
-            Demo buchen
+            {t('Demo buchen', 'Book a demo')}
             <span className="grid size-8 place-items-center rounded-full bg-ink text-white transition-transform duration-300 group-hover:translate-x-0.5">
               <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </span>
           </a>
         </div>
 
-        <nav aria-label="Zielgruppen" onMouseLeave={() => setHot(hot)}>
+        <nav aria-label={t('Zielgruppen', 'Audiences')} onMouseLeave={() => setHot(hot)}>
           <ul className="list-none m-0 p-0 flex flex-col">
             {CASES.map((c, i) => (
               <li key={c.slug} className="overflow-hidden">
@@ -59,7 +60,7 @@ export function FooterBody() {
                   onMouseEnter={() => setHot(i)}
                   onFocus={() => setHot(i)}
                   style={{ transitionDelay: `${120 + i * 70}ms` }}
-                  className={`rv-c block no-underline text-[clamp(1.875rem,4.1vw,3.75rem)] leading-[1.14] tracking-[-0.035em] font-bold transition-colors duration-300 ${
+                  className={`rv-c block whitespace-nowrap no-underline text-[clamp(1.875rem,4.1vw,3.75rem)] leading-[1.14] tracking-[-0.035em] font-bold transition-colors duration-300 ${
                     i === hot ? '!text-white' : '!text-white/35 hover:!text-white'
                   }`}
                 >
@@ -85,13 +86,31 @@ export function FooterBody() {
         <div className={`${WRAP} py-4 sm:py-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 text-[0.6875rem] tracking-[0.12em] uppercase text-white/45`}>
           <span className="normal-case tracking-normal text-[0.75rem]">© 2026 NorCom Information Technology GmbH &amp; Co. KGaA</span>
           <span className="flex flex-wrap items-center gap-x-3">
-            <a {...linkProps('/impressum')} className="!text-white/55 no-underline hover:!text-white">Impressum</a>
+            <a {...linkProps('/impressum')} className="!text-white/55 no-underline hover:!text-white">{t('Impressum', 'Legal notice')}</a>
             <span aria-hidden="true">·</span>
-            <a {...linkProps('/datenschutzerklaerung')} className="!text-white/55 no-underline hover:!text-white">Datenschutz</a>
+            <a {...linkProps('/datenschutzerklaerung')} className="!text-white/55 no-underline hover:!text-white">{t('Datenschutz', 'Privacy')}</a>
             <span aria-hidden="true">·</span>
             <button type="button" onClick={openConsentSettings} className="bg-transparent border-0 p-0 text-inherit uppercase tracking-[inherit] [font:inherit] !text-white/55 cursor-pointer hover:!text-white">Cookies</button>
             <span aria-hidden="true">·</span>
             <a href="https://www.norcom.de" className="!text-white/55 no-underline hover:!text-white">norcom.de</a>
+            <span aria-hidden="true">·</span>
+            <span role="group" aria-label={t('Sprache', 'Language')} className="inline-flex items-center gap-1.5">
+              {(['de', 'en'] as const).map((l, i) => (
+                <span key={l} className="inline-flex items-center gap-1.5">
+                  {i > 0 && <span aria-hidden="true">/</span>}
+                  <button
+                    type="button"
+                    lang={l}
+                    aria-pressed={LANG === l}
+                    aria-label={l === 'de' ? 'Deutsch' : 'English'}
+                    onClick={() => switchLang(l)}
+                    className={`bg-transparent border-0 p-0 uppercase tracking-[inherit] [font:inherit] cursor-pointer hover:!text-white ${LANG === l ? '!text-white font-semibold' : '!text-white/55'}`}
+                  >
+                    {l}
+                  </button>
+                </span>
+              ))}
+            </span>
           </span>
         </div>
       </div>

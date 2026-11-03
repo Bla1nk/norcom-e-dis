@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { SubCard } from '../steps/shared'
 import { useSeen } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Zwei kleine Funktionen: Dubletten ausblenden und Produktion mit fortlaufender Nummerierung. Fiktive Daten.
 
 export function KanzleiSmallCards() {
   return (
     <div className="grid md:grid-cols-2 border-t border-line">
-      <SubCard title="Jedes Dokument nur einmal lesen." text="Dubletten und nahezu gleiche Fassungen werden gruppiert. Ihr Team prüft nur die jeweils maßgebliche Version.">
+      <SubCard title={t('Jedes Dokument nur einmal lesen.', 'Read every document only once.')} text={t('Dubletten und nahezu gleiche Fassungen werden gruppiert. Ihr Team prüft nur die jeweils maßgebliche Version.', 'Duplicates and near-identical versions are grouped. Your team reviews only the authoritative version.')}>
         <Dedup />
       </SubCard>
-      <SubCard className="md:border-l border-line" title="Produktion mit fortlaufender Nummer." text="Für die Herausgabe erhalten die Dokumente eine durchgehende Kennzeichnung, die sich im Verfahren zitieren lässt.">
+      <SubCard className="md:border-l border-line" title={t('Produktion mit fortlaufender Nummer.', 'Production with sequential numbering.')} text={t('Für die Herausgabe erhalten die Dokumente eine durchgehende Kennzeichnung, die sich im Verfahren zitieren lässt.', 'For production, documents receive continuous identifiers that can be cited in the proceedings.')}>
         <Stamping />
       </SubCard>
     </div>
@@ -18,9 +19,9 @@ export function KanzleiSmallCards() {
 }
 
 const GROUPS = [
-  { name: 'Angebot_Rahmenvertrag.pdf', more: 41 },
-  { name: 'RE: Preise Q3 abstimmen.eml', more: 27 },
-  { name: 'Lieferplan_Anpassung.xlsx', more: 63 },
+  { name: t('Angebot_Rahmenvertrag.pdf', 'Offer_Framework_Agreement.pdf'), more: 41 },
+  { name: t('RE: Preise Q3 abstimmen.eml', 'RE: Aligning Q3 prices.eml'), more: 27 },
+  { name: t('Lieferplan_Anpassung.xlsx', 'Delivery_plan_adjustment.xlsx'), more: 63 },
 ]
 
 function Dedup() {
@@ -37,8 +38,8 @@ function Dedup() {
     <div ref={ref} className="w-full max-w-[400px] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-22px_rgba(40,10,50,0.3)] p-4 text-[0.8125rem]">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <div className="text-muted">Dokumente zur Prüfung</div>
-          <div className="text-[1.75rem] leading-tight font-semibold tabular-nums">{total.toLocaleString('de-DE')}</div>
+          <div className="text-muted">{t('Dokumente zur Prüfung', 'Documents for review')}</div>
+          <div className="text-[1.75rem] leading-tight font-semibold tabular-nums">{total.toLocaleString(t('de-DE', 'en-US'))}</div>
         </div>
         <button
           type="button"
@@ -46,7 +47,7 @@ function Dedup() {
           aria-pressed={on}
           className="flex items-center gap-2 bg-transparent border-0 cursor-pointer text-body p-0"
         >
-          Dubletten ausblenden
+          {t('Dubletten ausblenden', 'Hide duplicates')}
           <span className={`relative h-5 w-9 rounded-full transition-colors duration-300 ${on ? 'bg-primary' : 'bg-[#d9d0dd]'}`}>
             <span className={`absolute top-0.5 size-4 rounded-full bg-white shadow transition-all duration-300 ${on ? 'left-[18px]' : 'left-0.5'}`} />
           </span>
@@ -66,7 +67,7 @@ function Dedup() {
             <div className="relative z-10 flex items-center gap-2 rounded-lg border border-line bg-white px-3 py-2.5">
               <span className="min-w-0 flex-1 truncate font-medium">{g.name}</span>
               <span className={`rounded-full bg-primary-tint px-2 py-0.5 text-[0.75rem] font-medium text-primary transition-opacity duration-500 ${on ? 'opacity-100' : 'opacity-0'}`}>
-                +{g.more} ähnliche
+                +{g.more} {t('ähnliche', 'similar')}
               </span>
             </div>
           </li>
@@ -105,7 +106,7 @@ function Stamping() {
           </div>
         </div>
       ))}
-      <div className="absolute bottom-0 inset-x-0 text-center text-[0.8125rem] text-muted">Produktionssatz 3 · {n} Dokumente nummeriert</div>
+      <div className="absolute bottom-0 inset-x-0 text-center text-[0.8125rem] text-muted">{t('Produktionssatz 3', 'Production set 3')} · {n} {t('Dokumente nummeriert', 'documents numbered')}</div>
     </div>
   )
 }

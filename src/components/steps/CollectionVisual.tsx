@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n'
 import { useEffect, useState } from 'react'
 import { useInView } from '../../lib/useInView'
 import { SubCard } from './shared'
@@ -26,7 +27,7 @@ function useCount(to: number, run: boolean, ms = 2200, delay = 0) {
   return v
 }
 
-const fmt = (n: number) => n.toLocaleString('de-DE')
+const fmt = (n: number) => n.toLocaleString(t('de-DE', 'en-US'))
 
 export function CollectionVisual() {
   return (
@@ -36,7 +37,7 @@ export function CollectionVisual() {
         <div className="relative w-full sm:w-[88%]">
           <img
             src="/images/collection-platform.webp"
-            alt="DaSense-Suche mit 500.000 Treffern im Ordner enron-archiv"
+            alt={t('DaSense-Suche mit 500.000 Treffern im Ordner enron-archiv', 'DaSense search with 500,000 hits in the enron-archive folder')}
             width={1700}
             height={992}
             loading="lazy"
@@ -50,15 +51,15 @@ export function CollectionVisual() {
       {/* Unten: zwei Kleinkarten */}
       <div className="grid md:grid-cols-2 border-t border-line">
         <SubCard
-          title="Live befüllt. Jede Datei gezählt."
-          text="Der Ingest füllt den Bestand Ordner für Ordner. Jede Datei wird erfasst, geprüft und protokolliert."
+          title={t('Live befüllt. Jede Datei gezählt.', 'Filled live. Every file counted.')}
+          text={t('Der Ingest füllt den Bestand Ordner für Ordner. Jede Datei wird erfasst, geprüft und protokolliert.', 'Ingest fills the repository folder by folder. Every file is captured, verified and logged.')}
         >
           <IngestFill />
         </SubCard>
         <SubCard
           className="md:border-l border-line"
-          title="Ein Bestand für alles."
-          text="E-Mails, Office, PDFs, Chats und Archive: über 1.400 Formate landen im selben durchsuchbaren Bestand."
+          title={t('Ein Bestand für alles.', 'One repository for everything.')}
+          text={t('E-Mails, Office, PDFs, Chats und Archive: über 1.400 Formate landen im selben durchsuchbaren Bestand.', 'Emails, Office files, PDFs, chats and archives: over 1,400 formats end up in the same searchable repository.')}
         >
           <FormatOrbit />
         </SubCard>
@@ -109,12 +110,12 @@ function IngestCard() {
           }`}
         >
           <span className={`h-1.5 w-1.5 rounded-full bg-[#2fb36b] ${done ? '' : 'animate-pulse'}`} />
-          {done ? 'Index vollständig' : 'wird befüllt'}
+          {done ? t('Index vollständig', 'Index complete') : t('wird befüllt', 'filling up')}
         </span>
       </div>
       <div className="text-ink font-medium text-[0.9375rem]">enron-archiv</div>
       <div className="text-muted">
-        <span className="text-ink tabular-nums">{fmt(files)}</span> / 500.000 Dateien · ≈ 120 GB
+        <span className="text-ink tabular-nums">{fmt(files)}</span> / {t('500.000 Dateien', '500,000 files')} · ≈ 120 GB
       </div>
       <div className="h-1.5 rounded-full bg-[#eef2ef] overflow-hidden">
         <div className="h-full rounded-full bg-[#2fb36b]" style={{ width: `${(files / 500_000) * 100}%` }} />
@@ -172,7 +173,7 @@ const FORMATS: { label: string; ring: 0 | 1; angle: number; tone: string }[] = [
   { label: 'XLSX', ring: 0, angle: 140, tone: 'bg-[#e7f6ec] text-[#1f7a43]' },
   { label: 'DOCX', ring: 0, angle: 215, tone: 'bg-[#eef0ff] text-[#4b4fc9]' },
   { label: 'PST', ring: 1, angle: -20, tone: 'bg-[#f3ecf6] text-[#601571]' },
-  { label: 'Teams-Chat', ring: 1, angle: 70, tone: 'bg-[#efeefe] text-[#5b4fd6]' },
+  { label: t('Teams-Chat', 'Teams chat'), ring: 1, angle: 70, tone: 'bg-[#efeefe] text-[#5b4fd6]' },
   { label: 'MSG', ring: 1, angle: 165, tone: 'bg-[#eaf1fd] text-[#2f5fc4]' },
   { label: 'ZIP', ring: 1, angle: 245, tone: 'bg-[#f4f2ee] text-[#7a6a3c]' },
 ]

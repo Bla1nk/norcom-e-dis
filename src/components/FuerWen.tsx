@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 import { CASES } from '../content/cases'
 import { CaseIcon } from './CaseIcons'
 import { Eyebrow } from './Eyebrow'
@@ -11,10 +12,10 @@ export function FuerWen() {
     <section id="fuer-wen" aria-labelledby="fuer-wen-h" className="relative bg-white py-20 sm:py-24 lg:py-32">
       <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)_minmax(0,1.6fr)] items-start gap-x-8 gap-y-5 pb-10 sm:pb-14">
-          <Eyebrow colorClass="text-ink">Für wen</Eyebrow>
-          <TextReveal as="h2" id="fuer-wen-h" text="Zielgruppen." className="block m-0 text-ink text-[clamp(2.5rem,6vw,5.25rem)] leading-[1.06] tracking-[-0.04em] font-bold" />
+          <Eyebrow colorClass="text-ink">{t('Für wen', 'Who it\'s for')}</Eyebrow>
+          <TextReveal as="h2" id="fuer-wen-h" text={t('Zielgruppen.', 'Who it\'s for.')} className="block m-0 text-ink text-[clamp(2.5rem,6vw,5.25rem)] leading-[1.06] tracking-[-0.04em] font-bold" />
           <p className="m-0 text-body text-[0.9375rem] leading-[1.65]">
-            Für alle, die große Datenbestände belastbar auswerten müssen, ob in der Kanzlei, im Konzern oder in der Behörde.
+            {t('Für alle, die große Datenbestände belastbar auswerten müssen, ob in der Kanzlei, im Konzern oder in der Behörde.', 'For everyone who has to analyze large data sets reliably, whether in a law firm, a corporation or a government agency.')}
           </p>
         </div>
 
@@ -40,9 +41,9 @@ export function FuerWen() {
                 <div className="rv-c col-start-2 lg:col-start-auto lg:pt-2" style={{ transitionDelay: '320ms' }}>
                   <p className="m-0 text-body text-[0.9375rem] leading-[1.65]">{a.text}</p>
                   <span className="mt-3 flex flex-wrap gap-2">
-                    {a.tags.map((t) => (
-                      <span key={t} className="text-[0.75rem] py-0.5 px-2.5 rounded-full bg-mist text-body">
-                        {t}
+                    {a.tags.map((tag) => (
+                      <span key={tag} className="text-[0.75rem] py-0.5 px-2.5 rounded-full bg-mist text-body">
+                        {tag}
                       </span>
                     ))}
                   </span>

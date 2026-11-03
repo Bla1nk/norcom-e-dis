@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { markIntroSeen, releaseIntro } from '../lib/intro'
 import { lockScroll, unlockScroll } from '../lib/lenis'
+import { t, EN } from '../lib/i18n'
 
 // Intro „Ingest“: Der Graph aus dem Ingest-Cockpit (Platte → Ingest → Ordnerbaum). Während er läuft, bekommt jeder Ordner
 // sein „Vektorisiert“. Dann zieht eine Leitung zu einer letzten Station, der Suche in DaSense, und die Kamera fliegt
@@ -27,23 +28,23 @@ type Child = [string, string]
 type Folder = { name: string; total: string; kids: Child[] }
 const COLS: Folder[][] = [
   [
-    { name: 'geschaeftsleitung', total: '6,4 Tsd.', kids: [['inbox', '4,3 Tsd.'], ['gesendet', '2,1 Tsd.']] },
-    { name: 'einkauf', total: '3,2 Tsd.', kids: [] },
-    { name: 'vertrieb', total: '4,1 Tsd.', kids: [] },
-    { name: 'controlling', total: '2,8 Tsd.', kids: [] },
-    { name: 'logistik', total: '3,6 Tsd.', kids: [] },
-    { name: 'finanzen', total: '5,9 Tsd.', kids: [['q2', '3,8 Tsd.'], ['q3', '2,1 Tsd.']] },
+    { name: t('geschaeftsleitung', 'management'), total: t('6,4 Tsd.', '6.4k'), kids: [[t('inbox', 'inbox'), t('4,3 Tsd.', '4.3k')], [t('gesendet', 'sent'), t('2,1 Tsd.', '2.1k')]] },
+    { name: t('einkauf', 'purchasing'), total: t('3,2 Tsd.', '3.2k'), kids: [] },
+    { name: t('vertrieb', 'sales'), total: t('4,1 Tsd.', '4.1k'), kids: [] },
+    { name: 'controlling', total: t('2,8 Tsd.', '2.8k'), kids: [] },
+    { name: t('logistik', 'logistics'), total: t('3,6 Tsd.', '3.6k'), kids: [] },
+    { name: t('finanzen', 'finance'), total: t('5,9 Tsd.', '5.9k'), kids: [['q2', t('3,8 Tsd.', '3.8k')], ['q3', t('2,1 Tsd.', '2.1k')]] },
   ],
   [
-    { name: 'recht', total: '5,2 Tsd.', kids: [['entwuerfe', '1,4 Tsd.'], ['korrespondenz', '2,6 Tsd.'], ['sitzungen', '1,2 Tsd.']] },
-    { name: 'personal', total: '1,9 Tsd.', kids: [] },
-    { name: 'it', total: '3,3 Tsd.', kids: [] },
-    { name: 'projekte', total: '6,8 Tsd.', kids: [['mail', '4,9 Tsd.'], ['vertraege', '1,9 Tsd.']] },
+    { name: t('recht', 'legal'), total: t('5,2 Tsd.', '5.2k'), kids: [[t('entwuerfe', 'drafts'), t('1,4 Tsd.', '1.4k')], [t('korrespondenz', 'correspondence'), t('2,6 Tsd.', '2.6k')], [t('sitzungen', 'meetings'), t('1,2 Tsd.', '1.2k')]] },
+    { name: t('personal', 'hr'), total: t('1,9 Tsd.', '1.9k'), kids: [] },
+    { name: 'it', total: t('3,3 Tsd.', '3.3k'), kids: [] },
+    { name: t('projekte', 'projects'), total: t('6,8 Tsd.', '6.8k'), kids: [['mail', t('4,9 Tsd.', '4.9k')], [t('vertraege', 'contracts'), t('1,9 Tsd.', '1.9k')]] },
   ],
   [
-    { name: 'revision', total: '2,6 Tsd.', kids: [['mail', '1,7 Tsd.'], ['berichte', '0,9 Tsd.']] },
-    { name: 'compliance', total: '1,3 Tsd.', kids: [] },
-    { name: 'archiv_alt', total: '1,1 Tsd.', kids: [] },
+    { name: t('revision', 'audit'), total: t('2,6 Tsd.', '2.6k'), kids: [['mail', t('1,7 Tsd.', '1.7k')], [t('berichte', 'reports'), t('0,9 Tsd.', '0.9k')]] },
+    { name: 'compliance', total: t('1,3 Tsd.', '1.3k'), kids: [] },
+    { name: t('archiv_alt', 'archive_old'), total: t('1,1 Tsd.', '1.1k'), kids: [] },
   ],
 ]
 const cardH = (f: Folder) => 40 + (f.kids.length ? f.kids.length * 31 + 10 : 0)
@@ -77,7 +78,7 @@ const END_AFTER = 0.8 // s nach Flugende
 
 const clamp = (v: number) => Math.max(0, Math.min(1, v))
 const smooth = (v: number) => v * v * (3 - 2 * v)
-const fmt = (n: number) => Math.round(n).toLocaleString('de-DE')
+const fmt = (n: number) => Math.round(n).toLocaleString(EN ? 'en-US' : 'de-DE')
 
 const Pill = ({ children, tone }: { children: React.ReactNode; tone: 'green' | 'blue' }) => (
   <span
@@ -103,7 +104,7 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
   const others = useRef<HTMLDivElement>(null)
   const card = useRef<HTMLDivElement>(null)
   const chip = useRef<HTMLSpanElement>(null)
-  const [t, setT] = useState(0)
+  const [tm, setT] = useState(0)
 
   useEffect(() => {
     let cancelled = false
@@ -200,15 +201,15 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const p1 = clamp((t - T_SCAN) / (T_VEC + 0.4 - T_SCAN))
-  const p2 = clamp((t - T_VEC) / (T_DONE - T_VEC))
-  const running = t > T_SCAN && t < T_DONE
-  const nodeIn = smooth(clamp((t - T_NODE) / 0.45))
-  const platteIn = smooth(clamp((t - 0.1) / 0.45))
-  const linkP = smooth(clamp((t - T_LINK) / 0.5))
-  const cardIn = smooth(clamp((t - (T_LINK + 0.15)) / 0.45))
-  const vecPhase = t >= T_VEC
-  const doneAll = t >= T_DONE
+  const p1 = clamp((tm - T_SCAN) / (T_VEC + 0.4 - T_SCAN))
+  const p2 = clamp((tm - T_VEC) / (T_DONE - T_VEC))
+  const running = tm > T_SCAN && tm < T_DONE
+  const nodeIn = smooth(clamp((tm - T_NODE) / 0.45))
+  const platteIn = smooth(clamp((tm - 0.1) / 0.45))
+  const linkP = smooth(clamp((tm - T_LINK) / 0.5))
+  const cardIn = smooth(clamp((tm - (T_LINK + 0.15)) / 0.45))
+  const vecPhase = tm >= T_VEC
+  const doneAll = tm >= T_DONE
 
   const draw = (appear: number) => ({ strokeDasharray: 1, strokeDashoffset: 1 - appear })
   const flow = running ? 0.9 : 0
@@ -226,10 +227,10 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
           <svg className="absolute inset-0 overflow-visible" width={WORLD_W} height={WORLD_H} fill="none">
             <path d="M270,450 L340,450" pathLength={1} stroke={LINE} strokeWidth="1.6" {...draw(nodeIn)} />
             {/* Ausgang des Ingest-Knotens zur Schiene */}
-            <path d="M650,450 C705,450 690,190 740,190 L1380,190" pathLength={1} stroke={LINE} strokeWidth="1.6" {...draw(smooth(clamp((t - T_SCAN) / 0.9)))} />
-            <path d="M650,450 C705,450 690,190 740,190 L1380,190" stroke={BLUE} strokeWidth="1.8" strokeDasharray="4 10" className="ing-dash" style={{ opacity: flow * smooth(clamp((t - T_SCAN) / 0.9)) }} />
+            <path d="M650,450 C705,450 690,190 740,190 L1380,190" pathLength={1} stroke={LINE} strokeWidth="1.6" {...draw(smooth(clamp((tm - T_SCAN) / 0.9)))} />
+            <path d="M650,450 C705,450 690,190 740,190 L1380,190" stroke={BLUE} strokeWidth="1.8" strokeDasharray="4 10" className="ing-dash" style={{ opacity: flow * smooth(clamp((tm - T_SCAN) / 0.9)) }} />
             {PLACED.map((f) => {
-              const a = smooth(clamp((t - (0.95 + f.i * 0.1)) / 0.4))
+              const a = smooth(clamp((tm - (0.95 + f.i * 0.1)) / 0.4))
               const cy = f.y + 20
               return (
                 <g key={f.name} style={{ opacity: a }}>
@@ -239,7 +240,7 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
               )
             })}
             {TRUNK.map((x, c) => (
-              <path key={x} d={`M${x},${RAIL} L${x},${TRUNK_END[c]}`} stroke={LINE} strokeWidth="1.6" style={{ opacity: smooth(clamp((t - 1.0 - c * 0.35) / 0.5)) }} />
+              <path key={x} d={`M${x},${RAIL} L${x},${TRUNK_END[c]}`} stroke={LINE} strokeWidth="1.6" style={{ opacity: smooth(clamp((tm - 1.0 - c * 0.35) / 0.5)) }} />
             ))}
             {/* Leitung zur Suche */}
             <path d="M1380,190 L1740,190 C1790,190 1780,450 1800,450" pathLength={1} stroke={LINE} strokeWidth="1.6" {...draw(linkP)} />
@@ -253,7 +254,7 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
           >
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="1.5" strokeLinecap="round"><ellipse cx="12" cy="6" rx="8" ry="3" /><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" /></svg>
             <div>
-              <div className="text-[1.0625rem] font-semibold leading-tight">Platte</div>
+              <div className="text-[1.0625rem] font-semibold leading-tight">{t('Platte', 'Disk')}</div>
               <div className="text-[0.75rem] text-[#8b8b94]">/mnt/FILESTORAGE</div>
             </div>
           </div>
@@ -264,7 +265,7 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
               className="absolute -top-8 left-1 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[0.8125rem] font-semibold"
               style={doneAll ? { background: '#10231a', borderColor: '#1f5a38', color: GREEN } : { background: '#101a33', borderColor: '#2a4aa8', color: '#7d9bff' }}
             >
-              {doneAll ? '✓ Ingest abgeschlossen' : (<><span className="size-1.5 rounded-full bg-[#7d9bff] blink-dot" />{vecPhase ? `Vektorisierung ${Math.round(p2 * 100)} %` : `Ingest ${Math.round(p1 * 100)} %`}</>)}
+              {doneAll ? t('✓ Ingest abgeschlossen', '✓ Ingest complete') : (<><span className="size-1.5 rounded-full bg-[#7d9bff] blink-dot" />{vecPhase ? `${t('Vektorisierung', 'Vectorization')} ${Math.round(p2 * 100)} %` : `Ingest ${Math.round(p1 * 100)} %`}</>)}
             </span>
             <div
               className="size-full rounded-[14px] border-[1.5px] p-4 transition-[border-color,box-shadow] duration-500"
@@ -274,11 +275,11 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
                 boxShadow: doneAll ? '0 0 36px -8px rgba(74,222,128,0.35)' : '0 0 38px -6px rgba(59,108,246,0.55)',
               }}
             >
-              <div className="text-[1.125rem] font-semibold leading-tight">mandat_nordwind</div>
-              <div className="mt-0.5 text-[0.8125rem] text-[#8b8b94]">Ingest und Vektorisierung über Deep Fusion</div>
-              <div className="mt-3 text-[0.8125rem] text-[#a1a1aa] tabular-nums">{fmt(DOCS * p1)} / {fmt(DOCS)} Dateien · ≈ 61 GB</div>
+              <div className="text-[1.125rem] font-semibold leading-tight">{t('mandat_nordwind', 'matter_nordwind')}</div>
+              <div className="mt-0.5 text-[0.8125rem] text-[#8b8b94]">{t('Ingest und Vektorisierung über Deep Fusion', 'Ingest and vectorization via Deep Fusion')}</div>
+              <div className="mt-3 text-[0.8125rem] text-[#a1a1aa] tabular-nums">{fmt(DOCS * p1)} / {fmt(DOCS)} {t('Dateien', 'files')} · ≈ 61 GB</div>
               <div className="mt-1.5 h-[3px] rounded-full bg-[#26262b] overflow-hidden"><div className="h-full rounded-full" style={{ width: `${p1 * 100}%`, background: GREEN }} /></div>
-              <div className="mt-2 text-[0.8125rem] text-[#7d9bff] tabular-nums">{Math.round(p2 * 100)} % vektorisiert · {fmt(p2 * 184520)} Chunks</div>
+              <div className="mt-2 text-[0.8125rem] text-[#7d9bff] tabular-nums">{Math.round(p2 * 100)} % {t('vektorisiert', 'vectorized')} · {fmt(p2 * 184520)} Chunks</div>
               <div className="mt-1 h-[3px] rounded-full bg-[#26262b] overflow-hidden"><div className="h-full rounded-full" style={{ width: `${p2 * 100}%`, background: BLUE }} /></div>
             </div>
             <span className="absolute -left-[5px] top-1/2 -mt-[5px] size-[10px] rounded-full" style={{ background: BLUE, boxShadow: `0 0 0 3px ${BG}` }} />
@@ -287,10 +288,10 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
 
           {/* Ordnerbaum */}
           {PLACED.map((f) => {
-            const a = smooth(clamp((t - (0.95 + f.i * 0.1)) / 0.4))
+            const a = smooth(clamp((tm - (0.95 + f.i * 0.1)) / 0.4))
             const ct = T_VEC + 0.25 + (f.i / (N - 1)) * (T_DONE - T_VEC - 0.45)
-            const state = t >= ct ? 'done' : t >= ct - 0.55 ? 'run' : 'wait'
-            const pct = Math.round(clamp((t - (ct - 0.55)) / 0.55) * 100)
+            const state = tm >= ct ? 'done' : tm >= ct - 0.55 ? 'run' : 'wait'
+            const pct = Math.round(clamp((tm - (ct - 0.55)) / 0.55) * 100)
             return (
               <div
                 key={f.name}
@@ -307,8 +308,8 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
                   translate: `${(1 - a) * 14}px 0`,
                 }}
               >
-                {state === 'done' && <Pill tone="green">Vektorisiert</Pill>}
-                {state === 'run' && <Pill tone="blue">Vektorisiert {pct} %</Pill>}
+                {state === 'done' && <Pill tone="green">{t('Vektorisiert', 'Vectorized')}</Pill>}
+                {state === 'run' && <Pill tone="blue">{t('Vektorisiert', 'Vectorized')} {pct} %</Pill>}
                 <div className="flex items-baseline justify-between px-3.5 pt-2.5 text-[0.9375rem]">
                   <span className="font-medium">{f.name}</span>
                   <span className="text-[0.8125rem] text-[#8b8b94] tabular-nums">{f.total}</span>
@@ -336,7 +337,7 @@ export function IntroIngest({ onDone }: { onDone: () => void }) {
             style={{ background: '#10231a', borderColor: '#1f5a38', color: GREEN }}
           >
             <span className="size-1.5 rounded-full bg-[#4ade80] blink-dot" />
-            DaSense · Suche bereit
+            {t('DaSense · Suche bereit', 'DaSense · Search ready')}
           </span>
           <div className="size-full rounded-xl overflow-hidden ring-1 ring-white/15 bg-white" style={{ boxShadow: '0 0 60px -10px rgba(59,108,246,0.45)' }}>
             <img src="/videos/hero-poster.jpg" alt="" className="block size-full object-cover" />

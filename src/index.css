@@ -1274,3 +1274,12 @@
 .cust-track { display: flex; width: max-content; animation: custMarquee 48s linear infinite }
 .cust-mask:hover .cust-track { animation-play-state: paused }
 @media (prefers-reduced-motion: reduce) { .cust-track { animation: none; flex-wrap: wrap; width: auto; row-gap: 1.5rem } }
+
+/* Seiten-Scrollbar ausblenden (Scrollen per Rad, Trackpad, Touch und Tastatur bleibt) */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}

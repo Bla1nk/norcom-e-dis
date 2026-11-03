@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n'
 import { SubCard } from './shared'
 
 // Kleinkarten unter dem Processing-Diagramm: links ein ruhiges Bild (Text → Abschnitte → Vektor),
@@ -7,15 +8,15 @@ export function ProcessingCards() {
   return (
     <div className="grid md:grid-cols-2 border-t border-line">
       <SubCard
-        title="Bereit für die lokale KI."
-        text="Jedes Dokument wird in Abschnitte zerlegt und lokal vektorisiert. So versteht die KI Inhalte statt nur Stichworte."
+        title={t('Bereit für die lokale KI.', 'Ready for local AI.')}
+        text={t('Jedes Dokument wird in Abschnitte zerlegt und lokal vektorisiert. So versteht die KI Inhalte statt nur Stichworte.', 'Every document is split into chunks and vectorized locally, so the AI understands content, not just keywords.')}
       >
         <ChunkStill />
       </SubCard>
       <SubCard
         className="md:border-l border-line"
-        title="Inhalte und Metadaten erkannt."
-        text="Absender, Empfänger, Datum, Anhänge und Sprache werden beim Einlesen erfasst, auch aus gescannten PDFs per OCR."
+        title={t('Inhalte und Metadaten erkannt.', 'Content and metadata detected.')}
+        text={t('Absender, Empfänger, Datum, Anhänge und Sprache werden beim Einlesen erfasst, auch aus gescannten PDFs per OCR.', 'Sender, recipient, date, attachments and language are captured at ingest, even from scanned PDFs via OCR.')}
       >
         <MetadataCard />
       </SubCard>
@@ -25,22 +26,22 @@ export function ProcessingCards() {
 
 // Mail aus dem Smart-Filter-Video („Re: Absicherung über eigene Aktien“, Risk Assessment & Control, 21.06.2001).
 const META: [string, string][] = [
-  ['Von', 'Risk Assessment & Control'],
-  ['An', 'Structured Finance'],
-  ['Datum', '21.06.2001'],
-  ['Sprache', 'Englisch'],
-  ['Thread', '4 Nachrichten'],
-  ['Anhang', 'hedge_overview.xlsx'],
+  [t('Von', 'From'), 'Risk Assessment & Control'],
+  [t('An', 'To'), 'Structured Finance'],
+  [t('Datum', 'Date'), t('21.06.2001', '06/21/2001')],
+  [t('Sprache', 'Language'), t('Englisch', 'English')],
+  ['Thread', t('4 Nachrichten', '4 messages')],
+  [t('Anhang', 'Attachment'), 'hedge_overview.xlsx'],
 ]
 
-const DONE = ['Text extrahiert', 'Metadaten', 'Anhang entpackt']
+const DONE = [t('Text extrahiert', 'Text extracted'), t('Metadaten', 'Metadata'), t('Anhang entpackt', 'Attachment unpacked')]
 
 function MetadataCard() {
   return (
     <div className="w-full max-w-[400px] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-20px_rgba(40,10,50,0.25)] overflow-hidden text-[0.8125rem]">
       <div className="flex items-center gap-2.5 px-4 py-3 border-b border-line">
         <span className="rounded px-1.5 py-0.5 text-[0.6875rem] font-semibold tracking-[0.04em] bg-[#eaf1fd] text-[#2f5fc4]">EML</span>
-        <span className="text-ink font-medium truncate">Re: Absicherung über eigene Aktien</span>
+        <span className="text-ink font-medium truncate">{t('Re: Absicherung über eigene Aktien', 'Re: Hedging with own stock')}</span>
       </div>
       <dl className="m-0 px-4 py-2 grid grid-cols-[84px_1fr] gap-y-2">
         {META.map(([k, v]) => (

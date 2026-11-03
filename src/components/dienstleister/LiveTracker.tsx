@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Surface, useSeen } from '../legal/shared'
+import { t, EN } from '../../lib/i18n'
 
 // Live-Tracker im Stil der Live-Ansicht des Ingest-Cockpits: Gesamtfortschritt, Durchsatz, Restzeit und voraussichtliche
 // Fertigstellung, dazu die Pipeline-Stufen und die laufenden Mandate. Die Zeit läuft hier gerafft (1 s = 1 Minute).
@@ -7,20 +8,21 @@ import { Surface, useSeen } from '../legal/shared'
 
 const TOTAL = 2640000
 const BASE_RATE = 142 // Dokumente pro Sekunde bei 4 Workern
-const fmt = (n: number) => Math.round(n).toLocaleString('de-DE')
+const fmt = (n: number) => Math.round(n).toLocaleString(EN ? 'en-US' : 'de-DE')
 
 function dur(sec: number) {
   const m = Math.max(0, Math.round(sec / 60))
-  if (m >= 60) return `${Math.floor(m / 60)} Std. ${String(m % 60).padStart(2, '0')} Min.`
-  return `${m} Min.`
+  if (m >= 60) return `${Math.floor(m / 60)} ${t('Std.', 'hr')} ${String(m % 60).padStart(2, '0')} ${t('Min.', 'min')}`
+  return `${m} ${t('Min.', 'min')}`
 }
 
 const MANDATES = [
-  { name: 'Mandat Nordwind', phase: 'Einlesen', total: 1280000, offset: 0 },
-  { name: 'Mandat Falke', phase: 'Anreicherung', total: 940000, offset: 0.12 },
-  { name: 'Mandat Lindgrün', phase: 'Vektorisierung', total: 420000, offset: 0.28 },
+  { name: t('Mandat Nordwind', 'Matter Nordwind'), phase: t('Einlesen', 'Ingest'), total: 1280000, offset: 0 },
+  { name: t('Mandat Falke', 'Matter Falke'), phase: t('Anreicherung', 'Enrichment'), total: 940000, offset: 0.12 },
+  { name: t('Mandat Lindgrün', 'Matter Lindgrün'), phase: t('Vektorisierung', 'Vectorization'), total: 420000, offset: 0.28 },
 ]
-const STAGES = ['Scanner', 'NiFi', 'Anreicherung', 'Vektorisierung']
+const LINDGRUEN = t('Mandat Lindgrün', 'Matter Lindgrün')
+const STAGES = [t('Scanner', 'Scanner'), 'NiFi', t('Anreicherung', 'Enrichment'), t('Vektorisierung', 'Vectorization')]
 
 export function LiveTracker() {
   const { ref, seen } = useSeen<HTMLDivElement>()
@@ -51,7 +53,7 @@ export function LiveTracker() {
   const now = new Date()
   now.setHours(9, 30, 0, 0)
   const end = new Date(now.getTime() + left * 1000)
-  const endTxt = `${String(end.getHours()).padStart(2, '0')}:${String(end.getMinutes()).padStart(2, '0')} Uhr`
+  const endTxt = `${String(end.getHours()).padStart(2, '0')}:${String(end.getMinutes()).padStart(2, '0')}${t(' Uhr', '')}`
 
   const maxH = Math.max(...hist, BASE_RATE * 2)
   const pts = hist.map((v, i) => `${(i / (hist.length - 1)) * 300},${70 - (v / maxH) * 62}`).join(' ')
@@ -66,35 +68,35 @@ export function LiveTracker() {
             <b className="px-1.5 pl-1 py-1 bg-[#6d28d9] text-white font-extrabold">Com</b>
           </span>
           <h4 className="m-0 text-[1.0625rem] font-semibold">Live</h4>
-          <span className="flex items-center gap-1.5 text-[#4ade80]"><span className="size-1.5 rounded-full bg-[#4ade80] blink-dot" />3 Mandate laufen</span>
+          <span className="flex items-center gap-1.5 text-[#4ade80]"><span className="size-1.5 rounded-full bg-[#4ade80] blink-dot" />{t('3 Mandate laufen', '3 matters running')}</span>
           <span className="ml-auto flex items-center gap-2 text-[#8b8b94]">
-            Worker
-            <button type="button" onClick={() => setWorkers((w) => Math.max(2, w - 1))} aria-label="Weniger Worker" className="size-7 rounded-[8px] border border-[#26262b] bg-[#1b1b1f] text-[#f4f4f5] cursor-pointer hover:border-[#3b6cf6]">−</button>
+            {t('Worker', 'Workers')}
+            <button type="button" onClick={() => setWorkers((w) => Math.max(2, w - 1))} aria-label={t('Weniger Worker', 'Fewer workers')} className="size-7 rounded-[8px] border border-[#26262b] bg-[#1b1b1f] text-[#f4f4f5] cursor-pointer hover:border-[#3b6cf6]">−</button>
             <b className="w-4 text-center text-[#f4f4f5] tabular-nums">{workers}</b>
-            <button type="button" onClick={() => setWorkers((w) => Math.min(10, w + 1))} aria-label="Mehr Worker" className="size-7 rounded-[8px] border border-[#26262b] bg-[#1b1b1f] text-[#f4f4f5] cursor-pointer hover:border-[#3b6cf6]">+</button>
+            <button type="button" onClick={() => setWorkers((w) => Math.min(10, w + 1))} aria-label={t('Mehr Worker', 'More workers')} className="size-7 rounded-[8px] border border-[#26262b] bg-[#1b1b1f] text-[#f4f4f5] cursor-pointer hover:border-[#3b6cf6]">+</button>
           </span>
         </div>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 p-5">
           <div className="rounded-[14px] bg-[#3b6cf6]/12 border border-[#3b6cf6]/40 p-4 min-w-0">
-            <div className="text-[#8b8b94]">Noch</div>
+            <div className="text-[#8b8b94]">{t('Noch', 'Remaining')}</div>
             <div className="mt-1 text-[1.5rem] leading-tight font-semibold tabular-nums">{dur(left)}</div>
-            <div className="text-[0.75rem] text-[#7d9bff]">bis alles durchsuchbar ist</div>
+            <div className="text-[0.75rem] text-[#7d9bff]">{t('bis alles durchsuchbar ist', 'until everything is searchable')}</div>
           </div>
           <div className="rounded-[14px] bg-[#141416] border border-[#26262b] p-4 min-w-0">
-            <div className="text-[#8b8b94]">Fertig voraussichtlich</div>
+            <div className="text-[#8b8b94]">{t('Fertig voraussichtlich', 'Estimated completion')}</div>
             <div className="mt-1 text-[1.5rem] leading-tight font-semibold tabular-nums">{endTxt}</div>
-            <div className="text-[0.75rem] text-[#8b8b94]">heute</div>
+            <div className="text-[0.75rem] text-[#8b8b94]">{t('heute', 'today')}</div>
           </div>
           <div className="rounded-[14px] bg-[#141416] border border-[#26262b] p-4 min-w-0">
-            <div className="text-[#8b8b94]">Durchsatz</div>
-            <div className="mt-1 text-[1.5rem] leading-tight font-semibold tabular-nums">{fmt(rate)}<span className="text-[0.8125rem] text-[#8b8b94] font-normal"> Dok./s</span></div>
+            <div className="text-[#8b8b94]">{t('Durchsatz', 'Throughput')}</div>
+            <div className="mt-1 text-[1.5rem] leading-tight font-semibold tabular-nums">{fmt(rate)}<span className="text-[0.8125rem] text-[#8b8b94] font-normal">{t(' Dok./s', ' docs/s')}</span></div>
             <div className="text-[0.75rem] text-[#8b8b94]">{workers} Worker</div>
           </div>
           <div className="rounded-[14px] bg-[#141416] border border-[#26262b] p-4 min-w-0">
-            <div className="text-[#8b8b94]">Verarbeitet</div>
-            <div className="mt-1 text-[1.5rem] leading-tight font-semibold tabular-nums">{pct.toFixed(1).replace('.', ',')} %</div>
-            <div className="text-[0.75rem] text-[#8b8b94] tabular-nums">{fmt(done)} von {fmt(TOTAL)}</div>
+            <div className="text-[#8b8b94]">{t('Verarbeitet', 'Processed')}</div>
+            <div className="mt-1 text-[1.5rem] leading-tight font-semibold tabular-nums">{(EN ? pct.toFixed(1) : pct.toFixed(1).replace('.', ','))} %</div>
+            <div className="text-[0.75rem] text-[#8b8b94] tabular-nums">{fmt(done)} {t('von', 'of')} {fmt(TOTAL)}</div>
           </div>
         </div>
 
@@ -117,7 +119,7 @@ export function LiveTracker() {
               ))}
             </ul>
             <div className="mt-4 rounded-[10px] bg-[#0a0a0b] border border-[#1e1e22] p-3">
-              <div className="flex items-center justify-between text-[0.75rem] text-[#8b8b94]"><span>Durchsatz, letzte Minuten</span><span className="tabular-nums">{fmt(avg)} Ø</span></div>
+              <div className="flex items-center justify-between text-[0.75rem] text-[#8b8b94]"><span>{t('Durchsatz, letzte Minuten', 'Throughput, last minutes')}</span><span className="tabular-nums">{fmt(avg)} {t('Ø', 'avg')}</span></div>
               <svg viewBox="0 0 300 76" className="mt-2 w-full h-14" preserveAspectRatio="none" aria-hidden="true">
                 <polyline points={`0,76 ${pts} 300,76`} fill="rgba(59,108,246,.14)" stroke="none" />
                 <polyline points={pts} fill="none" stroke="#7d9bff" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
@@ -126,31 +128,31 @@ export function LiveTracker() {
           </div>
 
           <div className="rounded-[14px] bg-[#141416] border border-[#26262b] p-4">
-            <div className="font-semibold mb-3">Mandate</div>
+            <div className="font-semibold mb-3">{t('Mandate', 'Matters')}</div>
             <ul className="list-none m-0 p-0 flex flex-col gap-3.5">
               {MANDATES.map((m) => {
-                const p = Math.min(100, Math.max(2, pct + 18 - m.offset * 100 * 0.9 + (m.name === 'Mandat Lindgrün' ? 6 : 0)))
+                const p = Math.min(100, Math.max(2, pct + 18 - m.offset * 100 * 0.9 + (m.name === LINDGRUEN ? 6 : 0)))
                 const eta = ((100 - p) / 100) * (m.total / avg)
                 return (
                   <li key={m.name}>
                     <div className="flex items-baseline gap-2">
                       <span className="font-medium truncate">{m.name}</span>
                       <span className="text-[0.75rem] text-[#8b8b94]">{m.phase}</span>
-                      <span className="ml-auto tabular-nums text-[#7d9bff]">noch {dur(eta)}</span>
+                      <span className="ml-auto tabular-nums text-[#7d9bff]">{t('noch', 'about')} {dur(eta)} {t('', 'left')}</span>
                     </div>
                     <div className="mt-1.5 h-1.5 rounded-full bg-[#1e1e22] overflow-hidden"><div className="h-full rounded-full bg-[#3b6cf6] transition-[width] duration-1000 ease-linear" style={{ width: `${p}%` }} /></div>
                   </li>
                 )
               })}
               <li className="flex items-baseline gap-2 text-[#8b8b94]">
-                <span className="font-medium">Mandat Rheinbogen</span><span className="text-[0.75rem]">wartet</span>
-                <span className="ml-auto tabular-nums">startet nach Nordwind</span>
+                <span className="font-medium">{t('Mandat Rheinbogen', 'Matter Rheinbogen')}</span><span className="text-[0.75rem]">{t('wartet', 'waiting')}</span>
+                <span className="ml-auto tabular-nums">{t('startet nach Nordwind', 'starts after Nordwind')}</span>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <p className="m-0 mt-3 text-[0.75rem] text-muted">Zeit gerafft: eine Sekunde entspricht hier einer Minute. Mit mehr Workern sinkt die Restzeit sofort.</p>
+      <p className="m-0 mt-3 text-[0.75rem] text-muted">{t('Zeit gerafft: eine Sekunde entspricht hier einer Minute. Mit mehr Workern sinkt die Restzeit sofort.', 'Time lapse: one second here equals one minute. Add workers and the remaining time drops immediately.')}</p>
     </Surface>
   )
 }

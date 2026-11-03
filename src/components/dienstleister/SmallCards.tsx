@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { SubCard } from '../steps/shared'
 import { useSeen } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Zwei kleine Funktionen: Statusbericht für Mandanten und Rechte je Projekt. Fiktive Daten.
 
 export function DienstleisterSmallCards() {
   return (
     <div className="grid md:grid-cols-2 border-t border-line">
-      <SubCard title="Der Statusbericht schreibt sich selbst." text="Kennzahlen aus dem laufenden Projekt werden zum Bericht, den Sie mit einem Klick an Ihren Mandanten senden.">
+      <SubCard title={t('Der Statusbericht schreibt sich selbst.', 'The status report writes itself.')} text={t('Kennzahlen aus dem laufenden Projekt werden zum Bericht, den Sie mit einem Klick an Ihren Mandanten senden.', 'Metrics from the running project become a report you send to your client with one click.')}>
         <StatusReport />
       </SubCard>
-      <SubCard className="md:border-l border-line" title="Rechte je Projekt." text="Legen Sie fest, wer in einem Projekt suchen, prüfen oder exportieren darf.">
+      <SubCard className="md:border-l border-line" title={t('Rechte je Projekt.', 'Permissions per project.')} text={t('Legen Sie fest, wer in einem Projekt suchen, prüfen oder exportieren darf.', 'Define who can search, review, or export in each project.')}>
         <Rights />
       </SubCard>
     </div>
@@ -18,9 +19,9 @@ export function DienstleisterSmallCards() {
 }
 
 const KPI: [string, string, number][] = [
-  ['Eingelesen', '1.240.512', 100],
-  ['Geprüft', '412.870', 33],
-  ['Als relevant markiert', '9.804', 8],
+  [t('Eingelesen', 'Ingested'), t('1.240.512', '1,240,512'), 100],
+  [t('Geprüft', 'Reviewed'), t('412.870', '412,870'), 33],
+  [t('Als relevant markiert', 'Marked relevant'), t('9.804', '9,804'), 8],
 ]
 
 function StatusReport() {
@@ -36,10 +37,10 @@ function StatusReport() {
     <div ref={ref} className="w-full max-w-[400px] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-22px_rgba(40,10,50,0.3)] p-4 text-[0.8125rem]">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <div className="font-semibold text-[0.9375rem]">Statusbericht KW 45</div>
-          <div className="text-muted">Projekt Falke</div>
+          <div className="font-semibold text-[0.9375rem]">{t('Statusbericht KW 45', 'Status report CW 45')}</div>
+          <div className="text-muted">{t('Projekt Falke', 'Project Falke')}</div>
         </div>
-        <span className="rounded-full bg-primary-tint px-2.5 py-0.5 text-[0.75rem] font-medium text-primary">Entwurf</span>
+        <span className="rounded-full bg-primary-tint px-2.5 py-0.5 text-[0.75rem] font-medium text-primary">{t('Entwurf', 'Draft')}</span>
       </div>
       <ul className="list-none m-0 mt-3.5 p-0 flex flex-col gap-3">
         {KPI.map(([l, v, w], i) => (
@@ -56,14 +57,14 @@ function StatusReport() {
         onClick={() => setSent((v) => !v)}
         className={`mt-4 w-full rounded-full py-2 border-0 cursor-pointer font-semibold transition-colors ${sent ? 'bg-[#e1f4ee] text-[#16795e]' : 'bg-primary text-white hover:bg-primary-hover'}`}
       >
-        {sent ? '✓ Gesendet' : 'An Mandant senden'}
+        {sent ? t('✓ Gesendet', '✓ Sent') : t('An Mandant senden', 'Send to client')}
       </button>
     </div>
   )
 }
 
-const ROLES = ['Projektleitung', 'Prüfer', 'Mandant']
-const PERMS = ['Suchen', 'Prüfen', 'Exportieren']
+const ROLES = [t('Projektleitung', 'Project lead'), t('Prüfer', 'Reviewer'), t('Mandant', 'Client')]
+const PERMS = [t('Suchen', 'Search'), t('Prüfen', 'Review'), t('Exportieren', 'Export')]
 const INIT: boolean[][] = [
   [true, true, true],
   [true, true, false],
@@ -76,9 +77,9 @@ function Rights() {
 
   return (
     <div className="w-full max-w-[400px] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-22px_rgba(40,10,50,0.3)] overflow-hidden text-[0.8125rem]">
-      <div className="px-4 py-3 border-b border-line font-semibold text-[0.875rem]">Rechte · Projekt Falke</div>
+      <div className="px-4 py-3 border-b border-line font-semibold text-[0.875rem]">{t('Rechte · Projekt Falke', 'Permissions · Project Falke')}</div>
       <div className="grid grid-cols-[1fr_repeat(3,4.5rem)] items-center px-4 py-2 text-[0.6875rem] uppercase tracking-[0.08em] text-muted bg-[#faf8fb] border-b border-line">
-        <span>Rolle</span>
+        <span>{t('Rolle', 'Role')}</span>
         {PERMS.map((p) => <span key={p} className="text-center">{p}</span>)}
       </div>
       {ROLES.map((r, i) => (

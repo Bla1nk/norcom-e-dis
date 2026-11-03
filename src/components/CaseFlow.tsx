@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FlowItem } from '../content/cases'
+import { t } from '../lib/i18n'
 import { smoothScrollTo } from '../lib/lenis'
 import { CollectionVisual } from './steps/CollectionVisual'
 import { EntityNetwork } from './steps/EntityNetwork'
@@ -80,7 +81,7 @@ export function CaseFlow({ items, label, id }: { items: FlowItem[]; label: strin
         muted
         playsInline
         preload="metadata"
-        aria-label={`Clip: ${title}`}
+        aria-label={`${t('Clip', 'Clip')}: ${title}`}
       />
     </div>
   )
@@ -88,7 +89,7 @@ export function CaseFlow({ items, label, id }: { items: FlowItem[]; label: strin
   return (
     <section id={id} aria-label={label} className="relative scroll-mt-16 bg-white border-y border-line">
       <div className="box-border max-w-[1100px] xl:max-w-[1280px] 2xl:max-w-[1520px] 3xl:max-w-[1760px] mx-auto border-x border-line grid lg:grid-cols-[272px_minmax(0,1fr)] 2xl:grid-cols-[320px_minmax(0,1fr)] 3xl:grid-cols-[360px_minmax(0,1fr)]">
-        <nav aria-label="Abschnitte" className="hidden lg:block">
+        <nav aria-label={t('Abschnitte', 'Sections')} className="hidden lg:block">
           <ol className="sticky top-24 list-none m-0 py-24 px-0 flex flex-col gap-2.5">
             {items.map((it, i) => (
               <li key={it.title}>

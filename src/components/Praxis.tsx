@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 import { PraxisDemo } from './PraxisDemo'
 import { Eyebrow, sectionHeadingClass } from './Eyebrow'
 
@@ -7,13 +8,15 @@ export function Praxis() {
     <div id="praxis" role="region" aria-labelledby="praxis-h" className="relative border-t border-white/[0.08]">
       <div className="max-w-[1240px] mx-auto py-20 lg:py-28 px-8 lg:px-12 flex flex-col gap-8">
         <div className="flex flex-col gap-4 max-w-[48rem]">
-          <Eyebrow colorClass="text-[#c39bd3]">DaSense in der Praxis</Eyebrow>
+          <Eyebrow colorClass="text-[#c39bd3]">{t('DaSense in der Praxis', 'DaSense in practice')}</Eyebrow>
           <h2 id="praxis-h" className={`${sectionHeadingClass} !text-white`}>
-            Eine Frage. Neue Zusammenhänge. Belegte Antworten.
+            {t('Eine Frage. Neue Zusammenhänge. Belegte Antworten.', 'One question. New connections. Answers with evidence.')}
           </h2>
           <p className="m-0 text-[1.125rem] text-[#a19dab]">
-            Stellen Sie einem Dokument eine Frage. SenseBot antwortet, nennt die Quellen und markiert die Fundstellen im
-            Original.
+            {t(
+              'Stellen Sie einem Dokument eine Frage. SenseBot antwortet, nennt die Quellen und markiert die Fundstellen im Original.',
+              'Ask a document a question. SenseBot answers, cites its sources and highlights the passages in the original.',
+            )}
           </p>
         </div>
         <PraxisDemo />
@@ -36,9 +39,9 @@ export function Praxis() {
           </svg>
           <div className="flex flex-col items-center gap-1">
             <h3 className="m-0 text-white text-[1.25rem] font-semibold leading-[1.3]">
-              Die KI untersucht. Der Mensch entscheidet.
+              {t('Die KI untersucht. Der Mensch entscheidet.', 'The AI investigates. Humans decide.')}
             </h3>
-            <p className="m-0 text-[#d6d2e0]">Jeder Hinweis lässt sich anhand der Originalquellen überprüfen.</p>
+            <p className="m-0 text-[#d6d2e0]">{t('Jeder Hinweis lässt sich anhand der Originalquellen überprüfen.', 'Every finding can be verified against the original sources.')}</p>
           </div>
         </div>
       </div>

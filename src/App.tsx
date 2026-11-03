@@ -1,3 +1,4 @@
+import { t } from './lib/i18n'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { flushSync } from 'react-dom'
 import { CasePage } from './components/CasePage'
@@ -46,12 +47,12 @@ const slugOf = (path: string) => {
 }
 
 const HASH_TITLES: Record<string, string> = {
-  '#funktionen': 'Funktionen',
-  '#usp-h': 'Warum DaSense',
-  '#praxis': 'Praxis',
-  '#fuer-wen': 'Zielgruppen',
+  '#funktionen': t('Funktionen', 'Features'),
+  '#usp-h': t('Warum DaSense', 'Why DaSense'),
+  '#praxis': t('Praxis', 'In practice'),
+  '#fuer-wen': t('Zielgruppen', 'Who it\'s for'),
   '#top': 'DaSense',
-  '#demo': 'Demo buchen',
+  '#demo': t('Demo buchen', 'Book a demo'),
 }
 
 export default function App({ accent = '#601571' }: AppProps) {
@@ -71,8 +72,8 @@ export default function App({ accent = '#601571' }: AppProps) {
     const from = slugRef.current
     const item = CASES.find((c) => c.slug === target)
     const legal = LEGAL.find((c) => c.slug === target)
-    const label = item ? `${String(CASES.indexOf(item) + 1).padStart(2, '0')} · Für wen` : legal ? legal.eyebrow : 'Zurück zu'
-    const title = item ? item.title : legal ? legal.title : (HASH_TITLES[hash] ?? 'Zielgruppen')
+    const label = item ? `${String(CASES.indexOf(item) + 1).padStart(2, '0')} · ${t('Für wen', 'Who it\'s for')}` : legal ? legal.eyebrow : t('Zurück zu', 'Back to')
+    const title = item ? item.title : legal ? legal.title : (HASH_TITLES[hash] ?? t('Zielgruppen', 'Who it\'s for'))
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const swap = () => {
@@ -108,8 +109,8 @@ export default function App({ accent = '#601571' }: AppProps) {
     // Beim Zurückgehen mit Sprungmarke wird stattdessen der Abschnitt angesprungen.
     const anchor = !target && hash ? hash : ''
     const place = () => {
-      const t = anchor && anchor !== '#top' ? document.querySelector(anchor) : null
-      jumpTo(anchor === '#top' ? 0 : t ? t.getBoundingClientRect().top + window.scrollY : target ? 0 : savedY.current)
+      const node = anchor && anchor !== '#top' ? document.querySelector(anchor) : null
+      jumpTo(anchor === '#top' ? 0 : node ? node.getBoundingClientRect().top + window.scrollY : target ? 0 : savedY.current)
     }
     for (const wait of [120, 250, 400]) {
       await sleep(wait)

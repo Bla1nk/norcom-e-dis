@@ -1,21 +1,22 @@
 import { useState } from 'react'
 import { AppWindow, Surface } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Priorisierung: Gewichte bestimmen die Reihenfolge der Dateien, Zeilen gleiten live an ihre Position. Fiktive Dateien.
 
 const FILES = [
-  { name: 'Chatverlauf_Signal_2023.json', kw: 92, pers: 70, aff: 55 },
-  { name: 'Kontoauszug_Q3_scan.pdf', kw: 40, pers: 85, aff: 90 },
-  { name: 'RE: Lieferung Samstag.eml', kw: 88, pers: 50, aff: 35 },
-  { name: 'Fotoarchiv_IMG_4412.heic', kw: 15, pers: 90, aff: 45 },
-  { name: 'Preisliste_intern.xlsx', kw: 60, pers: 20, aff: 82 },
-  { name: 'Notizen_Treffen.docx', kw: 55, pers: 62, aff: 70 },
-  { name: 'Sprachmemo_0914.m4a', kw: 78, pers: 58, aff: 25 },
+  { name: t('Chatverlauf_Signal_2023.json', 'Chat_history_Signal_2023.json'), kw: 92, pers: 70, aff: 55 },
+  { name: t('Kontoauszug_Q3_scan.pdf', 'Bank_statement_Q3_scan.pdf'), kw: 40, pers: 85, aff: 90 },
+  { name: t('RE: Lieferung Samstag.eml', 'RE: Delivery Saturday.eml'), kw: 88, pers: 50, aff: 35 },
+  { name: t('Fotoarchiv_IMG_4412.heic', 'Photo_archive_IMG_4412.heic'), kw: 15, pers: 90, aff: 45 },
+  { name: t('Preisliste_intern.xlsx', 'Price_list_internal.xlsx'), kw: 60, pers: 20, aff: 82 },
+  { name: t('Notizen_Treffen.docx', 'Meeting_notes.docx'), kw: 55, pers: 62, aff: 70 },
+  { name: t('Sprachmemo_0914.m4a', 'Voice_memo_0914.m4a'), kw: 78, pers: 58, aff: 25 },
 ]
 const SLIDERS: { id: 'kw' | 'pers' | 'aff'; label: string }[] = [
-  { id: 'kw', label: 'Stichwort-Treffer' },
-  { id: 'pers', label: 'Personenbezug' },
-  { id: 'aff', label: 'Auffälligkeit' },
+  { id: 'kw', label: t('Stichwort-Treffer', 'Keyword hits') },
+  { id: 'pers', label: t('Personenbezug', 'Personal data') },
+  { id: 'aff', label: t('Auffälligkeit', 'Anomaly') },
 ]
 const ROW = 56
 
@@ -27,11 +28,11 @@ export function Prioritizer() {
 
   return (
     <Surface tone="dark">
-      <AppWindow tab="Smart Filter" title="Priorisierung">
+      <AppWindow tab="Smart Filter" title={t('Priorisierung', 'Prioritization')}>
         <div className="px-5 pt-5 pb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">Priorisierung</h4>
-          <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">Live sortiert</span>
-          <span className="text-muted">Regler bewegen, Reihenfolge ändert sich sofort</span>
+          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">{t('Priorisierung', 'Prioritization')}</h4>
+          <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">{t('Live sortiert', 'Sorted live')}</span>
+          <span className="text-muted">{t('Regler bewegen, Reihenfolge ändert sich sofort', 'Move the sliders and the order changes instantly')}</span>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-x-6 gap-y-3 px-5 pb-5">
@@ -48,7 +49,7 @@ export function Prioritizer() {
                 step={1}
                 value={w[s.id]}
                 onChange={(e) => setW((v) => ({ ...v, [s.id]: Number(e.target.value) }))}
-                aria-label={`Gewicht ${s.label}`}
+                aria-label={`${t('Gewicht', 'Weight')} ${s.label}`}
                 className="w-full accent-[#601571] cursor-pointer"
               />
             </label>
@@ -57,7 +58,7 @@ export function Prioritizer() {
 
         <div className="border-t border-line">
           <div className="hidden sm:grid grid-cols-[2.5rem_minmax(0,1fr)_minmax(0,1.1fr)_3rem] gap-3 px-5 py-2 text-[0.6875rem] uppercase tracking-[0.08em] text-muted border-b border-line bg-[#faf8fb]">
-            <span>Rang</span><span>Datei</span><span>Score</span><span className="text-right">Wert</span>
+            <span>{t('Rang', 'Rank')}</span><span>{t('Datei', 'File')}</span><span>Score</span><span className="text-right">{t('Wert', 'Value')}</span>
           </div>
           <ul className="list-none m-0 p-0 relative" style={{ height: ROW * FILES.length }}>
             {scored.map((f) => {

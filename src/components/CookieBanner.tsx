@@ -1,11 +1,12 @@
+import { t } from '../lib/i18n'
 import { useEffect, useState } from 'react'
 import { linkProps } from '../lib/router'
 import { readConsent, saveConsent } from '../lib/consent'
 
 const CATEGORIES = [
-  { id: 'necessary', title: 'Notwendig', text: 'Damit die Seite funktioniert, zum Beispiel für Ihre Auswahl hier.' },
-  { id: 'stats', title: 'Statistik', text: 'Hilft uns zu verstehen, welche Inhalte genutzt werden.' },
-  { id: 'external', title: 'Externe Inhalte', text: 'Eingebundene Videos und Karten von Drittanbietern.' },
+  { id: 'necessary', title: t('Notwendig', 'Necessary'), text: t('Damit die Seite funktioniert, zum Beispiel für Ihre Auswahl hier.', 'Required for the site to work, for example to remember your choice here.') },
+  { id: 'stats', title: t('Statistik', 'Statistics'), text: t('Hilft uns zu verstehen, welche Inhalte genutzt werden.', 'Helps us understand which content is used.') },
+  { id: 'external', title: t('Externe Inhalte', 'External content'), text: t('Eingebundene Videos und Karten von Drittanbietern.', 'Embedded videos and maps from third-party providers.') },
 ] as const
 
 // Cookie-Hinweis unten links: ruhig, abgerundet, mit drei Wegen (nur Notwendige, alle, eigene Auswahl).
@@ -23,8 +24,8 @@ export function CookieBanner() {
       setStats(existing.stats)
       setExternal(existing.external)
     } else {
-      const t = window.setTimeout(() => setShown(true), 1400)
-      return () => window.clearTimeout(t)
+      const timer = window.setTimeout(() => setShown(true), 1400)
+      return () => window.clearTimeout(timer)
     }
   }, [])
 
@@ -61,7 +62,7 @@ export function CookieBanner() {
   return (
     <div
       role="dialog"
-      aria-label="Cookie-Einstellungen"
+      aria-label={t('Cookie-Einstellungen', 'Cookie settings')}
       className={`fixed z-50 box-border inset-x-3 bottom-3 sm:inset-x-auto sm:left-4 sm:bottom-4 sm:w-[min(23.5rem,calc(100vw_-_2rem))] max-h-[calc(100svh_-_1.5rem)] overflow-y-auto rounded-[22px] bg-white/95 backdrop-blur-xl ring-1 ring-black/10 shadow-[0_24px_70px_-24px_rgba(30,10,40,0.45)] p-5 text-ink text-[0.875rem] leading-[1.55] ${leaving ? 'cookie-out' : 'cookie-in'}`}
     >
       <div className="flex items-center gap-2.5">
@@ -71,11 +72,11 @@ export function CookieBanner() {
             <path d="M8.5 11.5h.01M12 16h.01M15.5 13.5h.01" />
           </svg>
         </span>
-        <h2 className="m-0 text-[1rem] font-semibold tracking-[-0.01em]">Ihre Privatsphäre</h2>
+        <h2 className="m-0 text-[1rem] font-semibold tracking-[-0.01em]">{t('Ihre Privatsphäre', 'Your privacy')}</h2>
       </div>
       <p className="m-0 mt-3 text-body">
-        Wir nutzen notwendige Cookies, damit die Seite läuft. Mit Ihrer Einwilligung ergänzen wir Statistik und externe Inhalte. Mehr dazu in der{' '}
-        <a {...linkProps('/datenschutzerklaerung')} className="text-primary underline underline-offset-2">Datenschutzerklärung</a>.
+        {t('Wir nutzen notwendige Cookies, damit die Seite läuft. Mit Ihrer Einwilligung ergänzen wir Statistik und externe Inhalte. Mehr dazu in der', 'We use necessary cookies to keep the site running. With your consent, we add statistics and external content. Learn more in our')}{' '}
+        <a {...linkProps('/datenschutzerklaerung')} className="text-primary underline underline-offset-2">{t('Datenschutzerklärung', 'Privacy Policy')}</a>.
       </p>
 
       <div className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${details ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
@@ -107,21 +108,21 @@ export function CookieBanner() {
       <div className="mt-4 flex flex-wrap gap-2">
         {details ? (
           <button type="button" onClick={() => close(stats, external)} className="flex-1 h-10 rounded-full border-0 bg-ink px-4 text-white font-semibold [font:inherit] cursor-pointer transition-colors hover:bg-primary-deep">
-            Auswahl speichern
+            {t('Auswahl speichern', 'Save selection')}
           </button>
         ) : (
           <>
             <button type="button" onClick={() => close(false, false)} className="flex-1 h-10 rounded-full border border-ink/20 bg-white px-4 text-ink font-medium [font:inherit] cursor-pointer transition-colors hover:border-ink">
-              Nur notwendige
+              {t('Nur notwendige', 'Necessary only')}
             </button>
             <button type="button" onClick={() => close(true, true)} className="flex-1 h-10 rounded-full border-0 bg-ink px-4 text-white font-semibold [font:inherit] cursor-pointer transition-colors hover:bg-primary-deep">
-              Alle akzeptieren
+              {t('Alle akzeptieren', 'Accept all')}
             </button>
           </>
         )}
       </div>
       <button type="button" onClick={() => setDetails((v) => !v)} aria-expanded={details} className="mt-3 block mx-auto bg-transparent border-0 p-0 text-[0.8125rem] text-muted underline underline-offset-2 cursor-pointer hover:text-ink [font:inherit]">
-        {details ? 'Weniger anzeigen' : 'Einstellungen'}
+        {details ? t('Weniger anzeigen', 'Show less') : t('Einstellungen', 'Settings')}
       </button>
     </div>
   )

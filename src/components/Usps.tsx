@@ -3,6 +3,7 @@ import { useInView } from '../lib/useInView'
 import { useReveal } from '../lib/useReveal'
 import { Praxis } from './Praxis'
 import { USPS, USP_INTRO } from '../content/usps'
+import { t } from '../lib/i18n'
 
 // „Warum DaSense“ im Stil von linear.app: dunkler Abschnitt, je Punkt große Überschrift links, Text rechts,
 // darunter eine Komposition aus einem vorderen Panel, das ein abgeblendetes App-Bild überlappt.
@@ -45,7 +46,7 @@ export function Usps() {
           ))}
         </h2>
         <p className="mt-8 mb-0 max-w-[40rem] text-[1.1875rem] leading-[1.55] text-[#a19dab]">{USP_INTRO.text}</p>
-        <nav aria-label="Warum DaSense: Übersicht" className="mt-12 lg:mt-16 grid sm:grid-cols-3 gap-6">
+        <nav aria-label={t('Warum DaSense: Übersicht', 'Why DaSense: overview')} className="mt-12 lg:mt-16 grid sm:grid-cols-3 gap-6">
           {USPS.map((usp) => (
             <a
               key={usp.num}
@@ -88,9 +89,9 @@ export function Usps() {
 type Mode = 'cloud' | 'onprem' | 'airgap'
 
 const MODES: { id: Mode; name: string; sub: string; note: string }[] = [
-  { id: 'cloud', name: 'Deutsche Cloud', sub: 'Rechenzentrum in Deutschland', note: 'Verschlüsselte Verbindung, Verarbeitung ausschließlich in Deutschland.' },
-  { id: 'onprem', name: 'On-Premise', sub: 'In Ihrem Rechenzentrum', note: 'DaSense und alle KI-Modelle laufen in Ihrem eigenen Netz.' },
-  { id: 'airgap', name: 'Air-Gapped', sub: 'Ohne Verbindung nach außen', note: 'Abgeschottetes Netz: keine Verbindung ins Internet.' },
+  { id: 'cloud', name: t('Deutsche Cloud', 'German cloud'), sub: t('Rechenzentrum in Deutschland', 'Data center in Germany'), note: t('Verschlüsselte Verbindung, Verarbeitung ausschließlich in Deutschland.', 'Encrypted connection, processing exclusively in Germany.') },
+  { id: 'onprem', name: 'On-Premise', sub: t('In Ihrem Rechenzentrum', 'In your data center'), note: t('DaSense und alle KI-Modelle laufen in Ihrem eigenen Netz.', 'DaSense and all AI models run in your own network.') },
+  { id: 'airgap', name: 'Air-Gapped', sub: t('Ohne Verbindung nach außen', 'No outside connection'), note: t('Abgeschottetes Netz: keine Verbindung ins Internet.', 'Isolated network: no connection to the internet.') },
 ]
 
 function SovereigntyScene() {
@@ -108,10 +109,10 @@ function SovereigntyScene() {
       </div>
       <div className={`relative lg:absolute left-0 top-0 w-full lg:w-[min(440px,100%)] ${PANEL}`}>
         <div className="px-6 py-5 border-b border-white/[0.07] flex items-center justify-between">
-          <span className="text-[1rem] font-medium text-white">Betrieb</span>
+          <span className="text-[1rem] font-medium text-white">{t('Betrieb', 'Deployment')}</span>
           <span className="text-[0.75rem] text-[#8e8a96]">DaSense eDiscovery</span>
         </div>
-        <div role="radiogroup" aria-label="Betriebsmodell" className="p-4 flex flex-col gap-2">
+        <div role="radiogroup" aria-label={t('Betriebsmodell', 'Deployment model')} className="p-4 flex flex-col gap-2">
           {MODES.map((m) => {
             const on = m.id === mode
             return (
@@ -143,7 +144,7 @@ function SovereigntyScene() {
 }
 
 /* Schaubild je Betriebsmodell. Zeichenfläche 720 × 440, skaliert per viewBox. */
-const STACK = ['DaSense', 'Lokale KI', 'Index']
+const STACK = ['DaSense', t('Lokale KI', 'Local AI'), 'Index']
 
 function Node({ x, y, w, h, title, sub, icon }: { x: number; y: number; w: number; h: number; title: string; sub?: string; icon: ReactNode }) {
   return (
@@ -202,25 +203,25 @@ const GLOBE = (
 function DeploymentDiagram({ mode }: { mode: Mode }) {
   const show = (m: Mode) => ({ opacity: mode === m ? 1 : 0, transition: 'opacity 450ms ease' })
   return (
-    <svg viewBox="0 0 720 440" className="absolute inset-0 h-full w-full" role="img" aria-label={`Schaubild Betrieb: ${MODES.find((m) => m.id === mode)!.name}`}>
+    <svg viewBox="0 0 720 440" className="absolute inset-0 h-full w-full" role="img" aria-label={`${t('Schaubild Betrieb', 'Deployment diagram')}: ${MODES.find((m) => m.id === mode)!.name}`}>
       {/* Deutsche Cloud: Team -> verschlüsselte Verbindung -> Rechenzentrum in Deutschland */}
       <g style={show('cloud')}>
-        <Node x={40} y={180} w={190} h={64} title="Ihr Team" sub="Browser" icon={USERS} />
+        <Node x={40} y={180} w={190} h={64} title={t('Ihr Team', 'Your team')} sub="Browser" icon={USERS} />
         <path d="M230 212 C 300 212 330 212 404 212" fill="none" stroke="#b06fd1" strokeWidth="1.8" strokeDasharray="6 6" className="flow-12" />
         <rect x="273" y="196" width="88" height="22" rx="11" fill="#1f1726" stroke="rgba(176,111,209,0.5)" />
-        <text x="317" y="211" textAnchor="middle" fill="#c39bd3" style={{ font: '500 10.5px Satoshi, Helvetica, Arial, sans-serif' }}>verschlüsselt</text>
+        <text x="317" y="211" textAnchor="middle" fill="#c39bd3" style={{ font: '500 10.5px Satoshi, Helvetica, Arial, sans-serif' }}>{t('verschlüsselt', 'encrypted')}</text>
         <path d="M455 66 a40 40 0 0 1 76 -10 a32 32 0 0 1 54 26 a26 26 0 0 1 -6 52 h-120 a34 34 0 0 1 -4 -68z" fill="none" stroke="#c39bd3" strokeWidth="1.6" transform="translate(-14 0)" />
         <text x="512" y="106" textAnchor="middle" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>CLOUD</text>
-        <StackBox x={404} y={150} w={276} h={190} label="RECHENZENTRUM IN DEUTSCHLAND" tone="#c39bd3" />
+        <StackBox x={404} y={150} w={276} h={190} label={t('RECHENZENTRUM IN DEUTSCHLAND', 'DATA CENTER IN GERMANY')} tone="#c39bd3" />
       </g>
 
       {/* On-Premise: alles im eigenen Netz */}
       <g style={show('onprem')}>
         <rect x="24" y="40" width="672" height="360" rx="22" fill="none" stroke="rgba(176,111,209,0.55)" strokeDasharray="7 6" />
-        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>IHR NETZ</text>
-        <Node x={60} y={180} w={190} h={64} title="Ihr Team" sub="Browser" icon={USERS} />
+        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>{t('IHR NETZ', 'YOUR NETWORK')}</text>
+        <Node x={60} y={180} w={190} h={64} title={t('Ihr Team', 'Your team')} sub="Browser" icon={USERS} />
         <path d="M250 212 C 330 212 350 212 420 212" fill="none" stroke="#b06fd1" strokeWidth="1.8" strokeDasharray="6 6" className="flow-12" />
-        <StackBox x={420} y={110} w={240} h={190} label="IHR RECHENZENTRUM" tone="#c39bd3" />
+        <StackBox x={420} y={110} w={240} h={190} label={t('IHR RECHENZENTRUM', 'YOUR DATA CENTER')} tone="#c39bd3" />
       </g>
 
       {/* Air-Gapped: abgeschottetes Netz, Internet getrennt */}
@@ -233,10 +234,10 @@ function DeploymentDiagram({ mode }: { mode: Mode }) {
             <path d="M3 6V4a4 4 0 0 1 8 0v2" />
           </g>
         </g>
-        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>ABGESCHOTTETES NETZ</text>
-        <Node x={50} y={180} w={170} h={64} title="Ihr Team" sub="Browser" icon={USERS} />
+        <text x="46" y="70" fill="#c39bd3" style={{ font: '600 11px Satoshi, Helvetica, Arial, sans-serif', letterSpacing: '0.08em' }}>{t('ABGESCHOTTETES NETZ', 'ISOLATED NETWORK')}</text>
+        <Node x={50} y={180} w={170} h={64} title={t('Ihr Team', 'Your team')} sub="Browser" icon={USERS} />
         <path d="M220 212 C 270 212 290 212 320 212" fill="none" stroke="#b06fd1" strokeWidth="1.8" strokeDasharray="6 6" className="flow-12" />
-        <StackBox x={320} y={110} w={200} h={190} label="IHRE SERVER" tone="#c39bd3" />
+        <StackBox x={320} y={110} w={200} h={190} label={t('IHRE SERVER', 'YOUR SERVERS')} tone="#c39bd3" />
         {/* Unterbrochene Verbindung: Lücke in der Mitte, X auf dunklem Kreis */}
         <path d="M544 212 H 558 M 586 212 H 600" fill="none" stroke="rgba(248,113,113,0.6)" strokeWidth="1.6" strokeDasharray="4 4" />
         <circle cx="572" cy="212" r="11" fill="#1e1316" stroke="rgba(248,113,113,0.55)" />
@@ -260,61 +261,61 @@ type Chat = { q: string; worked: string; passages: string; intro: string; items:
 
 const CHATS: Chat[] = [
   {
-    q: 'Kalifornien Energiekrise 2001',
-    worked: 'Gearbeitet 5 s · 9 Textstellen in 8 Dokumenten',
-    passages: '9 passende Textstellen',
-    intro: 'Die Dokumente zur Energiekrise betreffen vor allem:',
+    q: t('Kalifornien Energiekrise 2001', 'California energy crisis 2001'),
+    worked: t('Gearbeitet 5 s · 9 Textstellen in 8 Dokumenten', 'Worked 5 s · 9 passages in 8 documents'),
+    passages: t('9 passende Textstellen', '9 matching passages'),
+    intro: t('Die Dokumente zur Energiekrise betreffen vor allem:', 'The documents on the energy crisis mainly concern:'),
     items: [
-      { b: 'Großhandelspreise', t: 'in Kalifornien', n: 1 },
-      { b: 'Kommunikation', t: 'mit Regulierern', n: 2 },
+      { b: t('Großhandelspreise', 'Wholesale prices'), t: t('in Kalifornien', 'in California'), n: 1 },
+      { b: t('Kommunikation', 'Communication'), t: t('mit Regulierern', 'with regulators'), n: 2 },
     ],
-    foot: 'Quellen 8',
+    foot: t('Quellen 8', 'Sources 8'),
   },
   {
-    q: 'Fasse die wichtigsten Risiken zusammen',
-    worked: 'Gearbeitet 9 s · 12 Textstellen in 11 Dokumenten',
-    passages: '12 passende Textstellen',
-    intro: 'Drei Risikothemen tauchen wiederholt auf:',
+    q: t('Fasse die wichtigsten Risiken zusammen', 'Summarize the key risks'),
+    worked: t('Gearbeitet 9 s · 12 Textstellen in 11 Dokumenten', 'Worked 9 s · 12 passages in 11 documents'),
+    passages: t('12 passende Textstellen', '12 matching passages'),
+    intro: t('Drei Risikothemen tauchen wiederholt auf:', 'Three risk themes come up repeatedly:'),
     items: [
-      { b: 'Absicherungen', t: 'über eigene Aktien', n: 1 },
-      { b: 'Bewertungen', t: 'im Merchant-Portfolio', n: 4 },
-      { b: 'Interessenkonflikte', t: 'bei Partnerschaften', n: 5 },
+      { b: t('Absicherungen', 'Hedges'), t: t('über eigene Aktien', 'backed by the company’s own stock'), n: 1 },
+      { b: t('Bewertungen', 'Valuations'), t: t('im Merchant-Portfolio', 'in the merchant portfolio'), n: 4 },
+      { b: t('Interessenkonflikte', 'Conflicts of interest'), t: t('bei Partnerschaften', 'in partnerships'), n: 5 },
     ],
-    foot: 'Quellen 11',
+    foot: t('Quellen 11', 'Sources 11'),
   },
   {
-    q: 'Wer hat intern vor dem Zusammenbruch gewarnt?',
-    worked: 'Gearbeitet 6 s · 15 Textstellen in 14 Dokumenten',
-    passages: '15 passende Textstellen',
-    intro: 'In den 500.000 Dokumenten finden sich mehrere interne Warnungen aus dem Jahr 2001:',
+    q: t('Wer hat intern vor dem Zusammenbruch gewarnt?', 'Who raised internal warnings before the collapse?'),
+    worked: t('Gearbeitet 6 s · 15 Textstellen in 14 Dokumenten', 'Worked 6 s · 15 passages in 14 documents'),
+    passages: t('15 passende Textstellen', '15 matching passages'),
+    intro: t('In den 500.000 Dokumenten finden sich mehrere interne Warnungen aus dem Jahr 2001:', 'The 500,000 documents contain several internal warnings from 2001:'),
     items: [
-      { b: 'Raptor-Absicherungen', t: 'hingen am Kurs der eigenen Aktie', n: 1 },
-      { b: 'Risk Assessment & Control', t: 'empfahl, vor dem Quartalsende zu eskalieren', n: 2 },
-      { b: 'Sherron Watkins', t: 'fürchtete, Enron werde „in einer Welle von Bilanzskandalen implodieren“', n: 3 },
+      { b: t('Raptor-Absicherungen', 'Raptor hedges'), t: t('hingen am Kurs der eigenen Aktie', 'depended on the price of the company’s own stock'), n: 1 },
+      { b: 'Risk Assessment & Control', t: t('empfahl, vor dem Quartalsende zu eskalieren', 'recommended escalating before quarter end'), n: 2 },
+      { b: 'Sherron Watkins', t: t('fürchtete, Enron werde „in einer Welle von Bilanzskandalen implodieren“', 'feared Enron would “implode in a wave of accounting scandals”'), n: 3 },
     ],
-    foot: 'Quellen 14',
+    foot: t('Quellen 14', 'Sources 14'),
   },
   {
-    q: 'Welche Fristen werden erwähnt?',
-    worked: 'Gearbeitet 4 s · 7 Textstellen in 6 Dokumenten',
-    passages: '7 passende Textstellen',
-    intro: 'Genannt werden vor allem diese Termine:',
+    q: t('Welche Fristen werden erwähnt?', 'Which deadlines are mentioned?'),
+    worked: t('Gearbeitet 4 s · 7 Textstellen in 6 Dokumenten', 'Worked 4 s · 7 passages in 6 documents'),
+    passages: t('7 passende Textstellen', '7 matching passages'),
+    intro: t('Genannt werden vor allem diese Termine:', 'These dates are mentioned most often:'),
     items: [
-      { b: 'Quartalsende Q3 2001', t: 'für die Eskalation', n: 2 },
-      { b: '22.08.2001', t: 'Termin mit der Geschäftsleitung', n: 6 },
+      { b: t('Quartalsende Q3 2001', 'Q3 2001 quarter end'), t: t('für die Eskalation', 'for the escalation'), n: 2 },
+      { b: t('22.08.2001', '08/22/2001'), t: t('Termin mit der Geschäftsleitung', 'meeting with senior management'), n: 6 },
     ],
-    foot: 'Quellen 6',
+    foot: t('Quellen 6', 'Sources 6'),
   },
   {
-    q: 'Raptor-Strukturen erklärt',
-    worked: 'Gearbeitet 7 s · 10 Textstellen in 8 Dokumenten',
-    passages: '10 passende Textstellen',
-    intro: 'Die Dokumente beschreiben die Strukturen so:',
+    q: t('Raptor-Strukturen erklärt', 'Raptor structures explained'),
+    worked: t('Gearbeitet 7 s · 10 Textstellen in 8 Dokumenten', 'Worked 7 s · 10 passages in 8 documents'),
+    passages: t('10 passende Textstellen', '10 matching passages'),
+    intro: t('Die Dokumente beschreiben die Strukturen so:', 'The documents describe the structures as follows:'),
     items: [
-      { b: 'Absicherungskapazität', t: 'hängt am Aktienkurs', n: 1 },
-      { b: 'Statusbericht', t: 'vom 03.08.2001', n: 1 },
+      { b: t('Absicherungskapazität', 'Hedging capacity'), t: t('hängt am Aktienkurs', 'depends on the stock price'), n: 1 },
+      { b: t('Statusbericht', 'Status report'), t: t('vom 03.08.2001', 'dated 08/03/2001'), n: 1 },
     ],
-    foot: 'Quellen 8',
+    foot: t('Quellen 8', 'Sources 8'),
   },
 ]
 
@@ -352,8 +353,8 @@ function useAnswerPhase(run: number, active: boolean, seen: boolean): Phase {
           [4400, { items: 3 }],
           [4900, { foot: true }],
         ]
-    const t = plan.map(([at, patch]) => window.setTimeout(() => setPh((p) => ({ ...p, ...patch })), at))
-    return () => t.forEach(clearTimeout)
+    const timers = plan.map(([at, patch]) => window.setTimeout(() => setPh((p) => ({ ...p, ...patch })), at))
+    return () => timers.forEach(clearTimeout)
   }, [run, active])
   return active ? ph : seen ? DONE_PHASE : ASK_PHASE
 }
@@ -364,9 +365,9 @@ function Spinner() {
 
 function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase: Phase }) {
   const steps: [string, string][] = [
-    ['Dokumente eingegrenzt', 'Alle Treffer · 500.000'],
-    ['500.000 Dokumente mit Deep Fusion durchsucht', chat.passages],
-    ['Antwort formuliert', 'mit Quellenangaben'],
+    [t('Dokumente eingegrenzt', 'Narrowed down documents'), t('Alle Treffer · 500.000', 'All hits · 500,000')],
+    [t('500.000 Dokumente mit Deep Fusion durchsucht', 'Searched 500,000 documents with Deep Fusion'), chat.passages],
+    [t('Antwort formuliert', 'Drafted answer'), t('mit Quellenangaben', 'with citations')],
   ]
   const reveal = (on: boolean) => `transition-all duration-500 ${on ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1.5'}`
   return (
@@ -381,9 +382,9 @@ function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase:
         <span className="font-semibold text-[14px]">SenseBot</span>
         <span className="ml-auto inline-flex rounded-full bg-[#f4f4f4] p-[3px] text-[12px] whitespace-nowrap">
           <span className="rounded-full bg-white px-2.5 py-1 shadow-[0_1px_3px_rgba(0,0,0,0.1)]">
-            Alle Treffer <i className="not-italic" style={{ color: SB.text3 }}>500.000</i>
+            {t('Alle Treffer', 'All hits')} <i className="not-italic" style={{ color: SB.text3 }}>{t('500.000', '500,000')}</i>
           </span>
-          <span className="px-2.5 py-1" style={{ color: SB.text2 }}>Nur Ja</span>
+          <span className="px-2.5 py-1" style={{ color: SB.text2 }}>{t('Nur Ja', 'Yes only')}</span>
         </span>
       </div>
 
@@ -392,7 +393,7 @@ function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase:
           {chat.q}
         </div>
         <div className={`self-end mt-1 mr-1.5 text-[11px] ${reveal(phase.q)}`} style={{ color: SB.text3 }}>
-          Alle Treffer · 500.000 Dokumente
+          {t('Alle Treffer · 500.000 Dokumente', 'All hits · 500,000 documents')}
         </div>
         {phase.collapsed ? (
           <div className="mt-3 flex items-center gap-2 text-[13px] min-w-0" style={{ color: SB.text3 }}>
@@ -403,14 +404,14 @@ function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase:
           </div>
         ) : (
           <div className="mt-3 flex flex-col gap-1 text-[13px]">
-            {steps.slice(0, phase.steps < 0 ? 0 : Math.min(3, phase.steps + 1)).map(([t, d], k) => (
-              <div key={t} className="flex items-center gap-2 min-w-0 animate-[fadeIn_.3s_ease]">
+            {steps.slice(0, phase.steps < 0 ? 0 : Math.min(3, phase.steps + 1)).map(([label, d], k) => (
+              <div key={label} className="flex items-center gap-2 min-w-0 animate-[fadeIn_.3s_ease]">
                 {k < phase.steps ? (
                   <span className="grid h-3 w-3 shrink-0 place-items-center text-[11px] text-[#067647]">✓</span>
                 ) : (
                   <Spinner />
                 )}
-                <span className="truncate" style={{ color: SB.text2 }}>{t}</span>
+                <span className="truncate" style={{ color: SB.text2 }}>{label}</span>
                 <span className="shrink-0" style={{ color: SB.text3 }}>{d}</span>
               </div>
             ))}
@@ -436,13 +437,13 @@ function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase:
           <div className={`mt-3 flex items-center gap-1.5 ${reveal(phase.foot)}`}>
             <span className="inline-flex items-center gap-1.5 h-[28px] pl-1.5 pr-3 rounded-full border text-[12.5px]" style={{ borderColor: SB.line, color: SB.text2 }}>
               <span className="inline-flex">
-                {['P', 'E', 'D'].map((t, k) => (
+                {['P', 'E', 'D'].map((dot, k) => (
                   <span
-                    key={t}
+                    key={dot}
                     className="grid place-items-center h-5 w-5 rounded-full border-2 border-white text-[9px] font-bold"
-                    style={{ marginLeft: k ? -6 : 0, background: TYPE_DOT[t][0], color: TYPE_DOT[t][1] }}
+                    style={{ marginLeft: k ? -6 : 0, background: TYPE_DOT[dot][0], color: TYPE_DOT[dot][1] }}
                   >
-                    {t}
+                    {dot}
                   </span>
                 ))}
               </span>
@@ -461,9 +462,9 @@ function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase:
               <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
               <path d="M14 3v6h6" />
             </svg>
-            Quellen
+            {t('Quellen', 'Sources')}
           </span>
-          <span className="flex-1 text-[14px]" style={{ color: SB.text3 }}>SenseBot fragen</span>
+          <span className="flex-1 text-[14px]" style={{ color: SB.text3 }}>{t('SenseBot fragen', 'Ask SenseBot')}</span>
           <span className="grid place-items-center h-8 w-8 rounded-full" style={{ background: '#d7d7d7' }}>
             <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 19V5M5 12l7-7 7 7" />
@@ -471,7 +472,7 @@ function ChatWindow({ chat, focus, phase }: { chat: Chat; focus: boolean; phase:
           </span>
         </div>
         <div className="mt-1.5 text-center text-[10.5px]" style={{ color: SB.text3 }}>
-          SenseBot kann Fehler machen. Prüfe wichtige Aussagen an den Quellen.
+          {t('SenseBot kann Fehler machen. Prüfe wichtige Aussagen an den Quellen.', 'SenseBot can make mistakes. Check important statements against the sources.')}
         </div>
       </div>
     </div>
@@ -532,7 +533,7 @@ function SenseBotScene() {
               key={c.q}
               role={focus ? undefined : 'button'}
               tabIndex={focus ? undefined : 0}
-              aria-label={focus ? undefined : `Frage anzeigen: ${c.q}`}
+              aria-label={focus ? undefined : `${t('Frage anzeigen', 'Show question')}: ${c.q}`}
               onClick={() => pick(i)}
               onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && pick(i)}
               className={`transition-opacity duration-700 outline-none ${focus ? '' : 'cursor-pointer hover:!opacity-80'}`}
@@ -548,7 +549,7 @@ function SenseBotScene() {
           <button
             key={c.q}
             type="button"
-            aria-label={`Frage ${i + 1}: ${c.q}`}
+            aria-label={`${t('Frage', 'Question')} ${i + 1}: ${c.q}`}
             aria-current={i === sel}
             onClick={() => pick(i)}
             className={`relative h-2 rounded-full border-0 p-0 cursor-pointer transition-all duration-300 before:absolute before:-inset-x-1.5 before:-inset-y-4 before:content-[''] ${i === sel ? 'w-6 bg-white' : 'w-2 bg-white/25 hover:bg-white/50'}`}
@@ -574,15 +575,15 @@ function ChatWindowAnimated({ chat, focus, run, active, seen }: { chat: Chat; fo
 type ReviewDoc = { type: string; name: string; from: string; to: string; date: string; before: string; mark: string; after: string }
 
 const REVIEW_DOCS: ReviewDoc[] = [
-  { type: 'EML', name: 'Notes call outside counsel.eml', from: 'Rechtsabteilung', to: 'Structured Finance', date: '23.08.2001',
+  { type: 'EML', name: 'Notes call outside counsel.eml', from: t('Rechtsabteilung', 'Legal Department'), to: 'Structured Finance', date: t('23.08.2001', '08/23/2001'),
     before: 'Summary of today’s call attached. ', mark: 'Privileged and confidential – please do not circulate beyond this list.', after: ' Next call scheduled for Monday.' },
-  { type: 'EML', name: 'Q3 close – sensitive items.eml', from: 'Accounting', to: 'Risk Assessment & Control', date: '30.09.2001',
+  { type: 'EML', name: 'Q3 close – sensitive items.eml', from: 'Accounting', to: 'Risk Assessment & Control', date: t('30.09.2001', '09/30/2001'),
     before: 'Please find the open items for the Q3 close below. ', mark: 'Keep this within the close team until the numbers are final.', after: ' We will review on Thursday.' },
-  { type: 'EML', name: 'Partnership update.eml', from: 'Treasury', to: 'Structured Finance', date: '18.06.2001',
+  { type: 'EML', name: 'Partnership update.eml', from: 'Treasury', to: 'Structured Finance', date: t('18.06.2001', '06/18/2001'),
     before: 'Short update on the partnership transactions. ', mark: 'This is confidential and should not be forwarded.', after: ' Details in the attached deck.' },
-  { type: 'XLSX', name: 'Hedge capacity overview.xlsx', from: 'Risk Assessment & Control', to: 'Treasury', date: '01.08.2001',
-    before: 'Sheet „Summary“, note in cell B2: ', mark: 'Internal use only – do not distribute.', after: ' Figures as of month end.' },
-  { type: 'EML', name: 'Re: valuation review.eml', from: 'Structured Finance', to: 'Accounting', date: '14.08.2001',
+  { type: 'XLSX', name: 'Hedge capacity overview.xlsx', from: 'Risk Assessment & Control', to: 'Treasury', date: t('01.08.2001', '08/01/2001'),
+    before: t('Sheet „Summary“, note in cell B2: ', 'Sheet “Summary”, note in cell B2: '), mark: 'Internal use only – do not distribute.', after: ' Figures as of month end.' },
+  { type: 'EML', name: 'Re: valuation review.eml', from: 'Structured Finance', to: 'Accounting', date: t('14.08.2001', '08/14/2001'),
     before: 'Thanks for the comments on the valuation. ', mark: 'Please handle this discreetly until we have aligned internally.', after: ' I will send the revised version tomorrow.' },
 ]
 
@@ -596,7 +597,7 @@ const SEED: { ago: number; doc: string; d: Decision; hash: string }[] = [
   { ago: 86, doc: 'RE: Term sheet Q3 hedging.eml', d: 'ja', hash: '5b2e…4a36' },
   { ago: 117, doc: 'FW: Raptor valuation (do not forward).eml', d: 'ja', hash: '8af3…4b6d' },
 ]
-const clock = (d: Date) => d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+const clock = (d: Date) => d.toLocaleTimeString(t('de-DE', 'en-US'), { hour: '2-digit', minute: '2-digit', second: '2-digit' })
 const seedLog = (): LogEntry[] => SEED.map(({ ago, ...e }) => ({ ...e, time: clock(new Date(Date.now() - ago * 1000)) }))
 /** Prüfset: aus den 41.870 vertraulichen Treffern auf die relevanten Dokumente eingegrenzt. */
 const TOTAL_HITS = 50
@@ -636,23 +637,23 @@ function ReviewScene() {
         <div className="relative p-4 sm:p-5 lg:p-0 lg:absolute lg:inset-y-0 lg:right-[6%] lg:left-[min(560px,46%)] lg:pt-8 flex flex-col gap-5">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { l: 'Ja', n: ja, c: '#4ade80' },
-              { l: 'Nein', n: nein, c: '#f87171' },
-              { l: 'Nicht bewertet', n: Math.max(0, TOTAL_HITS - done), c: '#8e8a96' },
+              { l: t('Ja', 'Yes'), n: ja, c: '#4ade80' },
+              { l: t('Nein', 'No'), n: nein, c: '#f87171' },
+              { l: t('Nicht bewertet', 'Not rated'), n: Math.max(0, TOTAL_HITS - done), c: '#8e8a96' },
             ].map((k) => (
               <div key={k.l} className="min-w-0 rounded-xl bg-white/[0.03] ring-1 ring-white/[0.07] px-3 py-3 sm:px-4">
                 <div className="flex items-center gap-2 text-[0.8125rem] text-[#a19dab]">
                   <span className="h-2 w-2 rounded-full" style={{ background: k.c }} />
                   {k.l}
                 </div>
-                <div className="mt-1 text-[1.375rem] font-medium text-white tabular-nums">{k.n.toLocaleString('de-DE')}</div>
+                <div className="mt-1 text-[1.375rem] font-medium text-white tabular-nums">{k.n.toLocaleString(t('de-DE', 'en-US'))}</div>
               </div>
             ))}
           </div>
           <div>
             <div className="mb-2 flex items-center justify-between text-[0.8125rem] text-[#8e8a96]">
-              <span>Prüfprotokoll · Review-Ordner /Review</span>
-              <span className="hidden sm:inline">jede Entscheidung protokolliert</span>
+              <span>{t('Prüfprotokoll · Review-Ordner /Review', 'Audit log · review folder /Review')}</span>
+              <span className="hidden sm:inline">{t('jede Entscheidung protokolliert', 'every decision logged')}</span>
             </div>
             <div className="rounded-xl ring-1 ring-white/[0.07] divide-y divide-white/[0.06] overflow-hidden">
               {log.slice(0, 6).map((e, k) => (
@@ -661,7 +662,7 @@ function ReviewScene() {
                   className={`grid grid-cols-[3.25rem_3.25rem_minmax(0,1fr)] sm:grid-cols-[72px_64px_minmax(0,1fr)_auto] items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 text-[0.8125rem] ${k === 0 && log.length > SEED.length ? 'animate-[fadeIn_.4s_ease] bg-white/[0.03]' : ''}`}
                 >
                   <span className="text-[#6f6a78] tabular-nums">{e.time}</span>
-                  <span className={e.d === 'ja' ? 'text-[#86efac]' : 'text-[#fca5a5]'}>{e.d === 'ja' ? '✓ Ja' : '✕ Nein'}</span>
+                  <span className={e.d === 'ja' ? 'text-[#86efac]' : 'text-[#fca5a5]'}>{e.d === 'ja' ? t('✓ Ja', '✓ Yes') : t('✕ Nein', '✕ No')}</span>
                   <span className="truncate text-[#d6d3dd]">
                     {e.doc} <span className="text-[#6f6a78]">· fadmin</span>
                   </span>
@@ -679,9 +680,9 @@ function ReviewScene() {
       <div
         tabIndex={0}
         role="group"
-        aria-label="Prüfansicht: Dokument mit Ja oder Nein bewerten (Tasten J und N)"
+        aria-label={t('Prüfansicht: Dokument mit Ja oder Nein bewerten (Tasten J und N)', 'Review view: rate the document Yes or No (keys Y and N)')}
         onKeyDown={(e) => {
-          if (e.key === 'j' || e.key === 'J') decide('ja')
+          if (e.key === t('j', 'y') || e.key === t('J', 'Y')) decide('ja')
           if (e.key === 'n' || e.key === 'N') decide('nein')
         }}
         className={`relative lg:absolute left-0 top-0 w-full lg:w-[min(540px,100%)] rounded-2xl bg-white text-[#0d0d0d] outline-none ring-1 ring-white/10 focus-visible:ring-2 focus-visible:ring-[#b06fd1] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.85)] overflow-hidden transition-shadow duration-300 ${
@@ -689,10 +690,10 @@ function ReviewScene() {
         }`}
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-4 sm:px-5 py-2.5 lg:py-0 min-h-[52px] lg:h-[52px] border-b border-[#e5e5e5] text-[0.8125rem]">
-          <span className="font-semibold text-[0.875rem]">Dokumente</span>
-          <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.75rem]">Prüfset · aus 41.870 eingegrenzt</span>
+          <span className="font-semibold text-[0.875rem]">{t('Dokumente', 'Documents')}</span>
+          <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.75rem]">{t('Prüfset · aus 41.870 eingegrenzt', 'Review set · narrowed down from 41,870')}</span>
           <span className="ml-auto text-[#8f8f8f] tabular-nums">
-            {Math.min(done, TOTAL_HITS)} von {TOTAL_HITS} bewertet
+            {t(`${Math.min(done, TOTAL_HITS)} von ${TOTAL_HITS} bewertet`, `${Math.min(done, TOTAL_HITS)} of ${TOTAL_HITS} rated`)}
           </span>
         </div>
         <div className="h-1 bg-[#f1eef3]">
@@ -702,17 +703,17 @@ function ReviewScene() {
           <div className="flex items-center gap-2 text-[0.75rem] text-[#8f8f8f]">
             <span className="rounded bg-[#eef0f3] px-1.5 py-0.5 text-[0.625rem] font-bold text-[#5d5d5d]">{doc.type}</span>
             <span className="tabular-nums">{Math.min(done + 1, TOTAL_HITS)} / {TOTAL_HITS}</span>
-            <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#ecfdf3] px-2 py-0.5 font-medium text-[#067647]">✓ Unverändert seit Ingest</span>
+            <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-[#ecfdf3] px-2 py-0.5 font-medium text-[#067647]">{t('✓ Unverändert seit Ingest', '✓ Unchanged since ingest')}</span>
           </div>
           <div className="mt-3 text-[1.0625rem] font-semibold">{doc.name.replace(/\.(eml|xlsx|msg|docx)$/, '')}</div>
           <div className="mt-1 text-[0.8125rem] text-[#5d5d5d]">
             {doc.from} → {doc.to} · {doc.date}
           </div>
           <div className="mt-3 flex items-center gap-2 text-[0.75rem]">
-            <span className="text-[#8f8f8f] tracking-[0.06em]">KI-FACETTEN</span>
+            <span className="text-[#8f8f8f] tracking-[0.06em]">{t('KI-FACETTEN', 'AI FACETS')}</span>
             <span className="inline-flex items-center gap-1.5 rounded-full ring-1 ring-[#c7d7fb] bg-[#eef3fe] px-2 py-0.5 text-[#1d4ed8]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#2563eb]" />
-              Vertraulich · 1 Stelle
+              {t('Vertraulich · 1 Stelle', 'Confidential · 1 passage')}
             </span>
           </div>
           <p className="mt-3 mb-0 text-[0.875rem] leading-[1.65] text-[#3a3a3a]">
@@ -726,17 +727,17 @@ function ReviewScene() {
               onClick={() => decide('ja')}
               className="flex-1 min-h-[44px] cursor-pointer rounded-xl border border-[#e3dfe6] bg-white px-4 py-2.5 text-[0.875rem] font-medium text-[#0d0d0d] hover:bg-[#e7f6ec] hover:border-[#bfe8cd] hover:text-[#1f7a43] transition-colors"
             >
-              ✓ Ja <kbd className="ml-1 rounded border border-[#e3dfe6] bg-white px-1 font-sans text-[0.6875rem]">J</kbd>
+              {t('✓ Ja', '✓ Yes')} <kbd className="ml-1 rounded border border-[#e3dfe6] bg-white px-1 font-sans text-[0.6875rem]">{t('J', 'Y')}</kbd>
             </button>
             <button
               type="button"
               onClick={() => decide('nein')}
               className="flex-1 min-h-[44px] cursor-pointer rounded-xl border border-[#e3dfe6] bg-white px-4 py-2.5 text-[0.875rem] font-medium text-[#0d0d0d] hover:bg-[#fdecec] hover:border-[#f6c9c5] hover:text-[#b42318] transition-colors"
             >
-              ✕ Nein <kbd className="ml-1 rounded border border-[#e3dfe6] bg-white px-1 font-sans text-[0.6875rem]">N</kbd>
+              {t('✕ Nein', '✕ No')} <kbd className="ml-1 rounded border border-[#e3dfe6] bg-white px-1 font-sans text-[0.6875rem]">N</kbd>
             </button>
           </div>
-          <div className="mt-3 text-center text-[0.75rem] text-[#8f8f8f]">Probieren Sie es aus: klicken oder J / N drücken</div>
+          <div className="mt-3 text-center text-[0.75rem] text-[#8f8f8f]">{t('Probieren Sie es aus: klicken oder J / N drücken', 'Try it out: click or press Y / N')}</div>
         </div>
       </div>
     </div>

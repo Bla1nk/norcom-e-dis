@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 import { useState } from 'react'
 import { CUSTOMERS } from '../content/referenzen'
 import { Reveal } from './TextReveal'
@@ -27,9 +28,9 @@ function Logo({ name, file }: { name: string; file: string }) {
 export function CustomerCarousel() {
   const row = [...CUSTOMERS, ...CUSTOMERS]
   return (
-    <section aria-label="Auswahl unserer Kunden" className="bg-white border-t border-line py-12 lg:py-14">
+    <section aria-label={t('Auswahl unserer Kunden', 'Selected customers')} className="bg-white border-t border-line py-12 lg:py-14">
       <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12">
-        <Reveal className="mb-8 text-[0.6875rem] font-medium tracking-[0.14em] uppercase text-muted">Auswahl unserer Kunden</Reveal>
+        <Reveal className="mb-8 text-[0.6875rem] font-medium tracking-[0.14em] uppercase text-muted">{t('Auswahl unserer Kunden', 'Selected customers')}</Reveal>
       </div>
       <div className="cust-mask relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)] motion-reduce:[mask-image:none] motion-reduce:px-5">
         <ul className="cust-track list-none m-0 p-0">

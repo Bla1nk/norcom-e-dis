@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 import { useEffect, useRef, useState } from 'react'
 import { STEPS, STEP_VIDEOS } from '../content/steps'
 import { smoothScrollTo } from '../lib/lenis'
@@ -60,10 +61,10 @@ export function Steps() {
 
   return (
     // Liegt über „Warum DaSense“ und zieht sich am Ende wie ein Vorhang nach oben weg.
-    <section id="funktionen" aria-label="So funktioniert es" className="relative z-10 bg-white border-y border-line">
+    <section id="funktionen" aria-label={t('So funktioniert es', 'How it works')} className="relative z-10 bg-white border-y border-line">
       <div className="box-border max-w-[1100px] xl:max-w-[1280px] 2xl:max-w-[1520px] 3xl:max-w-[1760px] mx-auto border-x border-line grid lg:grid-cols-[272px_minmax(0,1fr)] 2xl:grid-cols-[320px_minmax(0,1fr)] 3xl:grid-cols-[360px_minmax(0,1fr)]">
         {/* Linke Spalte: Liste der Schritte, bleibt beim Scrollen stehen */}
-        <nav aria-label="Schritte" className="hidden lg:block">
+        <nav aria-label={t('Schritte', 'Steps')} className="hidden lg:block">
           <ol className="sticky top-24 list-none m-0 py-24 px-0 flex flex-col gap-2.5">
             {STEPS.map((step, i) => (
               <li key={step.title}>
@@ -130,7 +131,7 @@ export function Steps() {
                     muted
                     playsInline
                     preload={i < 2 ? 'auto' : 'metadata'}
-                    aria-label={`Clip: ${step.title}`}
+                    aria-label={`${t('Clip', 'Clip')}: ${step.title}`}
                   />
                 </div>
               )}
@@ -139,9 +140,11 @@ export function Steps() {
                 <div className="border-t border-line">
                   <div className="px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
                     <p className="m-0 max-w-[30rem] text-[1.1875rem] sm:text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
-                      <span className="text-ink font-medium">Der Fall „Vertraulich“: Verbindungen sichtbar machen.</span>{' '}
-                      Die Entitätenerkennung zieht Personen, Organisationen, Orte und Projekte aus den vertraulichen
-                      Dokumenten. Klicken Sie auf eine Entität und sehen Sie, mit wem sie gemeinsam genannt wird.
+                      <span className="text-ink font-medium">{t('Der Fall „Vertraulich“: Verbindungen sichtbar machen.', 'The “Confidential” case: making connections visible.')}</span>{' '}
+                      {t(
+                        'Die Entitätenerkennung zieht Personen, Organisationen, Orte und Projekte aus den vertraulichen Dokumenten. Klicken Sie auf eine Entität und sehen Sie, mit wem sie gemeinsam genannt wird.',
+                        'Entity recognition extracts people, organizations, locations and projects from the confidential documents. Click an entity to see who it is mentioned with.',
+                      )}
                     </p>
                   </div>
                   <div className="dot-grid-light border-t border-line px-3 sm:px-6 lg:px-10 py-8 sm:py-14">
@@ -156,9 +159,11 @@ export function Steps() {
                   <div id="ai-navigator" className="border-t border-line">
                     <div className="px-5 sm:px-8 lg:px-12 pt-14 sm:pt-24 pb-10 sm:pb-16">
                       <p className="m-0 max-w-[24rem] text-[1.1875rem] sm:text-[1.375rem] leading-[1.3] tracking-[-0.01em] text-muted/70">
-                        <span className="text-ink font-medium">AI Navigator: das Wichtigste zuerst.</span> Der AI
-                        Navigator erkennt per Logik, welche Dokumente zuerst vektorisiert werden, damit die Analyse
-                        sofort mit den relevanten Daten startet.
+                        <span className="text-ink font-medium">{t('AI Navigator: das Wichtigste zuerst.', 'AI Navigator: the most important first.')}</span>{' '}
+                        {t(
+                          'Der AI Navigator erkennt per Logik, welche Dokumente zuerst vektorisiert werden, damit die Analyse sofort mit den relevanten Daten startet.',
+                          'The AI Navigator uses logic to determine which documents get vectorized first, so analysis starts right away with the relevant data.',
+                        )}
                       </p>
                     </div>
                     <div className="dot-grid-light border-t border-line px-3 sm:px-6 lg:px-10 py-8 sm:py-14">
@@ -167,7 +172,7 @@ export function Steps() {
                           <NavigatorFlow />
                         </div>
                       </div>
-                      <p className="sm:hidden m-0 mt-3 text-center text-[0.75rem] text-muted">Seitlich wischen, um den ganzen Ablauf zu sehen</p>
+                      <p className="sm:hidden m-0 mt-3 text-center text-[0.75rem] text-muted">{t('Seitlich wischen, um den ganzen Ablauf zu sehen', 'Swipe sideways to see the full flow')}</p>
                     </div>
                   </div>
                 </>

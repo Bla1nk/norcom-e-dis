@@ -1,28 +1,29 @@
 import { useState } from 'react'
 import { AppWindow, Surface } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Erkennung und Schwärzung personenbezogener Daten in einer Beispiel-Mail. Fiktiv.
 
 type Cat = 'name' | 'mail' | 'health' | 'iban' | 'phone'
 const CATS: { id: Cat; label: string; hi: string; dot: string }[] = [
-  { id: 'name', label: 'Name', hi: 'bg-[#e9d9ee]', dot: 'bg-primary' },
-  { id: 'mail', label: 'E-Mail', hi: 'bg-[#d9e6fb]', dot: 'bg-[#2f6fe0]' },
-  { id: 'health', label: 'Gesundheitsdaten', hi: 'bg-[#fadbe2]', dot: 'bg-[#d6385c]' },
+  { id: 'name', label: t('Name', 'Name'), hi: 'bg-[#e9d9ee]', dot: 'bg-primary' },
+  { id: 'mail', label: t('E-Mail', 'Email'), hi: 'bg-[#d9e6fb]', dot: 'bg-[#2f6fe0]' },
+  { id: 'health', label: t('Gesundheitsdaten', 'Health data'), hi: 'bg-[#fadbe2]', dot: 'bg-[#d6385c]' },
   { id: 'iban', label: 'IBAN', hi: 'bg-[#fbe7c8]', dot: 'bg-[#e08a1e]' },
-  { id: 'phone', label: 'Telefon', hi: 'bg-[#d6efe8]', dot: 'bg-[#16a07c]' },
+  { id: 'phone', label: t('Telefon', 'Phone'), hi: 'bg-[#d6efe8]', dot: 'bg-[#16a07c]' },
 ]
 type Seg = { t: string; c?: Cat }
 const TEXT: Seg[][] = [
-  [{ t: 'Von: ' }, { t: 'Anna Berger', c: 'name' }, { t: ' <' }, { t: 'anna.berger@beispiel.de', c: 'mail' }, { t: '>' }],
-  [{ t: 'Betreff: Krankmeldung und Gehaltsabrechnung' }],
+  [{ t: t('Von: ', 'From: ') }, { t: 'Anna Berger', c: 'name' }, { t: ' <' }, { t: 'anna.berger@beispiel.de', c: 'mail' }, { t: '>' }],
+  [{ t: t('Betreff: Krankmeldung und Gehaltsabrechnung', 'Subject: Sick note and payslip') }],
   [
-    { t: 'Hallo Herr Schulz, ich bin seit dem 12.03. krankgeschrieben (' },
-    { t: 'Diagnose: Bandscheibenvorfall', c: 'health' },
-    { t: '). Bitte überweisen Sie das Gehalt weiter auf ' },
+    { t: t('Hallo Herr Schulz, ich bin seit dem 12.03. krankgeschrieben (', 'Hello Mr. Schulz, I have been on sick leave since March 12 (') },
+    { t: t('Diagnose: Bandscheibenvorfall', 'Diagnosis: herniated disc'), c: 'health' },
+    { t: t('). Bitte überweisen Sie das Gehalt weiter auf ', '). Please continue to transfer my salary to ') },
     { t: 'IBAN DE89 3704 0044 0532 0130 00', c: 'iban' },
-    { t: '. Rückfragen gern unter ' },
+    { t: t('. Rückfragen gern unter ', '. Feel free to reach me at ') },
     { t: '+49 171 5550142', c: 'phone' },
-    { t: '. Viele Grüße, ' },
+    { t: t('. Viele Grüße, ', '. Best regards, ') },
     { t: 'Anna Berger', c: 'name' },
   ],
 ]
@@ -41,17 +42,17 @@ export function PiiRedaction() {
 
   return (
     <Surface tone="dark">
-      <AppWindow tab="Entitäten" title="Personenbezogene Daten">
+      <AppWindow tab="Entitäten" title={t('Personenbezogene Daten', 'Personal data')}>
         <div className="px-5 pt-5 pb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">Erkennung und Schwärzung</h4>
-          <span className="text-muted">{hits} Fundstellen in diesem Dokument</span>
+          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">{t('Erkennung und Schwärzung', 'Detection and redaction')}</h4>
+          <span className="text-muted">{hits} {t('Fundstellen in diesem Dokument', 'matches in this document')}</span>
           <button
             type="button"
             onClick={() => setRed((v) => !v)}
             aria-pressed={red}
             className={`ml-auto rounded-full px-4 py-1.5 border-0 cursor-pointer font-semibold transition-colors ${red ? 'bg-ink text-white' : 'bg-primary text-white hover:bg-primary-hover'}`}
           >
-            {red ? 'Schwärzung aufheben' : 'Schwärzen'}
+            {red ? t('Schwärzung aufheben', 'Remove redaction') : t('Schwärzen', 'Redact')}
           </button>
         </div>
         <div className="flex flex-wrap gap-2 px-5 pb-4">
@@ -89,7 +90,7 @@ export function PiiRedaction() {
             ))}
           </div>
           <p className="m-0 mt-3 text-[0.8125rem] text-muted">
-            Die Gesundheitsangabe zählt zu den besonderen Kategorien (Art. 9 DSGVO) und wird gesondert gekennzeichnet.
+            {t('Die Gesundheitsangabe zählt zu den besonderen Kategorien (Art. 9 DSGVO) und wird gesondert gekennzeichnet.', 'Health information is a special category of data (Art. 9 GDPR) and is flagged separately.')}
           </p>
         </div>
       </AppWindow>

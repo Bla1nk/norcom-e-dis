@@ -2,14 +2,16 @@
 // HINWEIS: Die Datenschutzerklärung beschreibt Dienste der norcom.de (Google Analytics, Google Maps, YouTube, Wix).
 // Vor Veröffentlichung dieser Demoseite von Rechtsabteilung bzw. Datenschutzbeauftragtem auf diese Seite anpassen lassen.
 
+import { t } from '../lib/i18n'
+
 export type LegalSection = { h?: string; sub?: string; p?: string[]; ul?: string[] }
 export type LegalDoc = { slug: string; title: string; eyebrow: string; sections: LegalSection[]; stand?: string }
 
 export const LEGAL: LegalDoc[] = [
   {
     slug: 'impressum',
-    title: 'Impressum',
-    eyebrow: 'Rechtliches',
+    title: t('Impressum', 'Legal notice'),
+    eyebrow: t('Rechtliches', 'Legal'),
     sections: [
       { h: 'Angaben gemäß § 5 TMG', p: ['NorCom Information Technology GmbH & Co. KGaA\nGabelsbergerstrasse 4\n80333 München'] },
       { h: 'Vertreten durch', p: ['NorCom Verwaltungs GmbH', 'Geschäftsführer:\nViggo Nordbakk\nWolfgang Schröter'] },
@@ -33,8 +35,8 @@ export const LEGAL: LegalDoc[] = [
   },
   {
     slug: 'datenschutzerklaerung',
-    title: 'Datenschutzerklärung',
-    eyebrow: 'Rechtliches',
+    title: t('Datenschutzerklärung', 'Privacy policy'),
+    eyebrow: t('Rechtliches', 'Legal'),
     stand: 'Stand dieser Datenschutzerklärung: 16.03.2020',
     sections: [
       { h: 'Einleitung und allgemeine Angaben', p: ['Vielen Dank für Ihr Interesse an unserer Website. Der Schutz Ihrer personenbezogenen Daten ist uns ein sehr wichtiges Anliegen. Im Folgenden finden Sie Informationen zum Umgang mit Ihren Daten, die durch Ihre Nutzung unserer Website erfasst werden. Die Verarbeitung Ihrer Daten erfolgt entsprechend den gesetzlichen Regelungen zum Datenschutz.'] },

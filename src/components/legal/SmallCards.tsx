@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { SubCard } from '../steps/shared'
 import { useSeen } from './shared'
+import { t } from '../../lib/i18n'
 
 // Zwei kleine Funktionen: Fristen-Erinnerung und Nachträge zum Hauptvertrag. Beispieldaten fiktiv.
 
@@ -8,15 +9,15 @@ export function LegalSmallCards() {
   return (
     <div className="grid md:grid-cols-2 border-t border-line">
       <SubCard
-        title="Erinnert, bevor es zu spät ist."
-        text="Zu jeder Kündigungsfrist legt DaSense eine Erinnerung an, per Mail oder im Kalender Ihres Teams."
+        title={t('Erinnert, bevor es zu spät ist.', 'Reminded before it is too late.')}
+        text={t('Zu jeder Kündigungsfrist legt DaSense eine Erinnerung an, per Mail oder im Kalender Ihres Teams.', 'For every notice period, DaSense sets a reminder, by email or in your team\'s calendar.')}
       >
         <Reminders />
       </SubCard>
       <SubCard
         className="md:border-l border-line"
-        title="Hauptvertrag und Nachträge verknüpft."
-        text="Änderungsvereinbarungen werden erkannt und zugeordnet. Sie sehen sofort, welcher Stand heute gilt."
+        title={t('Hauptvertrag und Nachträge verknüpft.', 'Master agreement and amendments linked.')}
+        text={t('Änderungsvereinbarungen werden erkannt und zugeordnet. Sie sehen sofort, welcher Stand heute gilt.', 'Amendments are detected and assigned. You see immediately which version applies today.')}
       >
         <Amendments />
       </SubCard>
@@ -25,9 +26,9 @@ export function LegalSmallCards() {
 }
 
 const REMINDERS = [
-  { partner: 'Nordlicht Logistik GmbH', what: 'Kündigungsfrist endet', days: 28, date: '30.11.2026' },
-  { partner: 'Brandt & Kollegen Beratung', what: 'Kündigungsfrist endet', days: 42, date: '15.12.2026' },
-  { partner: 'Lensa Cloud Services AG', what: 'Verlängerung ohne Kündigung', days: 58, date: '31.12.2026' },
+  { partner: 'Nordlicht Logistik GmbH', what: t('Kündigungsfrist endet', 'Notice period ends'), days: 28, date: t('30.11.2026', '11/30/2026') },
+  { partner: 'Brandt & Kollegen Beratung', what: t('Kündigungsfrist endet', 'Notice period ends'), days: 42, date: t('15.12.2026', '12/15/2026') },
+  { partner: 'Lensa Cloud Services AG', what: t('Verlängerung ohne Kündigung', 'Renewal unless terminated'), days: 58, date: t('31.12.2026', '12/31/2026') },
 ]
 
 function Reminders() {
@@ -59,9 +60,9 @@ function Reminders() {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="truncate text-[0.875rem] font-medium text-ink">{r.partner}</div>
-                <div className="text-[0.8125rem] text-muted">{r.what} am {r.date}</div>
+                <div className="text-[0.8125rem] text-muted">{r.what} {t('am', 'on')} {r.date}</div>
               </div>
-              <span className="text-[0.8125rem] font-semibold tabular-nums text-primary whitespace-nowrap">in {r.days} Tagen</span>
+              <span className="text-[0.8125rem] font-semibold tabular-nums text-primary whitespace-nowrap">{t('in', 'in')} {r.days} {t('Tagen', 'days')}</span>
             </div>
             <div className="mt-3 h-1 rounded-full bg-[#efe8f1] overflow-hidden">
               <div className="h-full rounded-full bg-primary transition-[width] duration-1000 ease-out" style={{ width: seen ? `${100 - r.days}%` : '0%' }} />
@@ -74,9 +75,9 @@ function Reminders() {
 }
 
 const CHAIN = [
-  { title: 'Hauptvertrag', date: '01.12.2023', change: 'Laufzeit bis 30.11.2026' },
-  { title: 'Nachtrag 1', date: '15.03.2025', change: 'Preisanpassung ab 01.04.2025' },
-  { title: 'Nachtrag 2', date: '02.09.2026', change: 'Laufzeit verlängert bis 31.05.2027', current: true },
+  { title: t('Hauptvertrag', 'Master agreement'), date: t('01.12.2023', '12/01/2023'), change: t('Laufzeit bis 30.11.2026', 'Term until 11/30/2026') },
+  { title: t('Nachtrag 1', 'Amendment 1'), date: t('15.03.2025', '03/15/2025'), change: t('Preisanpassung ab 01.04.2025', 'Price adjustment from 04/01/2025') },
+  { title: t('Nachtrag 2', 'Amendment 2'), date: t('02.09.2026', '09/02/2026'), change: t('Laufzeit verlängert bis 31.05.2027', 'Term extended until 05/31/2027'), current: true },
 ]
 
 function Amendments() {
@@ -100,7 +101,7 @@ function Amendments() {
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-ink text-[0.875rem]">{c.title}</span>
                 <span className="text-muted tabular-nums">{c.date}</span>
-                {c.current && <span className="ml-auto rounded-full bg-primary-tint px-2.5 py-0.5 text-[0.75rem] font-medium text-primary">gilt aktuell</span>}
+                {c.current && <span className="ml-auto rounded-full bg-primary-tint px-2.5 py-0.5 text-[0.75rem] font-medium text-primary">{t('gilt aktuell', 'current')}</span>}
               </div>
               <div className="mt-1 text-body">{c.change}</div>
             </div>

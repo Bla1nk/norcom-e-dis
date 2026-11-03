@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { markIntroSeen, releaseIntro } from '../lib/intro'
 import { lockScroll, unlockScroll } from '../lib/lenis'
+import { t, EN } from '../lib/i18n'
 
 // Konzept „Data Assembly“: Verstreute Datenpunkte und Dateikürzel fliegen ein und setzen sich zum Wort „DaSense“
 // zusammen, während die Zähler hochlaufen. Dann wird das Wort scharf, und die schwarze Fläche zieht nach oben weg.
@@ -18,7 +19,7 @@ type Chip = { label: string; x0: number; y0: number; x: number; y: number; d: nu
 
 const clamp = (v: number) => Math.max(0, Math.min(1, v))
 const easeOut = (v: number) => 1 - Math.pow(1 - v, 4)
-const fmt = (n: number) => Math.round(n).toLocaleString('de-DE')
+const fmt = (n: number) => Math.round(n).toLocaleString(EN ? 'en-US' : 'de-DE')
 
 export function Intro({ onDone }: { onDone: () => void }) {
   const root = useRef<HTMLDivElement>(null)
@@ -291,7 +292,7 @@ export function Intro({ onDone }: { onDone: () => void }) {
       <div ref={panel} className="absolute inset-0 bg-[#0b0a0e] pointer-events-auto">
         <div className="absolute inset-x-0 bottom-0 box-border mx-auto flex max-w-[1240px] 2xl:max-w-[1400px] items-end justify-between px-5 sm:px-8 lg:px-12 pb-7 sm:pb-9 text-[0.75rem] font-medium tracking-[0.12em] uppercase text-white/55 tabular-nums">
           <div>
-            <div>Dokumente erfasst</div>
+            <div>{t('Dokumente erfasst', 'Documents captured')}</div>
             <div className="mt-1.5 text-[1.125rem] sm:text-[1.375rem] tracking-[-0.01em] normal-case text-white"><span ref={docs}>0</span></div>
           </div>
           <div className="text-right">

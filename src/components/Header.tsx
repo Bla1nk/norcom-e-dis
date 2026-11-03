@@ -1,11 +1,12 @@
+import { t } from '../lib/i18n'
 import { useEffect, useState } from 'react'
 import { anchorProps, navigate } from '../lib/router'
 
 const LINKS = [
-  { href: '#funktionen', label: 'Funktionen' },
-  { href: '#usp-h', label: 'Warum DaSense' },
-  { href: '#praxis', label: 'Praxis' },
-  { href: '#fuer-wen', label: 'Für wen' },
+  { href: '#funktionen', label: t('Funktionen', 'Features') },
+  { href: '#usp-h', label: t('Warum DaSense', 'Why DaSense') },
+  { href: '#praxis', label: t('Praxis', 'In practice') },
+  { href: '#fuer-wen', label: t('Für wen', 'Who it\'s for') },
 ]
 
 // Feststehende Navigation: Logo links, Abschnitte mittig, „Demo buchen“ rechts. Die Leiste wechselt auf hell auf
@@ -86,10 +87,10 @@ export function Header() {
       } ${scrolled ? (dark ? 'border-white/10' : 'border-line') : 'border-transparent'}`}
     >
       <nav
-        aria-label="Hauptnavigation"
+        aria-label={t('Hauptnavigation', 'Main navigation')}
         className="box-border max-w-[1240px] 2xl:max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 h-16 grid grid-cols-[1fr_auto] md:grid-cols-[1fr_auto_1fr] items-center"
       >
-        <a {...anchorProps('#top')} aria-label="NorCom, zur Startseite" className="justify-self-start block no-underline">
+        <a {...anchorProps('#top')} aria-label={t('NorCom, zur Startseite', 'NorCom, back to home')} className="justify-self-start block no-underline">
           <img src="/images/norcom-logo.png" alt="NorCom" className="block h-7 sm:h-8 w-auto" />
         </a>
         <ul className="hidden md:flex list-none m-0 p-0 items-center gap-1">
@@ -115,14 +116,14 @@ export function Header() {
                 : 'bg-primary !text-white hover:bg-primary-hover'
             }`}
           >
-            Demo buchen
+            {t('Demo buchen', 'Book a demo')}
           </a>
           <button
             type="button"
             onClick={() => setMenu((v) => !v)}
             aria-expanded={menu}
             aria-controls="m1-menu"
-            aria-label={menu ? 'Menü schließen' : 'Menü öffnen'}
+            aria-label={menu ? t('Menü schließen', 'Close menu') : t('Menü öffnen', 'Open menu')}
             className={`md:hidden grid size-10 place-items-center rounded-full border-0 cursor-pointer transition-colors ${menu ? 'bg-ink text-white' : 'bg-transparent text-ink hover:bg-black/5'}`}
           >
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">

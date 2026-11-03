@@ -1,4 +1,5 @@
 import { linkProps } from '../lib/router'
+import { t } from '../lib/i18n'
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent, ReactNode } from 'react'
 import { Eyebrow } from './Eyebrow'
@@ -12,6 +13,27 @@ const FORM_ENDPOINT: string = import.meta.env.VITE_DEMO_ENDPOINT ?? '/api/demo'
 
 type ErrorKey = 'name' | 'org' | 'mail' | 'consent'
 type Errors = Partial<Record<ErrorKey, true>>
+// Versand: Mit EmailJS-Zugang (VITE_EMAILJS_*) direkt aus dem Browser an das Postfach, sonst an die Funktion api/demo.
+const EMAILJS = import.meta.env.VITE_EMAILJS_SERVICE && import.meta.env.VITE_EMAILJS_TEMPLATE && import.meta.env.VITE_EMAILJS_KEY
+  ? { service: import.meta.env.VITE_EMAILJS_SERVICE as string, template: import.meta.env.VITE_EMAILJS_TEMPLATE as string, key: import.meta.env.VITE_EMAILJS_KEY as string }
+  : null
+
+async function sendRequest(data: DemoRequest): Promise<void> {
+  const res = EMAILJS
+    ? await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          service_id: EMAILJS.service,
+          template_id: EMAILJS.template,
+          user_id: EMAILJS.key,
+          template_params: { ...data, interessen: data.interessen.join(', ') || '-', telefon: data.telefon || '-', nachricht: data.nachricht || '-', betrieb: data.betrieb || '-', start: data.start || '-', einwilligung: data.einwilligung ? 'ja' : 'nein' },
+        }),
+      })
+    : await fetch(FORM_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+  if (!res.ok) throw new Error('HTTP ' + res.status)
+}
+
 type Status = 'idle' | 'sending' | 'invalid' | 'unconnected' | 'failed' | 'sent'
 
 type DemoRequest = {
@@ -102,9 +124,12 @@ function Notice({ tone, children }: { tone: NoticeTone; children: ReactNode }) {
   )
 }
 
-const INTERESTS = ['Early Case Assessment', 'Vertragsfristen und Klauseln', 'Auskunftsersuchen und Datenschutz', 'Ermittlungen und Forensik', 'Ingest und Betrieb', 'Massendaten von Behörden']
-const OPERATION = ['Im eigenen Rechenzentrum', 'Air-gapped, ohne Verbindung nach außen', 'Noch offen']
-const START = ['So bald wie möglich', 'Innerhalb eines Monats', 'In den nächsten drei Monaten', 'Ich informiere mich nur']
+const INTERESTS = t(
+  ['Early Case Assessment', 'Vertragsfristen und Klauseln', 'Auskunftsersuchen und Datenschutz', 'Ermittlungen und Forensik', 'Ingest und Betrieb', 'Massendaten von Behörden'],
+  ['Early case assessment', 'Contract deadlines and clauses', 'Data subject requests and data protection', 'Investigations and forensics', 'Ingest and operations', 'Bulk data from government agencies'],
+)
+const OPERATION = t(['Im eigenen Rechenzentrum', 'Air-gapped, ohne Verbindung nach außen', 'Noch offen'], ['In our own data center', 'Air-gapped, no outside connection', 'Still open'])
+const START = t(['So bald wie möglich', 'Innerhalb eines Monats', 'In den nächsten drei Monaten', 'Ich informiere mich nur'], ['As soon as possible', 'Within a month', 'Within the next three months', 'Just exploring'])
 
 function Chips({ label, options, value, onToggle }: { label: string; options: string[]; value: string[]; onToggle: (o: string) => void }) {
   return (
@@ -132,7 +157,7 @@ function Chips({ label, options, value, onToggle }: { label: string; options: st
   )
 }
 
-const MAIL_LINK = 'mailto:info@norcom.de?subject=Demo-Anfrage%20DaSense%20eDiscovery'
+const MAIL_LINK = 'mailto:info@norcom.de?subject=' + t('Demo-Anfrage%20DaSense%20eDiscovery', 'Demo%20request%20DaSense%20eDiscovery')
 
 function DemoForm() {
   const [errors, setErrors] = useState<Errors>({})
@@ -169,20 +194,15 @@ function DemoForm() {
       if (first) f.querySelector<HTMLElement>('#' + first[1])?.focus()
       return
     }
-    if (!FORM_ENDPOINT) {
+    if (!EMAILJS && !FORM_ENDPOINT) {
       setErrors({})
       setStatus('unconnected')
       return
     }
     setErrors({})
     setStatus('sending')
-    fetch(FORM_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then((r) => {
-        if (!r.ok) throw new Error('HTTP ' + r.status)
+    sendRequest(data)
+      .then(() => {
         f.reset()
         setInterests([])
         setOperation([])
@@ -203,58 +223,58 @@ function DemoForm() {
       className="relative min-w-0 border border-ink bg-[#e8dcee] p-3 sm:p-6 flex flex-col gap-5"
     >
       <h3 id="demo-form-h" className="sr-only">
-        Demo anfragen
+        {t('Demo anfragen', 'Request a demo')}
       </h3>
       <div className="border border-ink p-3.5 sm:p-5 flex flex-col gap-5">
         <div className="flex items-baseline gap-3">
-          <span className="text-[0.9375rem] font-bold">Beginnen Sie mit ein paar Klicks</span>
-          <span className="text-[0.75rem] text-muted">Optional</span>
+          <span className="text-[0.9375rem] font-bold">{t('Beginnen Sie mit ein paar Klicks', 'Start with a few clicks')}</span>
+          <span className="text-[0.75rem] text-muted">{t('Optional', 'Optional')}</span>
         </div>
-        <Chips label="Was möchten Sie sehen?" options={INTERESTS} value={interests} onToggle={toggle(setInterests, true)} />
-        <Chips label="Wie soll DaSense betrieben werden?" options={OPERATION} value={operation} onToggle={toggle(setOperation, false)} />
-        <Chips label="Wann möchten Sie starten?" options={START} value={start} onToggle={toggle(setStart, false)} />
+        <Chips label={t('Was möchten Sie sehen?', 'What would you like to see?')} options={INTERESTS} value={interests} onToggle={toggle(setInterests, true)} />
+        <Chips label={t('Wie soll DaSense betrieben werden?', 'How should DaSense be deployed?')} options={OPERATION} value={operation} onToggle={toggle(setOperation, false)} />
+        <Chips label={t('Wann möchten Sie starten?', 'When would you like to start?')} options={START} value={start} onToggle={toggle(setStart, false)} />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-x-5 gap-y-4">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="d-name" className={labelClass}>
-            Name
+            {t('Name', 'Name')}
             <Required />
           </label>
           <input id="d-name" name="name" type="text" autoComplete="name" required aria-required="true" maxLength={120} aria-invalid={!!errors.name} aria-describedby="errName-msg" className={inputClass} />
           {errors.name && (
             <span id="errName-msg" className={errorClass}>
-              Bitte geben Sie Ihren Namen an.
+              {t('Bitte geben Sie Ihren Namen an.', 'Please enter your name.')}
             </span>
           )}
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="d-mail" className={labelClass}>
-            Geschäftliche E-Mail
+            {t('Geschäftliche E-Mail', 'Business email')}
             <Required />
           </label>
           <input id="d-mail" name="email" type="email" autoComplete="email" required aria-required="true" maxLength={200} aria-invalid={!!errors.mail} aria-describedby="errMail-msg" className={inputClass} />
           {errors.mail && (
             <span id="errMail-msg" className={errorClass}>
-              Bitte geben Sie eine gültige E-Mail-Adresse an.
+              {t('Bitte geben Sie eine gültige E-Mail-Adresse an.', 'Please enter a valid email address.')}
             </span>
           )}
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="d-org" className={labelClass}>
-            Unternehmen / Behörde
+            {t('Unternehmen / Behörde', 'Company / agency')}
             <Required />
           </label>
           <input id="d-org" name="organisation" type="text" autoComplete="organization" required aria-required="true" maxLength={160} aria-invalid={!!errors.org} aria-describedby="errOrg-msg" className={inputClass} />
           {errors.org && (
             <span id="errOrg-msg" className={errorClass}>
-              Bitte geben Sie Ihr Unternehmen oder Ihre Behörde an.
+              {t('Bitte geben Sie Ihr Unternehmen oder Ihre Behörde an.', 'Please enter your company or agency.')}
             </span>
           )}
         </div>
         <div className="flex flex-col gap-1.5">
           <label htmlFor="d-tel" className={labelClass}>
-            Telefon (optional)
+            {t('Telefon (optional)', 'Phone (optional)')}
           </label>
           <input id="d-tel" name="telefon" type="tel" autoComplete="tel" maxLength={40} className={inputClass} />
         </div>
@@ -262,14 +282,14 @@ function DemoForm() {
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="d-msg" className={labelClass}>
-          Worum geht es? (optional)
+          {t('Worum geht es? (optional)', 'What is it about? (optional)')}
         </label>
         <textarea
           id="d-msg"
           name="nachricht"
           rows={5}
           maxLength={2000}
-          placeholder="Schildern Sie kurz Ihren Fall, die Art und Menge der Daten und was Sie herausfinden möchten."
+          placeholder={t('Schildern Sie kurz Ihren Fall, die Art und Menge der Daten und was Sie herausfinden möchten.', 'Briefly describe your case, the type and volume of data, and what you want to find out.')}
           className="py-3 px-3.5 border border-ink/45 rounded-none resize-y [font:inherit] text-[1rem] bg-[#faf8fb] outline-none transition-colors focus:border-ink focus:bg-white placeholder:text-muted/70"
         />
       </div>
@@ -290,14 +310,14 @@ function DemoForm() {
             className="flex-none w-[18px] h-[18px] mt-0.5 accent-ink"
           />
           <label htmlFor="d-consent">
-            Ich willige ein, dass NorCom meine Angaben zur Bearbeitung meiner Demo-Anfrage verarbeitet. Details in der{' '}
-            <a {...linkProps('/datenschutzerklaerung')}>Datenschutzerklärung</a>. Die Einwilligung kann ich jederzeit widerrufen.
+            {t('Ich willige ein, dass NorCom meine Angaben zur Bearbeitung meiner Demo-Anfrage verarbeitet. Details in der', 'I consent to NorCom processing my details to handle my demo request. See the')}{' '}
+            <a {...linkProps('/datenschutzerklaerung')}>{t('Datenschutzerklärung', 'Privacy Policy')}</a>{t('. Die Einwilligung kann ich jederzeit widerrufen.', ' for details. I can withdraw my consent at any time.')}
             <Required />
           </label>
         </div>
         {errors.consent && (
           <span id="errConsent-msg" className={errorClass}>
-            Bitte bestätigen Sie die Einwilligung zur Datenverarbeitung.
+            {t('Bitte bestätigen Sie die Einwilligung zur Datenverarbeitung.', 'Please confirm your consent to data processing.')}
           </span>
         )}
       </div>
@@ -306,26 +326,26 @@ function DemoForm() {
         disabled={sending}
         className="group min-h-[56px] px-6 border-0 rounded-none bg-ink text-white [font:inherit] font-medium cursor-pointer flex items-center justify-between transition-colors hover:bg-primary-deep disabled:opacity-70"
       >
-        <span>{sending ? 'Wird gesendet …' : 'Anfrage senden'}</span>
+        <span>{sending ? t('Wird gesendet …', 'Sending …') : t('Anfrage senden', 'Send request')}</span>
         <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="square" className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
           <path d="M6 18 18 6M8 6h10v10" />
         </svg>
       </button>
       <div role="status" aria-live="polite">
-        {status === 'invalid' && <Notice tone="danger">Bitte prüfen Sie die markierten Felder.</Notice>}
+        {status === 'invalid' && <Notice tone="danger">{t('Bitte prüfen Sie die markierten Felder.', 'Please check the highlighted fields.')}</Notice>}
         {status === 'unconnected' && (
           <Notice tone="warn">
-            Der Online-Versand ist noch nicht freigeschaltet, Ihre Anfrage wurde nicht übermittelt. Bitte schreiben Sie uns direkt an{' '}
-            <a href={MAIL_LINK}>info@norcom.de</a> oder rufen Sie an: <a href="tel:+4989939480">+49 89 939 48-0</a>.
+            {t('Der Online-Versand ist noch nicht freigeschaltet, Ihre Anfrage wurde nicht übermittelt. Bitte schreiben Sie uns direkt an', 'Online submission is not enabled yet, and your request was not sent. Please email us directly at')}{' '}
+            <a href={MAIL_LINK}>info@norcom.de</a>{t(' oder rufen Sie an: ', ' or call us: ')}<a href="tel:+4989939480">+49 89 939 48-0</a>.
           </Notice>
         )}
         {status === 'failed' && (
           <Notice tone="danger">
-            Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an <a href={MAIL_LINK}>info@norcom.de</a>.
+            {t('Ihre Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie an', 'Your request could not be sent. Please try again or email')} <a href={MAIL_LINK}>info@norcom.de</a>.
           </Notice>
         )}
         {status === 'sent' && (
-          <Notice tone="ok">Vielen Dank. Ihre Anfrage ist bei uns eingegangen, wir melden uns zeitnah bei Ihnen.</Notice>
+          <Notice tone="ok">{t('Vielen Dank. Ihre Anfrage ist bei uns eingegangen, wir melden uns zeitnah bei Ihnen.', 'Thank you. We have received your request and will get back to you shortly.')}</Notice>
         )}
       </div>
     </form>
@@ -338,17 +358,17 @@ export function Demo() {
       <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-28 grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-x-16 gap-y-12 sm:gap-y-14 items-start">
         <div className="lg:sticky lg:top-28">
           <Reveal>
-            <Eyebrow colorClass="text-ink">Live-Demo</Eyebrow>
+            <Eyebrow colorClass="text-ink">{t('Live-Demo', 'Live demo')}</Eyebrow>
           </Reveal>
           <TextReveal
             as="h2"
-            text="Erzählen Sie uns von Ihrem Fall."
+            text={t('Erzählen Sie uns von Ihrem Fall.', 'Tell us about your case.')}
             delay={60}
             stagger={70}
             className="block m-0 mt-6 max-w-[11ch] text-[clamp(2.75rem,6.2vw,5.75rem)] leading-[1.06] tracking-[-0.045em] font-bold text-ink"
           />
           <Reveal as="p" delay={200} className="m-0 mt-8 max-w-[26rem] text-body text-[1.0625rem] leading-[1.7]">
-            Sie möchten sehen, was DaSense in Ihren Daten findet? Schildern Sie uns Ihren Anwendungsfall. Wir besprechen mit Ihnen den Workflow und das passende Betriebsmodell.
+            {t('Sie möchten sehen, was DaSense in Ihren Daten findet? Schildern Sie uns Ihren Anwendungsfall. Wir besprechen mit Ihnen den Workflow und das passende Betriebsmodell.', 'Want to see what DaSense finds in your data? Describe your use case. We will walk through the workflow and the right deployment model with you.')}
           </Reveal>
           <Reveal delay={280} className="mt-9">
             <a
@@ -362,13 +382,13 @@ export function Demo() {
             </a>
           </Reveal>
           <Reveal as="p" delay={340} className="m-0 mt-5 text-body text-[1.0625rem]">
-            Oder rufen Sie an: <a href="tel:+4989939480" className="text-body underline underline-offset-2">+49 89 939 48-0</a>
+            {t('Oder rufen Sie an: ', 'Or call us: ')}<a href="tel:+4989939480" className="text-body underline underline-offset-2">+49 89 939 48-0</a>
           </Reveal>
           <Reveal as="p" delay={400} className="m-0 mt-8 max-w-[26rem] text-body text-[1.0625rem] leading-[1.7]">
-            Wir melden uns zeitnah. Ihre Angaben nutzen wir nur, um Ihre Anfrage zu bearbeiten und Sie zu kontaktieren.
+            {t('Wir melden uns zeitnah. Ihre Angaben nutzen wir nur, um Ihre Anfrage zu bearbeiten und Sie zu kontaktieren.', 'We will get back to you shortly. We use your details only to handle your request and to contact you.')}
           </Reveal>
           <Reveal as="p" delay={460} className="m-0 mt-10 pt-5 border-t border-ink/15 text-[0.875rem] text-muted leading-[1.7]">
-            NorCom Information Technology GmbH &amp; Co. KGaA<br />Gabelsbergerstraße 4 · 80333 München
+            NorCom Information Technology GmbH &amp; Co. KGaA<br />Gabelsbergerstraße 4 · 80333 {t('München', 'Munich')}
           </Reveal>
         </div>
         <Reveal delay={120}>

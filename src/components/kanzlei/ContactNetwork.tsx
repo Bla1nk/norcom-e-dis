@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AppWindow, Surface } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Kontaktnetz (Kartellverfahren): Kommunikation zwischen Personen und Unternehmen im Zeitverlauf. Fiktiv.
 
@@ -43,15 +44,15 @@ export function ContactNetwork() {
 
   return (
     <Surface tone="grid">
-      <AppWindow tab="Kontaktnetz" title="Kontaktnetz">
+      <AppWindow tab={t('Kontaktnetz', 'Contact network')} title={t('Kontaktnetz', 'Contact network')}>
         <div className="px-5 pt-5 pb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">Kontaktnetz</h4>
-          <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">Kartellverfahren</span>
-          <span className="text-muted">Kommunikation zwischen Wettbewerbern bis {QUARTERS[q - 1]}</span>
+          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">{t('Kontaktnetz', 'Contact network')}</h4>
+          <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">{t('Kartellverfahren', 'Antitrust proceedings')}</span>
+          <span className="text-muted">{t('Kommunikation zwischen Wettbewerbern bis', 'Communication between competitors through')} {QUARTERS[q - 1]}</span>
         </div>
 
         <div className="px-3 sm:px-5">
-          <svg viewBox="0 0 560 300" className="w-full h-auto" role="img" aria-label="Kontaktnetz zwischen sechs Personen aus vier Unternehmen">
+          <svg viewBox="0 0 560 300" className="w-full h-auto" role="img" aria-label={t('Kontaktnetz zwischen sechs Personen aus vier Unternehmen', 'Contact network between six people from four companies')}>
             {EDGES.map(([a, b, from, n]) => {
               const on = from <= q
               const isCross = firm(a) !== firm(b)
@@ -91,12 +92,12 @@ export function ContactNetwork() {
               {f.name}
             </span>
           ))}
-          <span className="flex items-center gap-1.5"><span className="w-4 border-t-2 border-dashed border-[#d6385c]" />Kontakt zwischen Unternehmen</span>
+          <span className="flex items-center gap-1.5"><span className="w-4 border-t-2 border-dashed border-[#d6385c]" />{t('Kontakt zwischen Unternehmen', 'Contact between companies')}</span>
         </div>
 
         <div className="border-t border-line px-5 py-4">
           <div className="flex items-center justify-between gap-3 mb-2">
-            <label htmlFor="q-range" className="font-medium">Zeitregler</label>
+            <label htmlFor="q-range" className="font-medium">{t('Zeitregler', 'Time slider')}</label>
             <span className="tabular-nums text-muted">{QUARTERS[q - 1]}</span>
           </div>
           <input
@@ -115,9 +116,9 @@ export function ContactNetwork() {
           </div>
           <div className="mt-4 grid grid-cols-3 gap-3">
             {[
-              ['Personen im Netz', String(seenNodes.size)],
-              ['Kontakte zwischen Unternehmen', String(cross.length)],
-              ['Mails dazu', String(mails)],
+              [t('Personen im Netz', 'People in network'), String(seenNodes.size)],
+              [t('Kontakte zwischen Unternehmen', 'Contacts between companies'), String(cross.length)],
+              [t('Mails dazu', 'Related emails'), String(mails)],
             ].map(([l, v]) => (
               <div key={l} className="rounded-lg border border-line bg-white p-3">
                 <div className="text-muted text-[0.75rem]">{l}</div>

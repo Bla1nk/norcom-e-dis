@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { Case } from '../content/cases'
+import { t } from '../lib/i18n'
 import { linkProps } from '../lib/router'
 import { CaseFlow } from './CaseFlow'
 import { CaseIcon } from './CaseIcons'
@@ -33,12 +34,12 @@ export function CasePage({ item, startDelay = 150 }: { item: Case; startDelay?: 
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M11 6l-6 6 6 6" />
           </svg>
-          Alle Zielgruppen
+          {t('Alle Zielgruppen', 'All audiences')}
         </a>
         <div className="mt-12 grid lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] items-center gap-12">
           <div>
             <Reveal immediate delay={t0}>
-              <Eyebrow colorClass="text-primary">Für {item.title}</Eyebrow>
+              <Eyebrow colorClass="text-primary">{t('Für', 'For')} {item.title}</Eyebrow>
             </Reveal>
             <TextReveal as="h1" immediate delay={t0 + 80} text={item.claim} className="block m-0 mt-5 text-[clamp(2.5rem,5.6vw,5rem)] leading-[1.06] tracking-[-0.04em] font-bold" />
             <Reveal as="p" immediate delay={t0 + 420} className="m-0 mt-7 max-w-[34rem] text-body text-[1.125rem] leading-[1.6]">
@@ -46,11 +47,11 @@ export function CasePage({ item, startDelay = 150 }: { item: Case; startDelay?: 
             </Reveal>
             <Reveal immediate delay={t0 + 540} className="mt-9 flex flex-wrap items-center gap-3">
               <a {...linkProps('/#demo')} className="inline-flex items-center h-12 px-7 rounded-full bg-primary !text-white text-[0.9375rem] font-semibold no-underline transition-colors hover:bg-primary-hover">
-                Demo buchen
+                {t('Demo buchen', 'Book a demo')}
               </a>
               {!item.flow && (
                 <a href="#app" className="inline-flex items-center h-12 px-5 text-[0.9375rem] font-medium text-ink no-underline hover:text-primary">
-                  Die App ansehen ↓
+                  {t('Die App ansehen ↓', 'See the app ↓')}
                 </a>
               )}
             </Reveal>
@@ -62,13 +63,13 @@ export function CasePage({ item, startDelay = 150 }: { item: Case; startDelay?: 
       </section>
 
       {item.flow ? (
-        <CaseFlow id="ablauf" items={item.flow} label={`So hilft DaSense: ${item.title}`} />
+        <CaseFlow id="ablauf" items={item.flow} label={`${t('So hilft DaSense', 'How DaSense helps')}: ${item.title}`} />
       ) : (
         <>
       <section id="app" className="border-t border-ink bg-mist/60 py-20 lg:py-28 scroll-mt-16">
         <div className={WRAP}>
           <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-x-8 gap-y-5">
-            <Eyebrow colorClass="text-ink">Die App zum Fall</Eyebrow>
+            <Eyebrow colorClass="text-ink">{t('Die App zum Fall', 'The app for this case')}</Eyebrow>
             <div>
               <TextReveal as="h2" text={item.app.name} className="block m-0 text-[clamp(2.25rem,4.6vw,4rem)] leading-[1.08] tracking-[-0.035em] font-bold" />
               <Reveal as="p" delay={150} className="m-0 mt-3 text-primary text-[1.25rem] font-medium tracking-[-0.01em]">{item.app.tagline}</Reveal>
@@ -84,7 +85,7 @@ export function CasePage({ item, startDelay = 150 }: { item: Case; startDelay?: 
             muted
             loop
             playsInline
-            aria-label={`Clip: ${item.app.name}`}
+            aria-label={`${t('Clip', 'Clip')}: ${item.app.name}`}
           />
           </Reveal>
           <ul className="list-none m-0 mt-12 p-0 grid md:grid-cols-3 gap-x-10 gap-y-8">
@@ -101,8 +102,8 @@ export function CasePage({ item, startDelay = 150 }: { item: Case; startDelay?: 
       <section className="py-20 lg:py-28">
         <div className={WRAP}>
           <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-x-8 gap-y-5 pb-12">
-            <Eyebrow colorClass="text-ink">Im Fall</Eyebrow>
-            <TextReveal as="h2" text="So läuft es ab." className="block m-0 text-[clamp(2rem,4vw,3.25rem)] leading-[1.08] tracking-[-0.035em] font-bold" />
+            <Eyebrow colorClass="text-ink">{t('Im Fall', 'In the case')}</Eyebrow>
+            <TextReveal as="h2" text={t('So läuft es ab.', 'How it works.')} className="block m-0 text-[clamp(2rem,4vw,3.25rem)] leading-[1.08] tracking-[-0.035em] font-bold" />
           </div>
           <ol className="list-none m-0 p-0 border-t border-ink">
             {item.steps.map((s, i) => (
@@ -114,9 +115,9 @@ export function CasePage({ item, startDelay = 150 }: { item: Case; startDelay?: 
             ))}
           </ol>
           <div className="mt-10 flex flex-wrap gap-2">
-            {item.tags.map((t) => (
-              <span key={t} className="text-[0.8125rem] py-1 px-3 rounded-full bg-mist text-body">
-                {t}
+            {item.tags.map((tag) => (
+              <span key={tag} className="text-[0.8125rem] py-1 px-3 rounded-full bg-mist text-body">
+                {tag}
               </span>
             ))}
           </div>

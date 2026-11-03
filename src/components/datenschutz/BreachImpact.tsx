@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { AppWindow, Surface, useSeen } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Datenpanne: Wer ist betroffen, und wie viel Zeit bleibt für die Meldung (Art. 33 DSGVO, 72 Stunden)? Fiktiv.
 
+const OTHER = t('Sonst.', 'Other')
 const SETS = [
-  { name: 'Export Kundendatenbank', n: 18420, left: 61, cats: ['Name', 'E-Mail', 'Anschrift'], ctr: [['DE', 71], ['AT', 14], ['FR', 9], ['Sonst.', 6]] },
-  { name: 'Mailbox Vertrieb', n: 2310, left: 38, cats: ['Name', 'E-Mail', 'Vertragsdaten'], ctr: [['DE', 58], ['AT', 20], ['CH', 15], ['Sonst.', 7]] },
-  { name: 'Backup Personal', n: 640, left: 12, cats: ['Name', 'IBAN', 'Gesundheitsdaten'], ctr: [['DE', 88], ['PL', 7], ['TR', 3], ['Sonst.', 2]] },
+  { name: t('Export Kundendatenbank', 'Customer database export'), n: 18420, left: 61, cats: t(['Name', 'E-Mail', 'Anschrift'], ['Name', 'Email', 'Address']), ctr: [['DE', 71], ['AT', 14], ['FR', 9], [OTHER, 6]] },
+  { name: t('Mailbox Vertrieb', 'Sales mailbox'), n: 2310, left: 38, cats: t(['Name', 'E-Mail', 'Vertragsdaten'], ['Name', 'Email', 'Contract data']), ctr: [['DE', 58], ['AT', 20], ['CH', 15], [OTHER, 7]] },
+  { name: t('Backup Personal', 'HR backup'), n: 640, left: 12, cats: t(['Name', 'IBAN', 'Gesundheitsdaten'], ['Name', 'IBAN', 'Health data']), ctr: [['DE', 88], ['PL', 7], ['TR', 3], [OTHER, 2]] },
 ] as const
+const HEALTH = t('Gesundheitsdaten', 'Health data')
 const COLORS = ['#601571', '#2f6fe0', '#e08a1e', '#9a8fa0']
 
 function useTween(to: number) {
@@ -49,11 +52,11 @@ export function BreachImpact() {
   return (
     <Surface tone="grid">
       <div ref={ref}>
-        <AppWindow tab="Incident Response" title="Datenpanne">
+        <AppWindow tab="Incident Response" title={t('Datenpanne', 'Data breach')}>
           <div className="px-5 pt-5 pb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-            <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">Datenpanne</h4>
+            <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">{t('Datenpanne', 'Data breach')}</h4>
             <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">Incident Response</span>
-            <span className="text-muted">Betroffene aus abgeflossenen Daten ermitteln</span>
+            <span className="text-muted">{t('Betroffene aus abgeflossenen Daten ermitteln', 'Identify affected individuals from leaked data')}</span>
           </div>
           <div className="flex flex-wrap gap-2 px-5 pb-4">
             {SETS.map((x, i) => (
@@ -88,23 +91,23 @@ export function BreachImpact() {
                 <div className="absolute inset-0 grid place-items-center text-center leading-none">
                   <div>
                     <div className="text-[1.5rem] font-semibold tabular-nums">{s.left}</div>
-                    <div className="mt-0.5 text-[0.6875rem] text-muted">Std. übrig</div>
+                    <div className="mt-0.5 text-[0.6875rem] text-muted">{t('Std. übrig', 'hrs left')}</div>
                   </div>
                 </div>
               </div>
               <div>
-                <div className="font-semibold text-[0.9375rem]">Meldefrist</div>
-                <div className="text-muted">72 Stunden, Art. 33 DSGVO</div>
-                {urgent && <div className="mt-1.5 inline-block rounded-full bg-[#fbe0e6] px-2.5 py-0.5 text-[0.75rem] font-medium text-[#b02347]">Dringend</div>}
+                <div className="font-semibold text-[0.9375rem]">{t('Meldefrist', 'Reporting deadline')}</div>
+                <div className="text-muted">{t('72 Stunden, Art. 33 DSGVO', '72 hours, Art. 33 GDPR')}</div>
+                {urgent && <div className="mt-1.5 inline-block rounded-full bg-[#fbe0e6] px-2.5 py-0.5 text-[0.75rem] font-medium text-[#b02347]">{t('Dringend', 'Urgent')}</div>}
               </div>
             </div>
 
             <div className="p-5">
-              <div className="text-muted">Betroffene Personen</div>
-              <div className="text-[2.25rem] leading-tight font-semibold tabular-nums tracking-[-0.02em]">{n.toLocaleString('de-DE')}</div>
+              <div className="text-muted">{t('Betroffene Personen', 'Affected individuals')}</div>
+              <div className="text-[2.25rem] leading-tight font-semibold tabular-nums tracking-[-0.02em]">{n.toLocaleString(t('de-DE', 'en-US'))}</div>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {s.cats.map((c) => (
-                  <span key={c} className={`rounded-full px-2.5 py-0.5 text-[0.75rem] ${c === 'Gesundheitsdaten' || c === 'IBAN' ? 'bg-[#fbe0e6] text-[#b02347]' : 'bg-[#f4f1f5] text-body'}`}>{c}</span>
+                  <span key={c} className={`rounded-full px-2.5 py-0.5 text-[0.75rem] ${c === HEALTH || c === 'IBAN' ? 'bg-[#fbe0e6] text-[#b02347]' : 'bg-[#f4f1f5] text-body'}`}>{c}</span>
                 ))}
               </div>
               <div className="mt-4 flex h-2.5 rounded-full overflow-hidden bg-[#efe8f1]">
@@ -116,7 +119,7 @@ export function BreachImpact() {
                 {s.ctr.map(([c, v], i) => (
                   <span key={c} className="flex items-center gap-1.5">
                     <span className="size-2 rounded-full" style={{ background: COLORS[i] }} />
-                    {c} {v} %
+                    {c} {v}{t(' %', '%')}
                   </span>
                 ))}
               </div>
@@ -124,13 +127,13 @@ export function BreachImpact() {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line px-5 py-4 bg-[#faf8fb]">
-            <span className="text-muted">{rep ? 'Meldung an die Aufsichtsbehörde vorbereitet, Betroffenenliste angehängt.' : 'Betroffene, Datenkategorien und Länder fließen in die Meldung.'}</span>
+            <span className="text-muted">{rep ? t('Meldung an die Aufsichtsbehörde vorbereitet, Betroffenenliste angehängt.', 'Notification to the supervisory authority prepared, list of affected individuals attached.') : t('Betroffene, Datenkategorien und Länder fließen in die Meldung.', 'Affected individuals, data categories, and countries feed into the notification.')}</span>
             <button
               type="button"
               onClick={() => setRep((v) => !v)}
               className={`rounded-full px-4 py-2 border-0 cursor-pointer font-semibold transition-colors ${rep ? 'bg-[#e1f4ee] text-[#16795e]' : 'bg-primary text-white hover:bg-primary-hover'}`}
             >
-              {rep ? '✓ Meldung vorbereitet' : 'Meldung vorbereiten'}
+              {rep ? t('✓ Meldung vorbereitet', '✓ Notification prepared') : t('Meldung vorbereiten', 'Prepare notification')}
             </button>
           </div>
         </AppWindow>

@@ -1,20 +1,21 @@
 import { useState } from 'react'
 import { AppWindow, Surface, useSeen } from '../legal/shared'
+import { t } from '../../lib/i18n'
 
 // Ordnerlandkarte: sichergestellte Datenträger als Treemap nach Dateizahl, Klick zeigt die Formatverteilung. Fiktive Zahlen.
 
-const FORMATS = ['E-Mail', 'PDF', 'Office', 'Bilder', 'Chats', 'Sonstige']
+const FORMATS = t(['E-Mail', 'PDF', 'Office', 'Bilder', 'Chats', 'Sonstige'], ['Email', 'PDF', 'Office', 'Images', 'Chats', 'Other'])
 const COLORS = ['#601571', '#2f6fe0', '#16a07c', '#e08a1e', '#d6385c', '#9a8fa0']
 
 const SOURCES = [
   { id: 'laptop', name: 'Laptop 01', n: 412380, mix: [38, 22, 24, 9, 2, 5] },
-  { id: 'nas', name: 'NAS Büro', n: 268940, mix: [6, 31, 41, 14, 0, 8] },
-  { id: 'phone', name: 'Mobiltelefon', n: 187210, mix: [4, 3, 2, 52, 36, 3] },
-  { id: 'cloud', name: 'Cloud-Export', n: 96420, mix: [57, 18, 14, 4, 3, 4] },
-  { id: 'usb', name: 'USB-Stick', n: 38110, mix: [1, 24, 33, 26, 0, 16] },
+  { id: 'nas', name: t('NAS Büro', 'Office NAS'), n: 268940, mix: [6, 31, 41, 14, 0, 8] },
+  { id: 'phone', name: t('Mobiltelefon', 'Mobile phone'), n: 187210, mix: [4, 3, 2, 52, 36, 3] },
+  { id: 'cloud', name: t('Cloud-Export', 'Cloud export'), n: 96420, mix: [57, 18, 14, 4, 3, 4] },
+  { id: 'usb', name: t('USB-Stick', 'USB stick'), n: 38110, mix: [1, 24, 33, 26, 0, 16] },
 ]
 const TOTAL = SOURCES.reduce((s, x) => s + x.n, 0)
-const fmt = (n: number) => n.toLocaleString('de-DE')
+const fmt = (n: number) => n.toLocaleString(t('de-DE', 'en-US'))
 
 function Cell({ s, sel, on, i, onClick, className = '' }: { s: (typeof SOURCES)[number]; sel: boolean; on: boolean; i: number; onClick: () => void; className?: string }) {
   return (
@@ -28,7 +29,7 @@ function Cell({ s, sel, on, i, onClick, className = '' }: { s: (typeof SOURCES)[
       style={{ flexGrow: s.n, flexBasis: 0, opacity: on ? 1 : 0, transform: on ? 'none' : 'scale(0.92)', transitionDelay: on ? `${i * 90}ms` : '0ms' }}
     >
       <div className="font-semibold text-[0.875rem] leading-tight">{s.name}</div>
-      <div className={`mt-0.5 tabular-nums text-[0.75rem] ${sel ? 'text-white/80' : 'text-muted'}`}>{fmt(s.n)} Dateien</div>
+      <div className={`mt-0.5 tabular-nums text-[0.75rem] ${sel ? 'text-white/80' : 'text-muted'}`}>{fmt(s.n)} {t('Dateien', 'files')}</div>
     </button>
   )
 }
@@ -43,17 +44,17 @@ export function DataTreemap() {
   return (
     <Surface>
       <div ref={ref}>
-        <AppWindow tab="Landkarte" title="Ordnerlandkarte">
+        <AppWindow tab={t('Landkarte', 'Map')} title={t('Ordnerlandkarte', 'Folder map')}>
           <div className="px-5 pt-5 pb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-            <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">Ordnerlandkarte</h4>
-            <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">Sichergestellte Daten</span>
-            <span className="text-muted">Fläche entspricht der Dateizahl</span>
+            <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">{t('Ordnerlandkarte', 'Folder map')}</h4>
+            <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">{t('Sichergestellte Daten', 'Seized data')}</span>
+            <span className="text-muted">{t('Fläche entspricht der Dateizahl', 'Area reflects file count')}</span>
           </div>
           <div className="grid grid-cols-3 gap-3 px-5 pb-5">
             {[
-              ['Dateien gesamt', fmt(TOTAL)],
-              ['Dateiformate', '1.184'],
-              ['Datenträger', String(SOURCES.length)],
+              [t('Dateien gesamt', 'Total files'), fmt(TOTAL)],
+              [t('Dateiformate', 'File formats'), t('1.184', '1,184')],
+              [t('Datenträger', 'Devices'), String(SOURCES.length)],
             ].map(([l, v]) => (
               <div key={l} className="min-w-0 rounded-lg border border-line bg-white p-3.5">
                 <div className="text-muted">{l}</div>
@@ -78,7 +79,7 @@ export function DataTreemap() {
             <div className="p-5">
               <div className="flex items-baseline justify-between gap-3">
                 <span className="font-semibold">{s.name}</span>
-                <span className="text-muted tabular-nums">{Math.round((s.n / TOTAL) * 100)} % des Bestands</span>
+                <span className="text-muted tabular-nums">{Math.round((s.n / TOTAL) * 100)} %{t(' des Bestands', ' of the collection')}</span>
               </div>
               <ul className="list-none m-0 mt-3 p-0 flex flex-col gap-2.5">
                 {FORMATS.map((f, i) => (

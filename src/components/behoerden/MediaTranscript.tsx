@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AppWindow, Surface } from '../legal/shared'
+import { t as tr } from '../../lib/i18n'
 
 // Audio/Video: Wellenform, Transkript und Suche. Alles Simulation ohne echtes Audio, fiktives Gespräch.
 
@@ -8,13 +9,13 @@ const BARS = 64
 const heights = Array.from({ length: BARS }, (_, i) => 22 + Math.round(Math.abs(Math.sin(i * 0.7) * 38 + Math.sin(i * 1.9) * 24 + Math.cos(i * 0.31) * 14)))
 
 const LINES = [
-  { t: 0, who: 'Sprecher A', text: 'Hast du die Lieferung für Samstag bestätigt?' },
-  { t: 7, who: 'Sprecher B', text: 'Ja, aber nicht über die normale Adresse. Das Konto bleibt wie besprochen.' },
-  { t: 16, who: 'Sprecher A', text: 'Gut. Wir brauchen die Lieferung vor dem Wochenende, sonst wird es eng.' },
-  { t: 26, who: 'Sprecher B', text: 'Ich schicke dir die Nummer vom Konto später persönlich, nicht per Mail.' },
-  { t: 36, who: 'Sprecher A', text: 'Verstanden. Danach löschen wir die Nachrichten.' },
+  { t: 0, who: tr('Sprecher A', 'Speaker A'), text: tr('Hast du die Lieferung für Samstag bestätigt?', 'Did you confirm the delivery for Saturday?') },
+  { t: 7, who: tr('Sprecher B', 'Speaker B'), text: tr('Ja, aber nicht über die normale Adresse. Das Konto bleibt wie besprochen.', 'Yes, but not through the usual address. The account stays as discussed.') },
+  { t: 16, who: tr('Sprecher A', 'Speaker A'), text: tr('Gut. Wir brauchen die Lieferung vor dem Wochenende, sonst wird es eng.', 'Good. We need the delivery before the weekend, otherwise it gets tight.') },
+  { t: 26, who: tr('Sprecher B', 'Speaker B'), text: tr('Ich schicke dir die Nummer vom Konto später persönlich, nicht per Mail.', "I'll send you the account number personally later, not by email.") },
+  { t: 36, who: tr('Sprecher A', 'Speaker A'), text: tr('Verstanden. Danach löschen wir die Nachrichten.', 'Understood. Then we delete the messages.') },
 ]
-const TERMS = ['Lieferung', 'Konto']
+const TERMS = tr(['Lieferung', 'Konto'], ['delivery', 'account'])
 const mmss = (s: number) => `0:${String(Math.floor(s)).padStart(2, '0')}`
 
 function mark(text: string, term: string | null) {
@@ -26,7 +27,7 @@ function mark(text: string, term: string | null) {
 export function MediaTranscript() {
   const [t, setT] = useState(0)
   const [play, setPlay] = useState(false)
-  const [term, setTerm] = useState<string | null>('Lieferung')
+  const [term, setTerm] = useState<string | null>(TERMS[0])
   const last = useRef(0)
 
   useEffect(() => {
@@ -65,11 +66,11 @@ export function MediaTranscript() {
 
   return (
     <Surface tone="grid">
-      <AppWindow tab="Entitäten" title="Audio & Video">
+      <AppWindow tab={tr('Entitäten', 'Entities')} title={tr('Audio & Video', 'Audio & video')}>
         <div className="px-5 pt-5 pb-3 flex flex-wrap items-center gap-x-3 gap-y-1">
-          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">Sprachmemo_0914.m4a</h4>
-          <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">lokal transkribiert</span>
-          <span className="text-muted">Deutsch · {mmss(DUR)}</span>
+          <h4 className="m-0 text-[1.125rem] font-semibold tracking-[-0.01em]">{tr('Sprachmemo_0914.m4a', 'Voice_memo_0914.m4a')}</h4>
+          <span className="rounded-full bg-primary-tint text-primary px-2.5 py-0.5 text-[0.75rem]">{tr('lokal transkribiert', 'transcribed locally')}</span>
+          <span className="text-muted">{tr('Deutsch', 'English')} · {mmss(DUR)}</span>
         </div>
 
         <div className="px-5 pb-4">
@@ -80,7 +81,7 @@ export function MediaTranscript() {
                 if (t >= DUR) setT(0)
                 setPlay((v) => !v)
               }}
-              aria-label={play ? 'Pause' : 'Abspielen'}
+              aria-label={play ? tr('Pause', 'Pause') : tr('Abspielen', 'Play')}
               className="grid size-11 flex-none place-items-center rounded-full bg-primary text-white border-0 cursor-pointer transition-colors hover:bg-primary-hover"
             >
               {play ? (
@@ -108,7 +109,7 @@ export function MediaTranscript() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 px-5 pb-4">
-          <span className="text-muted mr-1">Suche im Text:</span>
+          <span className="text-muted mr-1">{tr('Suche im Text:', 'Search in text:')}</span>
           {TERMS.map((x) => (
             <button
               key={x}
@@ -120,7 +121,7 @@ export function MediaTranscript() {
               {x}
             </button>
           ))}
-          {term && <span className="text-muted">{hits} {hits === 1 ? 'Treffer' : 'Treffer'}, orange markiert</span>}
+          {term && <span className="text-muted">{hits} {hits === 1 ? tr('Treffer', 'hit') : tr('Treffer', 'hits')}{tr(', orange markiert', ', highlighted in orange')}</span>}
         </div>
 
         <ul className="list-none m-0 p-0 border-t border-line">

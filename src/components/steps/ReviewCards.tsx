@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n'
 import { useState } from 'react'
 import { SubCard } from './shared'
 
@@ -9,15 +10,15 @@ export function ReviewCards() {
   return (
     <div className="grid md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] border-t border-line">
       <SubCard
-        title="Ja oder Nein, mit einem Tastendruck."
-        text="Prüfer bestätigen oder verwerfen jeden KI-Treffer mit J oder N. Jede Entscheidung landet im Review-Ordner und bleibt nachvollziehbar."
+        title={t('Ja oder Nein, mit einem Tastendruck.', 'Yes or no, with one keystroke.')}
+        text={t('Prüfer bestätigen oder verwerfen jeden KI-Treffer mit J oder N. Jede Entscheidung landet im Review-Ordner und bleibt nachvollziehbar.', 'Reviewers confirm or reject every AI hit with Y or N. Every decision lands in the review folder and stays traceable.')}
       >
         <JaNeinList />
       </SubCard>
       <SubCard
         className="md:border-l border-line"
-        title="Das Ergebnis auf einen Blick."
-        text="Die Facetten-Verteilung zeigt, wie viele Dokumente der Smart Filter je Facette gefunden hat: 41.870 davon als vertraulich."
+        title={t('Das Ergebnis auf einen Blick.', 'The result at a glance.')}
+        text={t('Die Facetten-Verteilung zeigt, wie viele Dokumente der Smart Filter je Facette gefunden hat: 41.870 davon als vertraulich.', 'The facet distribution shows how many documents the Smart Filter found per facet: 41,870 of them confidential.')}
       >
         <FacetChart />
       </SubCard>
@@ -40,10 +41,10 @@ function JaNeinList() {
     <div className="w-full max-w-[460px] rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-20px_rgba(40,10,50,0.25)] overflow-hidden text-[0.8125rem]">
       <div className="flex items-center justify-between px-4 py-3 border-b border-line">
         <span className="flex items-center gap-2">
-          <span className="text-ink font-medium">Dokumente</span>
-          <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.6875rem]">Prüfset Vertraulich</span>
+          <span className="text-ink font-medium">{t('Dokumente', 'Documents')}</span>
+          <span className="rounded-full bg-[#f3ecf6] text-[#601571] px-2 py-0.5 text-[0.6875rem]">{t('Prüfset Vertraulich', 'Confidential review set')}</span>
         </span>
-        <span className="text-muted/80 tabular-nums">4 von 50 bewertet</span>
+        <span className="text-muted/80 tabular-nums">{t('4 von 50 bewertet', '4 of 50 rated')}</span>
       </div>
       <ul className="list-none m-0 p-0">
         {ROWS.map((r, i) => (
@@ -55,13 +56,13 @@ function JaNeinList() {
           >
             <span className="w-[38px] shrink-0 rounded bg-[#f4f2f6] text-center text-[0.625rem] font-semibold text-muted py-0.5">{r.type}</span>
             <span className="flex-1 min-w-0 truncate text-[#601571]">{r.name}</span>
-            <Btn label="Ja" on={r.verdict === 'ja'} tone="ja" />
-            <Btn label="Nein" on={r.verdict === 'nein'} tone="nein" />
+            <Btn label={t('Ja', 'Yes')} on={r.verdict === 'ja'} tone="ja" />
+            <Btn label={t('Nein', 'No')} on={r.verdict === 'nein'} tone="nein" />
           </li>
         ))}
       </ul>
       <div className="flex items-center gap-2 px-4 py-2.5 border-t border-line text-[0.6875rem] text-muted/80">
-        <Key>J</Key> Ja <Key>N</Key> Nein <Key>↓</Key> nächstes Dokument
+        <Key>{t('J', 'Y')}</Key> {t('Ja', 'Yes')} <Key>N</Key> {t('Nein', 'No')} <Key>↓</Key> {t('nächstes Dokument', 'next document')}
       </div>
     </div>
   )
@@ -88,13 +89,13 @@ function Key({ children }: { children: string }) {
 // Werte und Farben wie im Smart-Filter-Video (src/apps/smartfilter/data.ts).
 // soft = Ruhefarbe, strong = Farbe der gewählten Facette (popt beim Klick).
 const FACETS = [
-  { name: 'Bilanzrisiken', n: 18_420, soft: '#c5b0cf', strong: '#8e44ad', tint: '#f4ebf8' },
-  { name: 'Interessenkonflikt', n: 6_315, soft: '#a9cfc8', strong: '#0f9b8e', tint: '#e6f6f3' },
-  { name: 'Vertraulich', n: 41_870, soft: '#93b4f5', strong: '#2563eb', tint: '#ecf2fe' },
+  { name: t('Bilanzrisiken', 'Accounting risks'), n: 18_420, soft: '#c5b0cf', strong: '#8e44ad', tint: '#f4ebf8' },
+  { name: t('Interessenkonflikt', 'Conflict of interest'), n: 6_315, soft: '#a9cfc8', strong: '#0f9b8e', tint: '#e6f6f3' },
+  { name: t('Vertraulich', 'Confidential'), n: 41_870, soft: '#93b4f5', strong: '#2563eb', tint: '#ecf2fe' },
 ]
 const TOTAL = FACETS.reduce((a, f) => a + f.n, 0)
-const de = (n: number) => n.toLocaleString('de-DE')
-const pct = (n: number) => `${((n / TOTAL) * 100).toLocaleString('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 1 })} %`
+const de = (n: number) => n.toLocaleString(t('de-DE', 'en-US'))
+const pct = (n: number) => `${((n / TOTAL) * 100).toLocaleString(t('de-DE', 'en-US'), { maximumFractionDigits: 1, minimumFractionDigits: 1 })}${t(' %', '%')}`
 
 // Interaktiv: Klick auf eine Facette (Liste oder Ring) hebt sie dezent hervor; Farben bleiben voll.
 function FacetChart() {
@@ -108,18 +109,18 @@ function FacetChart() {
     <div className="w-full box-border rounded-xl bg-white ring-1 ring-black/5 shadow-[0_16px_40px_-20px_rgba(40,10,50,0.25)] p-5 text-left">
       <div className="flex items-center justify-between gap-3">
         <span className="text-[0.875rem]">
-          <span className="font-semibold text-ink">Facetten-Verteilung</span>{' '}
-          <span className="text-muted/80">Compliance-Prüfung 2001</span>
+          <span className="font-semibold text-ink">{t('Facetten-Verteilung', 'Facet distribution')}</span>{' '}
+          <span className="text-muted/80">{t('Compliance-Prüfung 2001', 'Compliance review 2001')}</span>
         </span>
         <span className="inline-flex items-center gap-1.5 rounded-full ring-1 ring-[#d9c6e0] px-2 py-0.5 text-[0.75rem] text-ink">
           <span className="relative h-3 w-5 rounded-full bg-primary">
             <span className="absolute right-0.5 top-0.5 h-2 w-2 rounded-full bg-white" />
           </span>
-          Nur facettierte
+          {t('Nur facettierte', 'Faceted only')}
         </span>
       </div>
       <div className="mt-4 grid grid-cols-1 sm:grid-cols-[160px_minmax(0,1fr)] items-center justify-items-center sm:justify-items-stretch gap-4 sm:gap-6">
-        <svg viewBox="0 0 180 180" className="w-[160px] h-[160px]" role="group" aria-label="Ring der Facetten-Verteilung">
+        <svg viewBox="0 0 180 180" className="w-[160px] h-[160px]" role="group" aria-label={t('Ring der Facetten-Verteilung', 'Facet distribution ring')}>
           <g className="-rotate-90 origin-center">
             {FACETS.map((f, i) => (
               <circle

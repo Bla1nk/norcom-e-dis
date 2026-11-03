@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { markIntroSeen, releaseIntro } from '../lib/intro'
 import { lockScroll, unlockScroll } from '../lib/lenis'
+import { t } from '../lib/i18n'
 
 // Konzept „System Initialization“: Wenige Statusmeldungen laufen auf Schwarz, eine feine Linie in der Mitte füllt sich.
 // Bei 100 % blenden die Meldungen aus, die Linie teilt die Fläche, beide Hälften ziehen nach oben und unten weg.
@@ -8,11 +9,11 @@ const EASE = 'cubic-bezier(0.76, 0, 0.24, 1)'
 const TOTAL = 3000 // ms bis 100 %
 const SPLIT = 1100 // ms Auseinanderziehen
 const LINES: { at: number; text: string }[] = [
-  { at: 250, text: 'Umgebung geprüft: Air-Gapped' },
-  { at: 800, text: 'Lokale KI geladen' },
-  { at: 1350, text: 'Index verbunden: 1.284.503 Dokumente' },
-  { at: 1900, text: 'Zugriffsrechte synchronisiert' },
-  { at: 2450, text: 'Bereit' },
+  { at: 250, text: t('Umgebung geprüft: Air-Gapped', 'Environment verified: air-gapped') },
+  { at: 800, text: t('Lokale KI geladen', 'Local AI loaded') },
+  { at: 1350, text: t('Index verbunden: 1.284.503 Dokumente', 'Index connected: 1,284,503 documents') },
+  { at: 1900, text: t('Zugriffsrechte synchronisiert', 'Access rights synchronized') },
+  { at: 2450, text: t('Bereit', 'Ready') },
 ]
 
 const ease = (v: number) => (v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2)

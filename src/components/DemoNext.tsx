@@ -1,15 +1,16 @@
+import { t } from '../lib/i18n'
 import { Eyebrow } from './Eyebrow'
 import { Reveal, RevealGroup, TextReveal } from './TextReveal'
 
 const STEPS = [
-  { t: 'Zeitnah eine Antwort', d: 'Wir melden uns per E-Mail oder Telefon und klären kurz, welchen Fall und welche Daten Sie im Blick haben.' },
-  { t: 'Ein Gespräch zu Ihrem Fall', d: 'Wir besprechen Anwendungsfall, Datenlage und das passende Betriebsmodell, unverbindlich.' },
-  { t: 'Ihre Live-Demo', d: 'Wir zeigen DaSense an einem Beispielbestand oder, wenn Sie möchten, an Ihren eigenen Daten, auch im eigenen Netz.' },
+  { t: t('Zeitnah eine Antwort', 'A prompt reply'), d: t('Wir melden uns per E-Mail oder Telefon und klären kurz, welchen Fall und welche Daten Sie im Blick haben.', 'We get back to you by email or phone and briefly clarify which case and which data you have in mind.') },
+  { t: t('Ein Gespräch zu Ihrem Fall', 'A conversation about your case'), d: t('Wir besprechen Anwendungsfall, Datenlage und das passende Betriebsmodell, unverbindlich.', 'We discuss your use case, your data and the right deployment model, with no obligation.') },
+  { t: t('Ihre Live-Demo', 'Your live demo'), d: t('Wir zeigen DaSense an einem Beispielbestand oder, wenn Sie möchten, an Ihren eigenen Daten, auch im eigenen Netz.', 'We show DaSense on a sample data set or, if you prefer, on your own data, even inside your own network.') },
 ]
 
 const NOTES = [
-  { q: 'Auf Wunsch vollständig im eigenen Netz.', s: 'DaSense und die lokale KI laufen auch ohne Verbindung nach außen.' },
-  { q: 'Ihre Angaben nur für Ihre Demo.', s: 'Wir verwenden sie ausschließlich, um Ihre Anfrage zu bearbeiten und Sie zu kontaktieren.' },
+  { q: t('Auf Wunsch vollständig im eigenen Netz.', 'Fully inside your own network, if you wish.'), s: t('DaSense und die lokale KI laufen auch ohne Verbindung nach außen.', 'DaSense and the local AI run without any outside connection.') },
+  { q: t('Ihre Angaben nur für Ihre Demo.', 'Your details, only for your demo.'), s: t('Wir verwenden sie ausschließlich, um Ihre Anfrage zu bearbeiten und Sie zu kontaktieren.', 'We use them solely to handle your request and to contact you.') },
 ]
 
 // „Was als Nächstes passiert“ im Aufbau des Vorbilds: links Eyebrow und große Headline, in der Mitte drei nummerierte
@@ -20,11 +21,11 @@ export function DemoNext() {
       <div className="box-border max-w-[1240px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-28 grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)_minmax(0,1fr)] gap-x-12 gap-y-12 sm:gap-y-14 items-start">
         <div>
           <Reveal>
-            <Eyebrow colorClass="text-ink">Nach dem Absenden</Eyebrow>
+            <Eyebrow colorClass="text-ink">{t('Nach dem Absenden', 'After you submit')}</Eyebrow>
           </Reveal>
           <h2 id="next-h" className="m-0 mt-6 text-[clamp(2.75rem,5vw,4.5rem)] leading-[1.02] tracking-[-0.04em] font-bold text-ink uppercase">
-            <TextReveal text="Was dann" delay={60} stagger={90} className="block" />
-            <TextReveal text="passiert." delay={240} className="block font-serif italic font-medium normal-case tracking-[-0.02em]" />
+            <TextReveal text={t('Was dann', 'What happens')} delay={60} stagger={90} className="block" />
+            <TextReveal text={t('passiert.', 'next.')} delay={240} className="block font-serif italic font-medium normal-case tracking-[-0.02em]" />
           </h2>
         </div>
 

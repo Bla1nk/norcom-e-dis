@@ -1,5 +1,6 @@
 import { Fragment, useEffect } from 'react'
 import type { LegalDoc } from '../content/legal'
+import { t } from '../lib/i18n'
 import { linkProps } from '../lib/router'
 import { Eyebrow } from './Eyebrow'
 import { RevealFooter } from './RevealFooter'
@@ -34,7 +35,7 @@ export function LegalPage({ doc, startDelay = 150 }: { doc: LegalDoc; startDelay
         <section className={`${WRAP} pt-14 pb-16 lg:pt-20 lg:pb-24`}>
           <a {...linkProps('/#top')} className="inline-flex items-center gap-2 text-[0.875rem] font-medium text-body no-underline hover:text-ink">
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
-            Zur Startseite
+            {t('Zur Startseite', 'Back to home')}
           </a>
           <div className="mt-12 grid lg:grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-x-10 gap-y-8">
             <Reveal immediate delay={startDelay}>
@@ -43,17 +44,20 @@ export function LegalPage({ doc, startDelay = 150 }: { doc: LegalDoc; startDelay
             <div>
               <TextReveal as="h1" immediate delay={startDelay + 80} text={doc.title} className="block m-0 text-[clamp(2.5rem,6vw,5.25rem)] leading-[1.06] tracking-[-0.04em] font-bold" />
               <div className="mt-14 max-w-[46rem]">
+                {t('', 'The legally binding version of this document is in German.') && (
+                  <p className="m-0 mb-10 text-[0.9375rem] font-medium text-ink">{t('', 'The legally binding version of this document is in German.')}</p>
+                )}
                 {doc.sections.map((s, i) => (
                   <Reveal key={i} className={s.h ? 'mt-12 first:mt-0' : 'mt-5'}>
                     {s.h && <h2 className="m-0 mb-4 text-[1.375rem] leading-[1.25] tracking-[-0.015em] font-semibold">{s.h}</h2>}
                     {s.sub && <h3 className={`m-0 mb-3 text-[1.0625rem] font-semibold ${s.h ? 'mt-0' : 'mt-9'}`}>{s.sub}</h3>}
-                    {s.p?.map((t, j) => (
-                      <p key={j} className="m-0 mb-4 last:mb-0 text-body text-[1rem] leading-[1.7] whitespace-pre-line">{linkify(t)}</p>
+                    {s.p?.map((txt, j) => (
+                      <p key={j} className="m-0 mb-4 last:mb-0 text-body text-[1rem] leading-[1.7] whitespace-pre-line">{linkify(txt)}</p>
                     ))}
                     {s.ul && (
                       <ul className="m-0 mt-3 pl-5 flex flex-col gap-2 text-body text-[1rem] leading-[1.7]">
-                        {s.ul.map((t, j) => (
-                          <li key={j}>{linkify(t)}</li>
+                        {s.ul.map((txt, j) => (
+                          <li key={j}>{linkify(txt)}</li>
                         ))}
                       </ul>
                     )}

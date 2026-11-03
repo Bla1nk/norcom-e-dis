@@ -1,3 +1,4 @@
+import { t } from '../lib/i18n'
 // Netz der Entitäten im Fall „Vertraulich“ (erste 200 Treffer), Auszug aus dem Entitäten-Video
 // (App-Previews/src/apps/entities/data.ts, automatisch übernommen). Namen aus dem öffentlichen Enron-Datensatz;
 // Zahlen illustrativ, nur „in n Dokumenten genannt“ / „gemeinsam in n Dokumenten“.
@@ -6,10 +7,10 @@ export type EntityType = 'PER' | 'ORG' | 'LOC' | 'PRO'
 export type NetEntity = { name: string; type: EntityType; count: number }
 
 export const NET_TYPES: { id: EntityType; label: string; color: string }[] = [
-  { id: 'PER', label: 'Personen', color: '#7c3aed' },
-  { id: 'ORG', label: 'Organisationen', color: '#0ea5e9' },
-  { id: 'LOC', label: 'Orte', color: '#16a34a' },
-  { id: 'PRO', label: 'Produkte & Projekte', color: '#f59e0b' },
+  { id: 'PER', label: t('Personen', 'People'), color: '#7c3aed' },
+  { id: 'ORG', label: t('Organisationen', 'Organizations'), color: '#0ea5e9' },
+  { id: 'LOC', label: t('Orte', 'Locations'), color: '#16a34a' },
+  { id: 'PRO', label: t('Produkte & Projekte', 'Products & projects'), color: '#f59e0b' },
 ]
 
 export const NET_ENTITIES: NetEntity[] = [

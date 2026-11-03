@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n'
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { NET_EDGES, NET_ENTITIES, NET_TYPES, type NetEntity } from '../../content/entities'
 
@@ -30,8 +31,8 @@ export function EntityNetwork() {
   const { pos, rows } = useMemo(() => {
     const pos = new Map<string, Pos>()
     let rows = 0
-    NET_TYPES.forEach((t, col) => {
-      const list = NET_ENTITIES.filter((e) => e.type === t.id)
+    NET_TYPES.forEach((nt, col) => {
+      const list = NET_ENTITIES.filter((e) => e.type === nt.id)
       rows = Math.max(rows, list.length)
       list.forEach((e, i) => pos.set(e.name, { x: COL_X[col], y: HEAD + i * ROW, col }))
     })
@@ -44,7 +45,7 @@ export function EntityNetwork() {
     .sort((x, y) => y.n - x.n)
   const linked = new Map(links.map((l) => [l.other, l.n]))
   const cur = NET_ENTITIES.find((e) => e.name === sel) as NetEntity
-  const curType = NET_TYPES.find((t) => t.id === cur.type)!
+  const curType = NET_TYPES.find((nt) => nt.id === cur.type)!
 
   const path = (a: string, b: string) => {
     let p = pos.get(a)!
@@ -63,13 +64,13 @@ export function EntityNetwork() {
       {/* Kopf wie im Panel */}
       <div className="flex flex-wrap items-center justify-between gap-3 text-[0.8125rem]">
         <span className="flex flex-wrap items-center gap-2">
-          <span className="font-semibold text-ink text-[0.9375rem]">Entitäten</span>
-          <span className="rounded-full bg-[#ecf2fe] text-[#2563eb] px-2 py-0.5 text-[0.75rem] font-medium">Vertraulich · 41.870 Treffer</span>
-          <span className="text-muted/80">Erste 200 Treffer analysiert</span>
+          <span className="font-semibold text-ink text-[0.9375rem]">{t('Entitäten', 'Entities')}</span>
+          <span className="rounded-full bg-[#ecf2fe] text-[#2563eb] px-2 py-0.5 text-[0.75rem] font-medium">{t('Vertraulich · 41.870 Treffer', 'Confidential · 41,870 hits')}</span>
+          <span className="text-muted/80">{t('Erste 200 Treffer analysiert', 'First 200 hits analyzed')}</span>
         </span>
         <span className="inline-flex rounded-lg bg-[#f4f2f6] p-0.5 text-[0.75rem]">
-          {['Liste', 'Netz', 'Diagramme'].map((v) => (
-            <span key={v} className={`rounded-md px-2.5 py-1 ${v === 'Netz' ? 'bg-white text-ink shadow-sm' : 'text-muted'}`}>
+          {[t('Liste', 'List'), t('Netz', 'Network'), t('Diagramme', 'Charts')].map((v) => (
+            <span key={v} className={`rounded-md px-2.5 py-1 ${v === t('Netz', 'Network') ? 'bg-white text-ink shadow-sm' : 'text-muted'}`}>
               {v}
             </span>
           ))}
@@ -88,11 +89,11 @@ export function EntityNetwork() {
               <path key={`on|${other}`} d={path(sel, other)} fill="none" stroke="#601571" strokeWidth="1.6" strokeDasharray="5 4" className="net-flow" />
             ))}
           </svg>
-          {NET_TYPES.map((t, col) => (
-            <div key={t.id} className="absolute flex items-center gap-1.5 text-[12px] font-medium text-muted" style={{ left: COL_X[col], top: 0 }}>
-              <span className="h-2 w-2 rounded-full" style={{ background: t.color }} />
-              {t.label}
-              <span className="text-muted/60">{NET_ENTITIES.filter((e) => e.type === t.id).length}</span>
+          {NET_TYPES.map((nt, col) => (
+            <div key={nt.id} className="absolute flex items-center gap-1.5 text-[12px] font-medium text-muted" style={{ left: COL_X[col], top: 0 }}>
+              <span className="h-2 w-2 rounded-full" style={{ background: nt.color }} />
+              {nt.label}
+              <span className="text-muted/60">{NET_ENTITIES.filter((e) => e.type === nt.id).length}</span>
             </div>
           ))}
           {NET_ENTITIES.map((e) => {
@@ -141,11 +142,11 @@ export function EntityNetwork() {
         <p className="m-0 text-ink">
           <span className="font-semibold">{cur.name}</span>{' '}
           <span className="text-muted">
-            · {curType.label} · in {cur.count} von 200 Dokumenten genannt
+            · {curType.label} · {t(`in ${cur.count} von 200 Dokumenten genannt`, `mentioned in ${cur.count} of 200 documents`)}
           </span>
         </p>
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-muted/80 mr-1">Gemeinsam genannt mit</span>
+          <span className="text-muted/80 mr-1">{t('Gemeinsam genannt mit', 'Mentioned together with')}</span>
           {links.map((l) => (
             <button
               key={l.other}
