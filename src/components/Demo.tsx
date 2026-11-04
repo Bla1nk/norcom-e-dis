@@ -2,6 +2,7 @@ import { linkProps } from '../lib/router'
 import { t } from '../lib/i18n'
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent, ReactNode } from 'react'
+import { track } from '../lib/analytics'
 import { Eyebrow } from './Eyebrow'
 import { Reveal, TextReveal } from './TextReveal'
 
@@ -208,6 +209,7 @@ function DemoForm() {
         setOperation([])
         setStart([])
         setStatus('sent')
+        track('demo_form_sent')
       })
       .catch(() => setStatus('failed'))
   }

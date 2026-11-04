@@ -1,6 +1,8 @@
 // Sprache der Seite: dasense.com zeigt Englisch, dasense.de Deutsch. Auf anderen Hosts (localhost, Vercel-Vorschau)
 // gilt ?lang=en|de, danach die gemerkte Wahl, sonst Deutsch. Der Wechsel lädt die Seite neu, daher darf `t` auch beim
 // Import von Modulen (Inhaltslisten) aufgerufen werden.
+import { track } from './analytics'
+
 export type Lang = 'de' | 'en'
 
 const KEY = 'dasense-lang'
@@ -39,6 +41,7 @@ if (typeof document !== 'undefined') document.documentElement.lang = LANG
 /** Wechselt die Sprache: auf den dasense-Domains zur anderen Domain, sonst per Merker und Neuladen. */
 export function switchLang(to: Lang) {
   if (to === LANG) return
+  track('lang_switch', { to })
   const { protocol, hostname, port, pathname, search, hash } = window.location
   if (COM.test(hostname) || DE.test(hostname)) {
     const host = hostname.replace(/\.(com|de)$/i, to === 'en' ? '.com' : '.de')
