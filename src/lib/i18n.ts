@@ -42,10 +42,16 @@ if (typeof document !== 'undefined') document.documentElement.lang = LANG
 export function switchLang(to: Lang) {
   if (to === LANG) return
   track('lang_switch', { to })
-  const { protocol, hostname, port, pathname, search, hash } = window.location
+  const { protocol, hostname, pathname, search, hash } = window.location
   if (COM.test(hostname) || DE.test(hostname)) {
-    const host = hostname.replace(/\.(com|de)$/i, to === 'en' ? '.com' : '.de')
-    window.location.href = `${protocol}//${host}${port ? ':' + port : ''}${pathname}${search}${hash}`
+    // Feste Zieladressen (nicht nur .de/.com tauschen): www.dasense.com und dasense.de sind die Hauptadressen.
+    const href = `${protocol}//${to === 'en' ? 'www.dasense.com' : 'dasense.de'}${pathname}${search}${hash}`
+    // Über einen echten Link-Klick, damit Google Analytics die Besucherkennung (Linker) an die andere Domain mitgibt.
+    const a = document.createElement('a')
+    a.href = href
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
     return
   }
   try {

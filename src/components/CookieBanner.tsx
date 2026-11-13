@@ -5,7 +5,7 @@ import { readConsent, saveConsent } from '../lib/consent'
 
 const CATEGORIES = [
   { id: 'necessary', title: t('Notwendig', 'Necessary'), text: t('Damit die Seite funktioniert, zum Beispiel für Ihre Auswahl hier.', 'Required for the site to work, for example to remember your choice here.') },
-  { id: 'stats', title: t('Statistik', 'Statistics'), text: t('Hilft uns zu verstehen, welche Inhalte genutzt werden.', 'Helps us understand which content is used.') },
+  { id: 'stats', title: t('Statistik', 'Statistics'), text: t('Hilft uns zu verstehen, welche Inhalte genutzt werden (Google Analytics, Vercel Analytics). Erst nach Ihrer Zustimmung aktiv.', 'Helps us understand which content is used (Google Analytics, Vercel Analytics). Only active after your consent.') },
   { id: 'external', title: t('Externe Inhalte', 'External content'), text: t('Eingebundene Videos und Karten von Drittanbietern.', 'Embedded videos and maps from third-party providers.') },
 ] as const
 

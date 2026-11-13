@@ -22,6 +22,7 @@ import { LEGAL } from './content/legal'
 import { INTRO_PENDING, INTRO_VARIANT } from './lib/intro'
 import { jumpTo, lockScroll, smoothScrollTo, unlockScroll } from './lib/lenis'
 import { SmoothScroll } from './lib/SmoothScroll'
+import { updateSeoLinks } from './lib/seo'
 
 type AppProps = {
   /** Akzentfarbe (Logo und Rubrik-Labels). Optionen im Original: #601571, #1F3A68, #0F5C55. */
@@ -156,6 +157,9 @@ export default function App({ accent = '#601571' }: AppProps) {
       window.removeEventListener('popstate', onPop)
     }
   }, [go])
+
+  // canonical und hreflang folgen der aktuellen Seite
+  useEffect(() => updateSeoLinks(), [slug])
 
   const item = CASES.find((c) => c.slug === slug) ?? null
   const legalDoc = LEGAL.find((c) => c.slug === slug) ?? null
